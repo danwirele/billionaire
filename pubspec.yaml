@@ -33,7 +33,7 @@ flutter:
     - assets/icons/
 
 flutter_gen:
-  output: lib/gen/ 
+  output: lib/core/gen/ 
   line_length: 80 
 
   integrations:
