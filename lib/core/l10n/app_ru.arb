@@ -1,0 +1,12 @@
+{
+  "appBarAccount": "Мой счет",
+  "appBarExpenses": "Расходы сегодня",
+  "appBarIncome": "Доходы сегодня",
+  "appBarSettings": "Настройки",
+  "appBarStats": "Мои статьи",
+  "navBarAccount": "Счет",
+  "navBarExpenses": "Расходы",
+  "navBarIncome": "Доходы",
+  "navBarSettings": "Настройки",
+  "navBarStats": "Статьи"
+}
