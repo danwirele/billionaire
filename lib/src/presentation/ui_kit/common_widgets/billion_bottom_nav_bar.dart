@@ -52,7 +52,7 @@ class _BillionBottomNavBarState extends State<BillionBottomNavBar> {
               context.goNamed(RoutesUtil.accountPageName);
               _index = value;
             case 3:
-              context.goNamed(RoutesUtil.articlePageName);
+              context.goNamed(RoutesUtil.statsPageName);
               _index = value;
             case 4:
               context.goNamed(RoutesUtil.settingsPageName);
@@ -73,7 +73,7 @@ class _BillionBottomNavBarState extends State<BillionBottomNavBar> {
             label: AppLocalizations.of(context)!.navBarAccount,
           ),
           BillionNavDestination(
-            iconPath: Assets.icons.expenseArticles.path,
+            iconPath: Assets.icons.expenseStats.path,
             label: AppLocalizations.of(context)!.navBarStats,
           ),
           BillionNavDestination(

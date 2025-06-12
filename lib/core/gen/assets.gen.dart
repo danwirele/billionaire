@@ -21,9 +21,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/edit.svg
   SvgGenImage get edit => const SvgGenImage('assets/icons/edit.svg');
 
-  /// File path: assets/icons/expense_articles.svg
-  SvgGenImage get expenseArticles =>
-      const SvgGenImage('assets/icons/expense_articles.svg');
+  /// File path: assets/icons/expense_stats.svg
+  SvgGenImage get expenseStats =>
+      const SvgGenImage('assets/icons/expense_stats.svg');
 
   /// File path: assets/icons/settings.svg
   SvgGenImage get settings => const SvgGenImage('assets/icons/settings.svg');
@@ -38,7 +38,7 @@ class $AssetsIconsGen {
   List<SvgGenImage> get values => [
     account,
     edit,
-    expenseArticles,
+    expenseStats,
     settings,
     trendDown,
     trendUp,

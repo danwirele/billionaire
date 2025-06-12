@@ -1,5 +1,5 @@
 import 'package:billionaire/src/presentation/pages/account_page.dart';
-import 'package:billionaire/src/presentation/pages/article_page.dart';
+import 'package:billionaire/src/presentation/pages/stats_page.dart';
 import 'package:billionaire/src/presentation/pages/expenses_page.dart';
 import 'package:billionaire/src/presentation/pages/income_page.dart';
 import 'package:billionaire/src/presentation/pages/settings_page.dart';
@@ -40,10 +40,10 @@ final GoRouter router = GoRouter(
               const MaterialPage(child: ExpensesPage()),
         ),
         GoRoute(
-          path: RoutesUtil.articlePagePath,
-          name: RoutesUtil.articlePageName,
+          path: RoutesUtil.statsPagePath,
+          name: RoutesUtil.statsPageName,
           pageBuilder: (context, state) =>
-              const MaterialPage(child: ArticlePage()),
+              const MaterialPage(child: StatsPage()),
         ),
         GoRoute(
           path: RoutesUtil.settingsPagePath,
