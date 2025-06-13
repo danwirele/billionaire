@@ -27,7 +27,7 @@ class BillionAppBar extends StatelessWidget
       title: Text(title, style: BillionTextStyle.titleLarge),
       centerTitle: true,
       leading: leading,
-      actionsPadding: EdgeInsets.only(right: 4),
+      actionsPadding: EdgeInsets.only(right: 16),
       actions: [?actionIcon],
     );
   }

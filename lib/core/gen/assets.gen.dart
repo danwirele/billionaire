@@ -25,6 +25,9 @@ class $AssetsIconsGen {
   SvgGenImage get expenseStats =>
       const SvgGenImage('assets/icons/expense_stats.svg');
 
+  /// File path: assets/icons/more_vert.svg
+  SvgGenImage get moreVert => const SvgGenImage('assets/icons/more_vert.svg');
+
   /// File path: assets/icons/settings.svg
   SvgGenImage get settings => const SvgGenImage('assets/icons/settings.svg');
 
@@ -39,6 +42,7 @@ class $AssetsIconsGen {
     account,
     edit,
     expenseStats,
+    moreVert,
     settings,
     trendDown,
     trendUp,
