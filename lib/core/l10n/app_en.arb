@@ -1,0 +1,12 @@
+{
+  "appBarAccount": "My account",
+  "appBarExpenses": "Expenses today",
+  "appBarIncome": "Income today",
+  "appBarSettings": "Settings",
+  "appBarStats": "My stats",
+  "navBarAccount": "Account",
+  "navBarExpenses": "Expenses",
+  "navBarIncome": "Income",
+  "navBarSettings": "Settings",
+  "navBarStats": "Stats"
+}
