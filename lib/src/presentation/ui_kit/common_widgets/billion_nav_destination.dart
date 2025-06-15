@@ -1,15 +1,15 @@
+import 'package:billionaire/core/gen/assets.gen.dart';
 import 'package:billionaire/src/presentation/ui_kit/theme/billion_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class BillionNavDestination extends StatelessWidget {
   const BillionNavDestination({
     super.key,
-    required this.iconPath,
+    required this.icon,
     required this.label,
   });
 
-  final String iconPath;
+  final SvgGenImage icon;
   final String label;
 
   static const _unselectedColorFilter = ColorFilter.mode(
@@ -28,14 +28,12 @@ class BillionNavDestination extends StatelessWidget {
   Widget build(BuildContext context) {
     return NavigationDestination(
       label: label,
-      icon: SvgPicture.asset(
-        iconPath,
+      icon: icon.svg(
         height: _iconSize,
         width: _iconSize,
         colorFilter: _unselectedColorFilter,
       ),
-      selectedIcon: SvgPicture.asset(
-        iconPath,
+      selectedIcon: icon.svg(
         height: _iconSize,
         width: _iconSize,
         colorFilter: _selectedColorFilter,

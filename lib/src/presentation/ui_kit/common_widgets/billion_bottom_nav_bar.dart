@@ -61,23 +61,23 @@ class _BillionBottomNavBarState extends State<BillionBottomNavBar> {
         },
         destinations: [
           BillionNavDestination(
-            iconPath: Assets.icons.trendDown.path,
+            icon: Assets.icons.trendDown,
             label: AppLocalizations.of(context)!.navBarExpenses,
           ),
           BillionNavDestination(
-            iconPath: Assets.icons.trendUp.path,
+            icon: Assets.icons.trendUp,
             label: AppLocalizations.of(context)!.navBarIncome,
           ),
           BillionNavDestination(
-            iconPath: Assets.icons.account.path,
+            icon: Assets.icons.account,
             label: AppLocalizations.of(context)!.navBarAccount,
           ),
           BillionNavDestination(
-            iconPath: Assets.icons.expenseStats.path,
+            icon: Assets.icons.expenseStats,
             label: AppLocalizations.of(context)!.navBarStats,
           ),
           BillionNavDestination(
-            iconPath: Assets.icons.settings.path,
+            icon: Assets.icons.settings,
             label: AppLocalizations.of(context)!.navBarSettings,
           ),
         ],

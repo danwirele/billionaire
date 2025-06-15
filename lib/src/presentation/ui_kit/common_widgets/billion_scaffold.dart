@@ -1,3 +1,4 @@
+import 'package:billionaire/src/presentation/ui_kit/theme/billion_colors.dart';
 import 'package:flutter/material.dart';
 
 class BillionScaffold extends StatelessWidget {
@@ -27,6 +28,7 @@ class BillionScaffold extends StatelessWidget {
       floatingActionButton: floatingActionButton,
       floatingActionButtonLocation:
           FloatingActionButtonLocation.endFloat,
+      backgroundColor: BillionColors.surface,
     );
   }
 }
