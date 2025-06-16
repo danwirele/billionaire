@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'account_transactions_repository.dart';
+part of 'filtered_transactions.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$accountTransactionsRepositoryHash() =>
-    r'0290bd5b29debb794da73a554c8a95a5ca961586';
+String _$filteredTransactionsHash() =>
+    r'91116d019ae80a2229e4d8df1d45a01728107940';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,80 +30,73 @@ class _SystemHash {
   }
 }
 
-abstract class _$AccountTransactionsRepository
-    extends BuildlessAutoDisposeAsyncNotifier<List<TransactionResponseModel>?> {
+abstract class _$FilteredTransactions
+    extends BuildlessAsyncNotifier<List<TransactionResponseModel>?> {
   late final bool isIncome;
 
   FutureOr<List<TransactionResponseModel>?> build({required bool isIncome});
 }
 
-/// See also [AccountTransactionsRepository].
-@ProviderFor(AccountTransactionsRepository)
-const accountTransactionsRepositoryProvider =
-    AccountTransactionsRepositoryFamily();
+/// See also [FilteredTransactions].
+@ProviderFor(FilteredTransactions)
+const filteredTransactionsProvider = FilteredTransactionsFamily();
 
-/// See also [AccountTransactionsRepository].
-class AccountTransactionsRepositoryFamily
+/// See also [FilteredTransactions].
+class FilteredTransactionsFamily
     extends Family<AsyncValue<List<TransactionResponseModel>?>> {
-  /// See also [AccountTransactionsRepository].
-  const AccountTransactionsRepositoryFamily();
+  /// See also [FilteredTransactions].
+  const FilteredTransactionsFamily();
 
-  /// See also [AccountTransactionsRepository].
-  AccountTransactionsRepositoryProvider call({required bool isIncome}) {
-    return AccountTransactionsRepositoryProvider(isIncome: isIncome);
+  /// See also [FilteredTransactions].
+  FilteredTransactionsProvider call({required bool isIncome}) {
+    return FilteredTransactionsProvider(isIncome: isIncome);
   }
 
   @override
-  AccountTransactionsRepositoryProvider getProviderOverride(
-    covariant AccountTransactionsRepositoryProvider provider,
+  FilteredTransactionsProvider getProviderOverride(
+    covariant FilteredTransactionsProvider provider,
   ) {
     return call(isIncome: provider.isIncome);
   }
 
-  static final Iterable<ProviderOrFamily> _dependencies = <ProviderOrFamily>[
-    userAccountRepositoryProvider,
-  ];
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
 
   @override
   Iterable<ProviderOrFamily>? get dependencies => _dependencies;
 
-  static final Iterable<ProviderOrFamily> _allTransitiveDependencies =
-      <ProviderOrFamily>{
-        userAccountRepositoryProvider,
-        ...?userAccountRepositoryProvider.allTransitiveDependencies,
-      };
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
 
   @override
   Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'accountTransactionsRepositoryProvider';
+  String? get name => r'filteredTransactionsProvider';
 }
 
-/// See also [AccountTransactionsRepository].
-class AccountTransactionsRepositoryProvider
+/// See also [FilteredTransactions].
+class FilteredTransactionsProvider
     extends
-        AutoDisposeAsyncNotifierProviderImpl<
-          AccountTransactionsRepository,
+        AsyncNotifierProviderImpl<
+          FilteredTransactions,
           List<TransactionResponseModel>?
         > {
-  /// See also [AccountTransactionsRepository].
-  AccountTransactionsRepositoryProvider({required bool isIncome})
+  /// See also [FilteredTransactions].
+  FilteredTransactionsProvider({required bool isIncome})
     : this._internal(
-        () => AccountTransactionsRepository()..isIncome = isIncome,
-        from: accountTransactionsRepositoryProvider,
-        name: r'accountTransactionsRepositoryProvider',
+        () => FilteredTransactions()..isIncome = isIncome,
+        from: filteredTransactionsProvider,
+        name: r'filteredTransactionsProvider',
         debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
             ? null
-            : _$accountTransactionsRepositoryHash,
-        dependencies: AccountTransactionsRepositoryFamily._dependencies,
+            : _$filteredTransactionsHash,
+        dependencies: FilteredTransactionsFamily._dependencies,
         allTransitiveDependencies:
-            AccountTransactionsRepositoryFamily._allTransitiveDependencies,
+            FilteredTransactionsFamily._allTransitiveDependencies,
         isIncome: isIncome,
       );
 
-  AccountTransactionsRepositoryProvider._internal(
+  FilteredTransactionsProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -117,16 +110,16 @@ class AccountTransactionsRepositoryProvider
 
   @override
   FutureOr<List<TransactionResponseModel>?> runNotifierBuild(
-    covariant AccountTransactionsRepository notifier,
+    covariant FilteredTransactions notifier,
   ) {
     return notifier.build(isIncome: isIncome);
   }
 
   @override
-  Override overrideWith(AccountTransactionsRepository Function() create) {
+  Override overrideWith(FilteredTransactions Function() create) {
     return ProviderOverride(
       origin: this,
-      override: AccountTransactionsRepositoryProvider._internal(
+      override: FilteredTransactionsProvider._internal(
         () => create()..isIncome = isIncome,
         from: from,
         name: null,
@@ -139,18 +132,17 @@ class AccountTransactionsRepositoryProvider
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<
-    AccountTransactionsRepository,
+  AsyncNotifierProviderElement<
+    FilteredTransactions,
     List<TransactionResponseModel>?
   >
   createElement() {
-    return _AccountTransactionsRepositoryProviderElement(this);
+    return _FilteredTransactionsProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is AccountTransactionsRepositoryProvider &&
-        other.isIncome == isIncome;
+    return other is FilteredTransactionsProvider && other.isIncome == isIncome;
   }
 
   @override
@@ -164,24 +156,23 @@ class AccountTransactionsRepositoryProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin AccountTransactionsRepositoryRef
-    on AutoDisposeAsyncNotifierProviderRef<List<TransactionResponseModel>?> {
+mixin FilteredTransactionsRef
+    on AsyncNotifierProviderRef<List<TransactionResponseModel>?> {
   /// The parameter `isIncome` of this provider.
   bool get isIncome;
 }
 
-class _AccountTransactionsRepositoryProviderElement
+class _FilteredTransactionsProviderElement
     extends
-        AutoDisposeAsyncNotifierProviderElement<
-          AccountTransactionsRepository,
+        AsyncNotifierProviderElement<
+          FilteredTransactions,
           List<TransactionResponseModel>?
         >
-    with AccountTransactionsRepositoryRef {
-  _AccountTransactionsRepositoryProviderElement(super.provider);
+    with FilteredTransactionsRef {
+  _FilteredTransactionsProviderElement(super.provider);
 
   @override
-  bool get isIncome =>
-      (origin as AccountTransactionsRepositoryProvider).isIncome;
+  bool get isIncome => (origin as FilteredTransactionsProvider).isIncome;
 }
 
 // ignore_for_file: type=lint

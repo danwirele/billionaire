@@ -1,15 +1,14 @@
 import 'package:billionaire/src/data/remote/mock_repository_impl/mock_transaction_repository_impl.dart';
 import 'package:billionaire/src/domain/models/transactions/transaction_response.dart';
 import 'package:billionaire/src/domain/repositories/transaction_repository.dart';
-import 'package:billionaire/src/presentation/shared/controllers/user_account_repository.dart';
+import 'package:billionaire/src/domain/controllers/user_account_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'account_transactions_repository.g.dart';
 
 //PS Выбранный счет пользователя
 @Riverpod(dependencies: [UserAccountRepository])
-class AccountTransactionsRepository
-    extends _$AccountTransactionsRepository {
+class TransactionsRepository extends _$TransactionsRepository {
   static final TransactionRepository transactionRepo =
       MockTransactionRepositoryImpl();
 
@@ -52,40 +51,6 @@ class AccountTransactionsRepository
     );
 
     return filteredTransactions.toList();
-  }
-
-  Future<void> setTransactionsByPeriod({
-    required DateTime startDate,
-    required DateTime endDate,
-    required bool isIncome,
-  }) async {
-    state = AsyncLoading();
-    await Future.delayed(Duration(seconds: 3));
-    final account = await ref.read(
-      userAccountRepositoryProvider.future,
-    );
-
-    if (account == null) {
-      state = AsyncError(
-        'Ошибка, счета не существует',
-        StackTrace.current,
-      );
-
-      return;
-    }
-
-    final transactions = await transactionRepo
-        .getTransactionsByPeriod(
-          accountId: account.id,
-          startDate: startDate,
-          endDate: endDate,
-        );
-
-    final filteredTransactions = transactions.where(
-      (element) => element.category.isIncome == isIncome,
-    );
-
-    state = AsyncData(filteredTransactions.toList());
   }
 
   double getTransactionAmmount() {
