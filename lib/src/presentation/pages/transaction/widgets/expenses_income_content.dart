@@ -1,10 +1,7 @@
-import 'package:billionaire/src/presentation/pages/transaction/controllers/account_transactions_repository.dart';
+import 'package:billionaire/src/domain/controllers/account_transactions_repository.dart';
 import 'package:billionaire/src/presentation/pages/transaction/widgets/billion_pinned_container.dart';
 import 'package:billionaire/src/presentation/pages/transaction/widgets/billion_stat_widget.dart';
-import 'package:billionaire/src/presentation/shared/controllers/currency_provider.dart';
-import 'package:billionaire/src/presentation/ui_kit/common_widgets/billion_text.dart';
-import 'package:billionaire/src/presentation/ui_kit/theme/billion_colors.dart';
-import 'package:billionaire/src/presentation/ui_kit/utils/number_extension.dart';
+import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -17,13 +14,14 @@ class ExpensesIncomeContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final accountTransactionRepo = transactionsRepositoryProvider(
+      isIncome: isIncome,
+    );
+
     return Consumer(
       builder: (context, ref, child) {
-        final currencyProviderValue = ref.read(
-          currencyProviderProvider,
-        );
-        final accountTransactionRepo =
-            accountTransactionsRepositoryProvider(isIncome: isIncome);
+        final currencyProviderValue = ref.getCurrency();
+
         return ref
             .watch(accountTransactionRepo)
             .when(
@@ -44,18 +42,18 @@ class ExpensesIncomeContent extends StatelessWidget {
                   );
                 }
 
-                final transactionAmmountSum = ref
-                    .read(accountTransactionRepo.notifier)
-                    .getTransactionAmmount();
+                // final transactionAmmountSum = ref
+                //     .read(accountTransactionRepo.notifier)
+                //     .getTransactionAmmount();
 
                 return Column(
                   children: [
-                    BillionPinnedContainer(
-                      leadingText: 'Всего',
-                      action: BillionText.bodyLarge(
-                        '${(transactionAmmountSum).formatNumber()} $currencyProviderValue',
-                      ),
-                    ),
+                    // BillionPinnedContainer(
+                    //   leadingText: 'Всего',
+                    //   action: BillionText.bodyLarge(
+                    //     '${(transactionAmmountSum).formatNumber()} $currencyProviderValue',
+                    //   ),
+                    // ),
                     Expanded(
                       child: ListView.builder(
                         itemCount: transactionList.length,
@@ -68,7 +66,7 @@ class ExpensesIncomeContent extends StatelessWidget {
                             statDescription: transaction.comment,
                             transactionAmount: transaction.amount,
 
-                            currency: currencyProviderValue,
+                            currency: currencyProviderValue.name,
                             leadingEmoji: category.emoji,
                           );
                         },

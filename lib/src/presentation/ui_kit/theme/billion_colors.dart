@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+part of '../ui_kit.dart';
 
 class BillionColors {
   static const Color surface = Color(0xFFFEF7FF);

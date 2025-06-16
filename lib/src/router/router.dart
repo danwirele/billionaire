@@ -4,7 +4,7 @@ import 'package:billionaire/src/presentation/pages/transaction/expenses/expenses
 import 'package:billionaire/src/presentation/pages/transaction/history/history_page.dart';
 import 'package:billionaire/src/presentation/pages/transaction/income/income_page.dart';
 import 'package:billionaire/src/presentation/pages/settings/settings_page.dart';
-import 'package:billionaire/src/presentation/ui_kit/common_widgets/nav_bar_wrapper.dart';
+import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/router/routes_util.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

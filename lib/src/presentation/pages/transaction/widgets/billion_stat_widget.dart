@@ -1,10 +1,7 @@
 import 'package:billionaire/core/gen/assets.gen.dart';
-import 'package:billionaire/src/presentation/ui_kit/common_widgets/billion_text.dart';
-import 'package:billionaire/src/presentation/ui_kit/theme/billion_colors.dart';
-import 'package:billionaire/src/presentation/ui_kit/utils/time_extension.dart';
+import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 
 class BillionStatWidget extends StatelessWidget {
   const BillionStatWidget({

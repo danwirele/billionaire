@@ -1,5 +1,4 @@
-import 'package:billionaire/src/presentation/ui_kit/theme/billion_text_style.dart';
-import 'package:flutter/material.dart';
+part of '../ui_kit.dart';
 
 class BillionText extends StatelessWidget {
   final TextStyle textStyle;

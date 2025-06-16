@@ -4,18 +4,12 @@ part 'currency_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 class CurrencyProvider extends _$CurrencyProvider {
-  static const Map<CurrencyEnum, String> currencyMap = {
-    CurrencyEnum.usaDollar: '\$',
-    CurrencyEnum.ruble: '₽',
-    CurrencyEnum.euro: '€',
-  };
-
   @override
-  String build() {
-    return currencyMap[CurrencyEnum.ruble]!;
+  Currency build() {
+    return Currency.ruble;
   }
 
-  void setCurrency(CurrencyEnum currency) {
-    state = currencyMap[currency]!;
+  void setCurrency(Currency currency) {
+    state = currency;
   }
 }

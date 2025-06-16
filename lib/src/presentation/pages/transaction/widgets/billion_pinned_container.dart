@@ -1,5 +1,4 @@
-import 'package:billionaire/src/presentation/ui_kit/common_widgets/billion_text.dart';
-import 'package:billionaire/src/presentation/ui_kit/theme/billion_colors.dart';
+import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:flutter/material.dart';
 
 class BillionPinnedContainer extends StatelessWidget {

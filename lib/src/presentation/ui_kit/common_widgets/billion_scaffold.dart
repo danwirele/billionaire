@@ -1,5 +1,4 @@
-import 'package:billionaire/src/presentation/ui_kit/theme/billion_colors.dart';
-import 'package:flutter/material.dart';
+part of '../ui_kit.dart';
 
 class BillionScaffold extends StatelessWidget {
   const BillionScaffold({

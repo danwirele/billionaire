@@ -1,9 +1,6 @@
 import 'package:billionaire/core/l10n/app_localizations.dart';
 import 'package:billionaire/src/presentation/pages/transaction/widgets/expenses_income_content.dart';
-import 'package:billionaire/src/presentation/ui_kit/common_widgets/billion_fab.dart';
-import 'package:billionaire/src/presentation/ui_kit/common_widgets/billion_app_bar.dart';
-import 'package:billionaire/src/presentation/ui_kit/common_widgets/billion_scaffold.dart';
-import 'package:billionaire/src/presentation/ui_kit/theme/billion_colors.dart';
+import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/router/routes_util.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
