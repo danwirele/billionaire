@@ -1,11 +1,6 @@
 part of '../ui_kit.dart';
 
 class BillionText extends StatelessWidget {
-  final TextStyle textStyle;
-  final String text;
-  final TextOverflow overflow;
-  final int? maxLines;
-  final TextAlign? textAlign;
   const BillionText.titleLarge(
     this.text, {
     super.key,
@@ -41,6 +36,12 @@ class BillionText extends StatelessWidget {
     this.overflow = TextOverflow.ellipsis,
     this.textStyle = BillionTextStyle.bodyMedium,
   });
+
+  final TextStyle textStyle;
+  final String text;
+  final TextOverflow overflow;
+  final int? maxLines;
+  final TextAlign? textAlign;
 
   @override
   Widget build(BuildContext context) {

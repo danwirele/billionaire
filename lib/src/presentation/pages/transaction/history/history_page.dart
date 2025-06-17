@@ -1,6 +1,4 @@
-// ignore_for_file: prefer_final_fields
-
-import 'package:billionaire/src/domain/controllers/account_transactions_repository.dart';
+import 'package:billionaire/src/presentation/pages/transaction/history/controllers/history_transactions.dart';
 import 'package:billionaire/src/presentation/pages/transaction/widgets/billion_pinned_container.dart';
 import 'package:billionaire/src/presentation/pages/transaction/widgets/billion_stat_widget.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
@@ -18,97 +16,111 @@ class HistoryPage extends ConsumerStatefulWidget {
 }
 
 class _HistoryPageState extends ConsumerState<HistoryPage> {
-  DateTime _startDate = DateTime.now();
-  DateTime _endDate = DateTime.now();
-
   @override
   Widget build(BuildContext context) {
-    final accountTransactionsProvider =
-        transactionsRepositoryProvider(isIncome: widget.isIncome);
     final currencyProviderValue = ref.getCurrency();
-
-    final accountTransactionsProviderNotifier = ref.read(
-      accountTransactionsProvider.notifier,
+    final historyTransactionsController = historyTransactionsProvider(
+      isIncome: widget.isIncome,
     );
-
-    // final transactionAmmountSum = accountTransactionsProviderNotifier
-    //     .getTransactionAmmount();
-
     return BillionScaffold(
-      body: Column(
-        children: [
-          BillionPinnedContainer(
-            leadingText: 'Начало',
-            action: BillionText.bodyLarge(_startDate.toddMMyyyy()),
-          ),
-          BillionPinnedContainer(
-            leadingText: 'Конец',
-            action: BillionText.bodyLarge(_endDate.toddMMyyyy()),
-          ),
-          BillionPinnedContainer(
-            leadingText: 'Сортировка',
-            action: Flexible(child: Placeholder()),
-          ),
-          // BillionPinnedContainer(
-          //   leadingText: 'Всего',
-          //   action: BillionText.bodyLarge(
-          //     '${(transactionAmmountSum).formatNumber()} $currencyProviderValue',
-          //   ),
-          // ),
-          ref
-              .watch(accountTransactionsProvider)
-              .when(
-                data: (transactionList) {
-                  if (transactionList == null) {
-                    return Expanded(
-                      child: Center(
-                        child: Text(
-                          'Извините, произошла ошибка, счет не найден',
-                        ),
-                      ),
-                    );
-                  }
-
-                  if (transactionList.isEmpty) {
-                    return Expanded(
-                      child: Center(
-                        child: Text('Транзакции отсутствуют'),
-                      ),
-                    );
-                  }
-
-                  return Expanded(
-                    child: ListView.builder(
-                      itemCount: transactionList.length,
-                      itemBuilder: (context, index) {
-                        final transaction = transactionList[index];
-                        final category = transaction.category;
-
-                        return BillionStatWidget(
-                          statTitle: category.name,
-                          statDescription: transaction.comment,
-                          transactionAmount: transaction.amount,
-
-                          currency: currencyProviderValue.name,
-                          leadingEmoji: category.emoji,
-                        );
-                      },
-                    ),
-                  );
-                },
-                error: (error, stackTrace) => Text(error.toString()),
-                loading: () => Expanded(
+      appBar: const BillionAppBar(title: 'Моя история'),
+      body: ref
+          .watch(historyTransactionsController)
+          .when(
+            data: (historyTransactionStateModel) {
+              if (historyTransactionStateModel == null) {
+                return const Expanded(
                   child: Center(
-                    child: CircularProgressIndicator(
-                      backgroundColor: BillionColors.onPrimary,
-                      color: BillionColors.primary,
+                    child: Text(
+                      'Извините, произошла ошибка, счет не найден',
                     ),
                   ),
-                ),
+                );
+              }
+
+              return Column(
+                children: [
+                  BillionPinnedContainer(
+                    onTap: () async {
+                      final firstDate = historyTransactionStateModel
+                          .startDateNotifier
+                          .value;
+
+                      final lastDate = historyTransactionStateModel
+                          .endDateNotifier
+                          .value;
+                      final dateTime = await showDatePicker(
+                        context: context,
+                        firstDate: firstDate,
+                        lastDate: lastDate,
+                      );
+                      print(dateTime);
+                    },
+                    leadingText: 'Начало',
+                    action: BillionText.bodyLarge(
+                      historyTransactionStateModel
+                          .startDateNotifier
+                          .value
+                          .toddMMyyyy(),
+                    ),
+                  ),
+                  BillionPinnedContainer(
+                    leadingText: 'Конец',
+                    action: BillionText.bodyLarge(
+                      historyTransactionStateModel
+                          .endDateNotifier
+                          .value
+                          .toddMMyyyy(),
+                    ),
+                  ),
+                  const BillionPinnedContainer(
+                    leadingText: 'Сортировка',
+                    action: Flexible(child: Placeholder()),
+                  ),
+                  BillionPinnedContainer(
+                    leadingText: 'Всего',
+                    action: BillionText.bodyLarge(
+                      '${historyTransactionStateModel.amount.formatNumber()} ${currencyProviderValue.name}',
+                    ),
+                  ),
+
+                  historyTransactionStateModel.transactions.isEmpty
+                      ? const Center(
+                          child: Text('Транзакции отсуствуют'),
+                        )
+                      : Expanded(
+                          child: ListView.builder(
+                            itemCount: historyTransactionStateModel
+                                .transactions
+                                .length,
+                            itemBuilder: (context, index) {
+                              final transaction =
+                                  historyTransactionStateModel
+                                      .transactions[index];
+                              final category = transaction.category;
+
+                              return BillionStatWidget(
+                                statTitle: category.name,
+                                statDescription: transaction.comment,
+                                transactionAmount: transaction.amount,
+
+                                currency: currencyProviderValue.name,
+                                leadingEmoji: category.emoji,
+                              );
+                            },
+                          ),
+                        ),
+                ],
+              );
+            },
+            error: (error, stackTrace) => Text(error.toString()),
+            loading: () => const Center(
+              child: CircularProgressIndicator(
+                backgroundColor: BillionColors.onPrimary,
+                color: BillionColors.primary,
               ),
-        ],
-      ),
-      appBar: BillionAppBar(title: 'Моя история'),
+            ),
+          ),
     );
   }
 }

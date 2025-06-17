@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 
 class BillionPinnedContainer extends StatelessWidget {
   const BillionPinnedContainer({
-    super.key,
     required this.leadingText,
     required this.action,
+    super.key,
+    this.onTap,
   });
 
   final String leadingText;
   final Widget action;
+  final void Function()? onTap;
 
   static const double _rowHeight = 56.0;
   static const EdgeInsets _rowPadding = EdgeInsets.symmetric(
@@ -19,22 +21,25 @@ class BillionPinnedContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          height: _rowHeight,
-          padding: _rowPadding,
-          color: BillionColors.onPrimary,
-          child: Row(
-            children: [
-              BillionText.bodyLarge(leadingText),
-              Spacer(),
-              action,
-            ],
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        children: [
+          Container(
+            height: _rowHeight,
+            padding: _rowPadding,
+            color: BillionColors.onPrimary,
+            child: Row(
+              children: [
+                BillionText.bodyLarge(leadingText),
+                const Spacer(),
+                action,
+              ],
+            ),
           ),
-        ),
-        Divider(height: 1, color: BillionColors.outlineVariant),
-      ],
+          const Divider(height: 1, color: BillionColors.outlineVariant),
+        ],
+      ),
     );
   }
 }

@@ -1,25 +1,37 @@
-import 'package:billionaire/src/domain/controllers/account_transactions_repository.dart';
+import 'package:billionaire/src/domain/controllers/transactions_repository.dart';
 import 'package:billionaire/src/domain/models/transactions/transaction_response.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'filtered_transactions.g.dart';
+part 'filtered_transactions.freezed.dart';
 
 @Riverpod(keepAlive: true)
 class FilteredTransactions extends _$FilteredTransactions {
   @override
-  Future<List<TransactionResponseModel>?> build({
-    required bool isIncome,
-  }) async {
-    final transactions = await ref.read(
-      transactionsRepositoryProvider(isIncome: isIncome).future,
-    );
+  Future<TransactionStateModel?> build({required bool isIncome}) async {
+    final transactions = await ref.read(transactionsRepositoryProvider.future);
 
     if (transactions == null) return null;
 
-    final filteredTransactions = transactions.where(
-      (element) => element.category.isIncome == isIncome,
-    );
+    final List<TransactionResponseModel> filteredTransactions = [];
+    double amount = 0;
 
-    return filteredTransactions.toList();
+    for (final transaction in transactions) {
+      if (transaction.category.isIncome == isIncome) {
+        filteredTransactions.add(transaction);
+        amount += double.parse(transaction.amount);
+      }
+    }
+
+    return TransactionStateModel(transactions: filteredTransactions, amount: amount);
   }
+}
+
+@freezed
+abstract class TransactionStateModel with _$TransactionStateModel {
+  const factory TransactionStateModel({
+    required List<TransactionResponseModel> transactions,
+    required double amount,
+  }) = _TransactionStateModel;
 }

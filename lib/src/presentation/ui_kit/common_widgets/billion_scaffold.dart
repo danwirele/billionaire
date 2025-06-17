@@ -2,17 +2,17 @@ part of '../ui_kit.dart';
 
 class BillionScaffold extends StatelessWidget {
   const BillionScaffold({
-    super.key,
-    this.floatingActionButton,
     required this.body,
     required this.appBar,
+    super.key,
+    this.floatingActionButton,
   });
 
   const BillionScaffold.fab({
-    super.key,
     required this.floatingActionButton,
     required this.body,
     required this.appBar,
+    super.key,
   });
 
   final Widget? floatingActionButton;

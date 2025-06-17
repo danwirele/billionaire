@@ -13,14 +13,14 @@ class ExpensesPage extends StatelessWidget {
     return BillionScaffold(
       appBar: BillionAppBar(
         title: AppLocalizations.of(context)!.appBarExpenses,
-        actionIcon: GestureDetector(
+        actionIcon: InkWell(
           onTap: () async {
             await GoRouter.of(context).pushNamed(
               RoutesUtil.historyPageName,
               pathParameters: {'isIncome': 'false'},
             );
           },
-          child: Icon(
+          child: const Icon(
             Icons.history,
             size: 24,
             color: BillionColors.onSurfaceVariant,
@@ -28,7 +28,7 @@ class ExpensesPage extends StatelessWidget {
         ),
       ),
       floatingActionButton: BillionFAB(onPressed: () {}),
-      body: ExpensesIncomeContent.expenses(),
+      body: const ExpensesIncomeContent.expenses(),
     );
   }
 }

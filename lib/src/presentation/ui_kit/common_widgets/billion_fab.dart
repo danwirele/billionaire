@@ -1,7 +1,10 @@
 part of '../ui_kit.dart';
 
 class BillionFAB extends StatelessWidget {
-  const BillionFAB({super.key, required this.onPressed});
+  const BillionFAB({
+    required this.onPressed,
+    super.key,
+  });
 
   final void Function()? onPressed;
 

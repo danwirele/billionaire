@@ -2,9 +2,9 @@ part of '../ui_kit.dart';
 
 class BillionNavDestination extends StatelessWidget {
   const BillionNavDestination({
-    super.key,
     required this.icon,
     required this.label,
+    super.key,
   });
 
   final SvgGenImage icon;

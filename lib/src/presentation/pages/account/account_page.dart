@@ -16,7 +16,7 @@ class AccountPage extends StatelessWidget {
           child: Assets.icons.edit.svg(
             width: 24,
             height: 24,
-            colorFilter: ColorFilter.mode(
+            colorFilter: const ColorFilter.mode(
               BillionColors.onSurfaceVariant,
               BlendMode.srcIn,
             ),
@@ -24,7 +24,7 @@ class AccountPage extends StatelessWidget {
         ),
       ),
       floatingActionButton: BillionFAB(onPressed: () {}),
-      body: Center(
+      body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [Text('Счет')],

@@ -5,14 +5,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class BillionStatWidget extends StatelessWidget {
   const BillionStatWidget({
-    super.key,
     required this.leadingEmoji,
     required this.statTitle,
-    this.statDescription,
     required this.transactionAmount,
+    required this.currency,
+    super.key,
+    this.statDescription,
     this.transactionTime,
     this.actionCallBack,
-    required this.currency,
   });
 
   final String leadingEmoji;
@@ -65,7 +65,7 @@ class BillionStatWidget extends StatelessWidget {
                       ? BillionText.bodyLarge(
                           transactionTime!.toHHmm(),
                         )
-                      : SizedBox.shrink(),
+                      : const SizedBox.shrink(),
                 ],
               ),
 
@@ -82,7 +82,7 @@ class BillionStatWidget extends StatelessWidget {
             ],
           ),
         ),
-        Divider(height: 1, color: BillionColors.outlineVariant),
+        const Divider(height: 1, color: BillionColors.outlineVariant),
       ],
     );
   }

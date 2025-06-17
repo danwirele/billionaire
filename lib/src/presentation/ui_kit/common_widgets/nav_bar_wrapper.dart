@@ -1,7 +1,10 @@
 part of '../ui_kit.dart';
 
 class NavBarWrapper extends StatelessWidget {
-  const NavBarWrapper({super.key, required this.child});
+  const NavBarWrapper({
+    required this.child,
+    super.key,
+  });
   final Widget child;
 
   @override
@@ -10,7 +13,7 @@ class NavBarWrapper extends StatelessWidget {
       body: Column(
         children: [
           Expanded(child: child),
-          BillionBottomNavBar(),
+          const BillionBottomNavBar(),
         ],
       ),
     );

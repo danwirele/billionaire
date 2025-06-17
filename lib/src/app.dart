@@ -13,7 +13,7 @@ class App extends StatelessWidget {
         localizationsDelegates:
             AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        locale: Locale('ru', 'RU'),
+        locale: const Locale('ru', 'RU'),
         routerConfig: router,
         theme: ThemeData.light(useMaterial3: true),
         debugShowCheckedModeBanner: false,

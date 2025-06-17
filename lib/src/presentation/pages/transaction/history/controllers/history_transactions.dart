@@ -1,88 +1,54 @@
 import 'package:billionaire/src/data/remote/mock_repository_impl/mock_transaction_repository_impl.dart';
-import 'package:billionaire/src/domain/controllers/user_account_repository.dart';
+import 'package:billionaire/src/domain/controllers/history_transactions_repository.dart';
 import 'package:billionaire/src/domain/models/transactions/transaction_response.dart';
 import 'package:billionaire/src/domain/repositories/transaction_repository.dart';
+import 'package:flutter/widgets.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'history_transactions.g.dart';
+part 'history_transactions.freezed.dart';
 
-@Riverpod()
+@Riverpod(dependencies: [HistoryTransactionsRepository])
 class HistoryTransactions extends _$HistoryTransactions {
-  static final TransactionRepository transactionRepo =
-      MockTransactionRepositoryImpl();
+  static final TransactionRepository transactionRepo = MockTransactionRepositoryImpl();
 
   @override
-  Future<List<TransactionResponseModel>?> build({
-    required bool isIncome,
-  }) async {
-    final account = await ref.watch(
-      userAccountRepositoryProvider.future,
-    );
+  Future<HistoryTransactionStateModel?> build({required bool isIncome}) async {
+    final transactions = await ref.watch(historyTransactionsRepositoryProvider.future);
 
-    if (account == null) return null;
+    if (transactions == null) return null;
 
-    // Начало текущего дня
-    final startDate = DateTime(
-      DateTime.now().year,
-      DateTime.now().month,
-      DateTime.now().day,
-    );
+    final List<TransactionResponseModel> filteredTransactions = [];
+    double amount = 0;
 
-    // Конец текущего дня
-    final endDate = DateTime(
-      startDate.year,
-      startDate.month,
-      startDate.day,
-      23,
-      59,
-      59,
-    );
-
-    final transactions = await transactionRepo
-        .getTransactionsByPeriod(
-          accountId: account.id,
-          startDate: startDate,
-          endDate: endDate,
-        );
-
-    final filteredTransactions = transactions.where(
-      (element) => element.category.isIncome == isIncome,
-    );
-
-    return filteredTransactions.toList();
-  }
-
-  Future<void> setTransactionsByPeriod({
-    required DateTime startDate,
-    required DateTime endDate,
-    required bool isIncome,
-  }) async {
-    state = AsyncLoading();
-    await Future.delayed(Duration(seconds: 3));
-    final account = await ref.read(
-      userAccountRepositoryProvider.future,
-    );
-
-    if (account == null) {
-      state = AsyncError(
-        'Ошибка, счета не существует',
-        StackTrace.current,
-      );
-
-      return;
+    for (final transaction in transactions) {
+      if (transaction.category.isIncome == isIncome) {
+        filteredTransactions.add(transaction);
+        amount += double.parse(transaction.amount);
+      }
     }
 
-    final transactions = await transactionRepo
-        .getTransactionsByPeriod(
-          accountId: account.id,
-          startDate: startDate,
-          endDate: endDate,
-        );
+    // Начало текущего дня
+    final startDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
-    final filteredTransactions = transactions.where(
-      (element) => element.category.isIncome == isIncome,
+    // Конец текущего дня
+    final endDate = DateTime(startDate.year, startDate.month, startDate.day, 23, 59, 59);
+    return HistoryTransactionStateModel(
+      transactions: filteredTransactions,
+      amount: amount,
+      startDateNotifier: ValueNotifier(startDate),
+      endDateNotifier: ValueNotifier(endDate),
     );
-
-    state = AsyncData(filteredTransactions.toList());
   }
+}
+
+@freezed
+abstract class HistoryTransactionStateModel with _$HistoryTransactionStateModel {
+  const factory HistoryTransactionStateModel({
+    required List<TransactionResponseModel> transactions,
+    required double amount,
+    required ValueNotifier<DateTime> startDateNotifier,
+    required ValueNotifier<DateTime> endDateNotifier,
+  }) = _HistoryTransactionStateModel;
 }

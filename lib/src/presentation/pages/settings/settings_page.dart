@@ -11,7 +11,7 @@ class SettingsPage extends StatelessWidget {
       appBar: BillionAppBar(
         title: AppLocalizations.of(context)!.appBarSettings,
       ),
-      body: Center(
+      body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [Text('Настройки')],

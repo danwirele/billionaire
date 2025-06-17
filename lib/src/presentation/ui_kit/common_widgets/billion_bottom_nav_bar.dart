@@ -4,8 +4,7 @@ class BillionBottomNavBar extends StatefulWidget {
   const BillionBottomNavBar({super.key});
 
   @override
-  State<BillionBottomNavBar> createState() =>
-      _BillionBottomNavBarState();
+  State<BillionBottomNavBar> createState() => _BillionBottomNavBarState();
 }
 
 class _BillionBottomNavBarState extends State<BillionBottomNavBar> {
@@ -22,34 +21,31 @@ class _BillionBottomNavBarState extends State<BillionBottomNavBar> {
         height: _navBarHeight,
         backgroundColor: BillionColors.surfaceContainer,
         indicatorColor: BillionColors.onPrimary,
-        overlayColor: WidgetStatePropertyAll(Colors.transparent),
-        animationDuration: Duration(seconds: 1),
+        overlayColor: const WidgetStatePropertyAll(Colors.transparent),
+        animationDuration: const Duration(seconds: 1),
         selectedIndex: _index,
         labelTextStyle: WidgetStateTextStyle.resolveWith(
-          (Set<WidgetState> states) =>
-              BillionTextStyle.labelMedium.copyWith(
-                color: states.contains(WidgetState.selected)
-                    ? null
-                    : BillionColors.onSurfaceVariant,
-              ),
+          (Set<WidgetState> states) => BillionTextStyle.labelMedium.copyWith(
+            color: states.contains(WidgetState.selected) ? null : BillionColors.onSurfaceVariant,
+          ),
         ),
         onDestinationSelected: (value) {
           switch (value) {
             case 0:
+              setState(() => _index = value);
               context.goNamed(RoutesUtil.expensesPageName);
-              _index = value;
             case 1:
+              setState(() => _index = value);
               context.goNamed(RoutesUtil.incomePageName);
-              _index = value;
             case 2:
+              setState(() => _index = value);
               context.goNamed(RoutesUtil.accountPageName);
-              _index = value;
             case 3:
+              setState(() => _index = value);
               context.goNamed(RoutesUtil.statsPageName);
-              _index = value;
             case 4:
+              setState(() => _index = value);
               context.goNamed(RoutesUtil.settingsPageName);
-              _index = value;
           }
         },
         destinations: [

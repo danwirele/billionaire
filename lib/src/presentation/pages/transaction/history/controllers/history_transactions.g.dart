@@ -7,7 +7,7 @@ part of 'history_transactions.dart';
 // **************************************************************************
 
 String _$historyTransactionsHash() =>
-    r'bd48ca4dd3b21a2acd912878a73799aa3223b4ec';
+    r'bfb01206439ec7a34480ae73ecfbdc7098cc23a2';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -31,10 +31,10 @@ class _SystemHash {
 }
 
 abstract class _$HistoryTransactions
-    extends BuildlessAutoDisposeAsyncNotifier<List<TransactionResponseModel>?> {
+    extends BuildlessAutoDisposeAsyncNotifier<HistoryTransactionStateModel?> {
   late final bool isIncome;
 
-  FutureOr<List<TransactionResponseModel>?> build({required bool isIncome});
+  FutureOr<HistoryTransactionStateModel?> build({required bool isIncome});
 }
 
 /// See also [HistoryTransactions].
@@ -43,7 +43,7 @@ const historyTransactionsProvider = HistoryTransactionsFamily();
 
 /// See also [HistoryTransactions].
 class HistoryTransactionsFamily
-    extends Family<AsyncValue<List<TransactionResponseModel>?>> {
+    extends Family<AsyncValue<HistoryTransactionStateModel?>> {
   /// See also [HistoryTransactions].
   const HistoryTransactionsFamily();
 
@@ -59,12 +59,18 @@ class HistoryTransactionsFamily
     return call(isIncome: provider.isIncome);
   }
 
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
+  static final Iterable<ProviderOrFamily> _dependencies = <ProviderOrFamily>[
+    historyTransactionsRepositoryProvider,
+  ];
 
   @override
   Iterable<ProviderOrFamily>? get dependencies => _dependencies;
 
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+  static final Iterable<ProviderOrFamily> _allTransitiveDependencies =
+      <ProviderOrFamily>{
+        historyTransactionsRepositoryProvider,
+        ...?historyTransactionsRepositoryProvider.allTransitiveDependencies,
+      };
 
   @override
   Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
@@ -79,7 +85,7 @@ class HistoryTransactionsProvider
     extends
         AutoDisposeAsyncNotifierProviderImpl<
           HistoryTransactions,
-          List<TransactionResponseModel>?
+          HistoryTransactionStateModel?
         > {
   /// See also [HistoryTransactions].
   HistoryTransactionsProvider({required bool isIncome})
@@ -109,7 +115,7 @@ class HistoryTransactionsProvider
   final bool isIncome;
 
   @override
-  FutureOr<List<TransactionResponseModel>?> runNotifierBuild(
+  FutureOr<HistoryTransactionStateModel?> runNotifierBuild(
     covariant HistoryTransactions notifier,
   ) {
     return notifier.build(isIncome: isIncome);
@@ -134,7 +140,7 @@ class HistoryTransactionsProvider
   @override
   AutoDisposeAsyncNotifierProviderElement<
     HistoryTransactions,
-    List<TransactionResponseModel>?
+    HistoryTransactionStateModel?
   >
   createElement() {
     return _HistoryTransactionsProviderElement(this);
@@ -157,7 +163,7 @@ class HistoryTransactionsProvider
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 mixin HistoryTransactionsRef
-    on AutoDisposeAsyncNotifierProviderRef<List<TransactionResponseModel>?> {
+    on AutoDisposeAsyncNotifierProviderRef<HistoryTransactionStateModel?> {
   /// The parameter `isIncome` of this provider.
   bool get isIncome;
 }
@@ -166,7 +172,7 @@ class _HistoryTransactionsProviderElement
     extends
         AutoDisposeAsyncNotifierProviderElement<
           HistoryTransactions,
-          List<TransactionResponseModel>?
+          HistoryTransactionStateModel?
         >
     with HistoryTransactionsRef {
   _HistoryTransactionsProviderElement(super.provider);

@@ -7,7 +7,7 @@ part of 'filtered_transactions.dart';
 // **************************************************************************
 
 String _$filteredTransactionsHash() =>
-    r'91116d019ae80a2229e4d8df1d45a01728107940';
+    r'5f20ee0106316161f71e88abba3f232c533670b4';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -31,10 +31,10 @@ class _SystemHash {
 }
 
 abstract class _$FilteredTransactions
-    extends BuildlessAsyncNotifier<List<TransactionResponseModel>?> {
+    extends BuildlessAsyncNotifier<TransactionStateModel?> {
   late final bool isIncome;
 
-  FutureOr<List<TransactionResponseModel>?> build({required bool isIncome});
+  FutureOr<TransactionStateModel?> build({required bool isIncome});
 }
 
 /// See also [FilteredTransactions].
@@ -43,7 +43,7 @@ const filteredTransactionsProvider = FilteredTransactionsFamily();
 
 /// See also [FilteredTransactions].
 class FilteredTransactionsFamily
-    extends Family<AsyncValue<List<TransactionResponseModel>?>> {
+    extends Family<AsyncValue<TransactionStateModel?>> {
   /// See also [FilteredTransactions].
   const FilteredTransactionsFamily();
 
@@ -79,7 +79,7 @@ class FilteredTransactionsProvider
     extends
         AsyncNotifierProviderImpl<
           FilteredTransactions,
-          List<TransactionResponseModel>?
+          TransactionStateModel?
         > {
   /// See also [FilteredTransactions].
   FilteredTransactionsProvider({required bool isIncome})
@@ -109,7 +109,7 @@ class FilteredTransactionsProvider
   final bool isIncome;
 
   @override
-  FutureOr<List<TransactionResponseModel>?> runNotifierBuild(
+  FutureOr<TransactionStateModel?> runNotifierBuild(
     covariant FilteredTransactions notifier,
   ) {
     return notifier.build(isIncome: isIncome);
@@ -132,10 +132,7 @@ class FilteredTransactionsProvider
   }
 
   @override
-  AsyncNotifierProviderElement<
-    FilteredTransactions,
-    List<TransactionResponseModel>?
-  >
+  AsyncNotifierProviderElement<FilteredTransactions, TransactionStateModel?>
   createElement() {
     return _FilteredTransactionsProviderElement(this);
   }
@@ -157,7 +154,7 @@ class FilteredTransactionsProvider
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 mixin FilteredTransactionsRef
-    on AsyncNotifierProviderRef<List<TransactionResponseModel>?> {
+    on AsyncNotifierProviderRef<TransactionStateModel?> {
   /// The parameter `isIncome` of this provider.
   bool get isIncome;
 }
@@ -166,7 +163,7 @@ class _FilteredTransactionsProviderElement
     extends
         AsyncNotifierProviderElement<
           FilteredTransactions,
-          List<TransactionResponseModel>?
+          TransactionStateModel?
         >
     with FilteredTransactionsRef {
   _FilteredTransactionsProviderElement(super.provider);

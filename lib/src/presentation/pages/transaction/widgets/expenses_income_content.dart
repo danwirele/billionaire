@@ -1,4 +1,4 @@
-import 'package:billionaire/src/domain/controllers/account_transactions_repository.dart';
+import 'package:billionaire/src/presentation/pages/transaction/controllers/filtered_transactions.dart';
 import 'package:billionaire/src/presentation/pages/transaction/widgets/billion_pinned_container.dart';
 import 'package:billionaire/src/presentation/pages/transaction/widgets/billion_stat_widget.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
@@ -14,7 +14,7 @@ class ExpensesIncomeContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final accountTransactionRepo = transactionsRepositoryProvider(
+    final accountTransactionRepo = filteredTransactionsProvider(
       isIncome: isIncome,
     );
 
@@ -25,47 +25,44 @@ class ExpensesIncomeContent extends StatelessWidget {
         return ref
             .watch(accountTransactionRepo)
             .when(
-              data: (transactionList) {
-                if (transactionList == null) {
-                  return Center(
+              data: (transactionStateModel) {
+                if (transactionStateModel == null) {
+                  return const Center(
                     child: Text(
                       'Извините, произошла ошибка, счет не найден',
                     ),
                   );
                 }
 
-                if (transactionList.isEmpty) {
-                  return Center(
+                if (transactionStateModel.transactions.isEmpty) {
+                  return const Center(
                     child: Text(
                       'Отсутствуют информации о транзакциях',
                     ),
                   );
                 }
 
-                // final transactionAmmountSum = ref
-                //     .read(accountTransactionRepo.notifier)
-                //     .getTransactionAmmount();
-
                 return Column(
                   children: [
-                    // BillionPinnedContainer(
-                    //   leadingText: 'Всего',
-                    //   action: BillionText.bodyLarge(
-                    //     '${(transactionAmmountSum).formatNumber()} $currencyProviderValue',
-                    //   ),
-                    // ),
+                    BillionPinnedContainer(
+                      leadingText: 'Всего',
+                      action: BillionText.bodyLarge(
+                        '${transactionStateModel.amount.formatNumber()} ${currencyProviderValue.name}',
+                      ),
+                    ),
                     Expanded(
                       child: ListView.builder(
-                        itemCount: transactionList.length,
+                        itemCount:
+                            transactionStateModel.transactions.length,
                         itemBuilder: (context, index) {
-                          final transaction = transactionList[index];
+                          final transaction = transactionStateModel
+                              .transactions[index];
                           final category = transaction.category;
 
                           return BillionStatWidget(
                             statTitle: category.name,
                             statDescription: transaction.comment,
                             transactionAmount: transaction.amount,
-
                             currency: currencyProviderValue.name,
                             leadingEmoji: category.emoji,
                           );
@@ -76,7 +73,7 @@ class ExpensesIncomeContent extends StatelessWidget {
                 );
               },
               error: (error, stackTrace) => Text(error.toString()),
-              loading: () => Center(
+              loading: () => const Center(
                 child: CircularProgressIndicator(
                   backgroundColor: BillionColors.onPrimary,
                   color: BillionColors.primary,

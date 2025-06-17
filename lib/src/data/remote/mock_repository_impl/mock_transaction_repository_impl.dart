@@ -22,7 +22,7 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
   Future<TransactionModel?> createTransaction(
     TransactionRequestModel model,
   ) async {
-    await Future.delayed(const Duration(milliseconds: 300));
+    await Future<void>.delayed(const Duration(milliseconds: 300));
 
     // Создаем новую транзакцию с уникальным ID
     final newTransaction = TransactionModel(
@@ -42,7 +42,7 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
 
   @override
   Future<TransactionResponseModel> getTransactionById(int id) async {
-    await Future.delayed(const Duration(milliseconds: 200));
+    await Future<void>.delayed(const Duration(milliseconds: 200));
 
     final transaction = _mockTransactions.firstWhere(
       (t) => t.id == id,
@@ -78,7 +78,7 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
     required int id,
     required TransactionRequestModel updatedModel,
   }) async {
-    await Future.delayed(const Duration(milliseconds: 250));
+    await Future<void>.delayed(const Duration(milliseconds: 250));
 
     final index = _mockTransactions.indexWhere((t) => t.id == id);
     if (index == -1) return null;
@@ -123,7 +123,7 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
     required int id,
     required TransactionModel deleteModel,
   }) async {
-    await Future.delayed(const Duration(milliseconds: 200));
+    await Future<void>.delayed(const Duration(milliseconds: 200));
 
     final index = _mockTransactions.indexWhere((t) => t.id == id);
     if (index == -1) {
@@ -163,163 +163,179 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
     _mockTransactionsResponses.addAll([
       TransactionResponseModel(
         id: 1,
-        account: AccountBriefModel(
+        account: const AccountBriefModel(
           id: 1,
           name: 'Mock Account',
           balance: '1000',
           currency: 'RUB',
         ),
-        category: CategoryModel(
+        category: const CategoryModel(
           id: 1,
           name: 'Аренда квартиры',
           emoji: '🏠',
           isIncome: false,
         ),
         amount: '5000',
-        transactionDate: DateTime.now().add(Duration(minutes: 10)),
+        transactionDate: DateTime.now().add(
+          const Duration(minutes: 10),
+        ),
         comment: 'аренда',
-        createdAt: DateTime.now().add(Duration(minutes: 10)),
-        updatedAt: DateTime.now().add(Duration(minutes: 10)),
+        createdAt: DateTime.now().add(const Duration(minutes: 10)),
+        updatedAt: DateTime.now().add(const Duration(minutes: 10)),
       ),
       TransactionResponseModel(
         id: 2,
-        account: AccountBriefModel(
+        account: const AccountBriefModel(
           id: 1,
           name: 'Mock Account',
           balance: '1000',
           currency: 'RUB',
         ),
-        category: CategoryModel(
+        category: const CategoryModel(
           id: 2,
           name: 'Одежда',
           emoji: '💰',
           isIncome: false,
         ),
         amount: '5000',
-        transactionDate: DateTime.now().add(Duration(minutes: 10)),
+        transactionDate: DateTime.now().add(
+          const Duration(minutes: 10),
+        ),
         comment: 'Платье',
-        createdAt: DateTime.now().add(Duration(minutes: 10)),
-        updatedAt: DateTime.now().add(Duration(minutes: 10)),
+        createdAt: DateTime.now().add(const Duration(minutes: 10)),
+        updatedAt: DateTime.now().add(const Duration(minutes: 10)),
       ),
       TransactionResponseModel(
         id: 3,
-        account: AccountBriefModel(
+        account: const AccountBriefModel(
           id: 1,
           name: 'Mock Account',
           balance: '1000',
           currency: 'RUB',
         ),
-        category: CategoryModel(
+        category: const CategoryModel(
           id: 3,
           name: 'На собачку',
           emoji: '🐶',
           isIncome: false,
         ),
         amount: '5000',
-        transactionDate: DateTime.now().add(Duration(minutes: 10)),
+        transactionDate: DateTime.now().add(
+          const Duration(minutes: 10),
+        ),
         comment: 'Собачка',
-        createdAt: DateTime.now().add(Duration(minutes: 10)),
-        updatedAt: DateTime.now().add(Duration(minutes: 10)),
+        createdAt: DateTime.now().add(const Duration(minutes: 10)),
+        updatedAt: DateTime.now().add(const Duration(minutes: 10)),
       ),
       TransactionResponseModel(
         id: 4,
-        account: AccountBriefModel(
+        account: const AccountBriefModel(
           id: 1,
           name: 'Mock Account',
           balance: '1000',
           currency: 'RUB',
         ),
-        category: CategoryModel(
+        category: const CategoryModel(
           id: 4,
           name: 'Продукты',
           emoji: '🍭',
           isIncome: false,
         ),
         amount: '5000',
-        transactionDate: DateTime.now().add(Duration(minutes: 10)),
+        transactionDate: DateTime.now().add(
+          const Duration(minutes: 10),
+        ),
         comment: 'Собачка',
-        createdAt: DateTime.now().add(Duration(minutes: 10)),
-        updatedAt: DateTime.now().add(Duration(minutes: 10)),
+        createdAt: DateTime.now().add(const Duration(minutes: 10)),
+        updatedAt: DateTime.now().add(const Duration(minutes: 10)),
       ),
       TransactionResponseModel(
         id: 5,
-        account: AccountBriefModel(
+        account: const AccountBriefModel(
           id: 1,
           name: 'Mock Account',
           balance: '1000',
           currency: 'RUB',
         ),
-        category: CategoryModel(
+        category: const CategoryModel(
           id: 5,
           name: 'Спортзал',
           emoji: '🏋',
           isIncome: false,
         ),
         amount: '5000',
-        transactionDate: DateTime.now().add(Duration(minutes: 10)),
+        transactionDate: DateTime.now().add(
+          const Duration(minutes: 10),
+        ),
         comment: null,
-        createdAt: DateTime.now().add(Duration(minutes: 10)),
-        updatedAt: DateTime.now().add(Duration(minutes: 10)),
+        createdAt: DateTime.now().add(const Duration(minutes: 10)),
+        updatedAt: DateTime.now().add(const Duration(minutes: 10)),
       ),
       TransactionResponseModel(
         id: 6,
-        account: AccountBriefModel(
+        account: const AccountBriefModel(
           id: 1,
           name: 'Mock Account',
           balance: '1000',
           currency: 'RUB',
         ),
-        category: CategoryModel(
+        category: const CategoryModel(
           id: 6,
           name: 'Медицина',
           emoji: '💊',
           isIncome: false,
         ),
         amount: '5000',
-        transactionDate: DateTime.now().add(Duration(minutes: 10)),
+        transactionDate: DateTime.now().add(
+          const Duration(minutes: 10),
+        ),
         comment: null,
-        createdAt: DateTime.now().add(Duration(minutes: 10)),
-        updatedAt: DateTime.now().add(Duration(minutes: 10)),
+        createdAt: DateTime.now().add(const Duration(minutes: 10)),
+        updatedAt: DateTime.now().add(const Duration(minutes: 10)),
       ),
       TransactionResponseModel(
         id: 7,
-        account: AccountBriefModel(
+        account: const AccountBriefModel(
           id: 1,
           name: 'Mock Account',
           balance: '1000',
           currency: 'RUB',
         ),
-        category: CategoryModel(
+        category: const CategoryModel(
           id: 7,
           name: 'Зарплата',
           emoji: '',
           isIncome: true,
         ),
         amount: '100000',
-        transactionDate: DateTime.now().add(Duration(minutes: 10)),
+        transactionDate: DateTime.now().add(
+          const Duration(minutes: 10),
+        ),
         comment: null,
-        createdAt: DateTime.now().add(Duration(minutes: 10)),
-        updatedAt: DateTime.now().add(Duration(minutes: 10)),
+        createdAt: DateTime.now().add(const Duration(minutes: 10)),
+        updatedAt: DateTime.now().add(const Duration(minutes: 10)),
       ),
       TransactionResponseModel(
         id: 8,
-        account: AccountBriefModel(
+        account: const AccountBriefModel(
           id: 1,
           name: 'Mock Account',
           balance: '1000',
           currency: 'RUB',
         ),
-        category: CategoryModel(
+        category: const CategoryModel(
           id: 8,
           name: 'Подработка',
           emoji: '',
           isIncome: true,
         ),
         amount: '15000',
-        transactionDate: DateTime.now().add(Duration(minutes: 10)),
+        transactionDate: DateTime.now().add(
+          const Duration(minutes: 10),
+        ),
         comment: 'Калым',
-        createdAt: DateTime.now().add(Duration(minutes: 10)),
-        updatedAt: DateTime.now().add(Duration(minutes: 10)),
+        createdAt: DateTime.now().add(const Duration(minutes: 10)),
+        updatedAt: DateTime.now().add(const Duration(minutes: 10)),
       ),
     ]);
   }

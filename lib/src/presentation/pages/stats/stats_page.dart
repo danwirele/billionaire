@@ -11,7 +11,7 @@ class StatsPage extends StatelessWidget {
       appBar: BillionAppBar(
         title: AppLocalizations.of(context)!.appBarStats,
       ),
-      body: Center(
+      body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [Text('Статьи')],
