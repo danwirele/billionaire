@@ -23,20 +23,19 @@ class HistoryTransactionsRepository
     // Начало текущего дня
     final startDate = DateTime(
       dateTimeNow.year,
-      dateTimeNow.month,
+      dateTimeNow.month - 1,
       dateTimeNow.day,
     );
 
     // Конец текущего дня
     final endDate = DateTime(
-      startDate.year,
-      startDate.month,
-      startDate.day,
+      dateTimeNow.year,
+      dateTimeNow.month,
+      dateTimeNow.day,
       23,
       59,
       59,
     );
-
     final transactions = await transactionRepo
         .getTransactionsByPeriod(
           accountId: account.id,
@@ -50,7 +49,6 @@ class HistoryTransactionsRepository
   Future<void> setTransactionsByPeriod({
     required DateTime startDate,
     required DateTime endDate,
-    required bool isIncome,
   }) async {
     state = const AsyncLoading();
     final account = await ref.read(
@@ -73,10 +71,6 @@ class HistoryTransactionsRepository
           endDate: endDate,
         );
 
-    final filteredTransactions = transactions.where(
-      (element) => element.category.isIncome == isIncome,
-    );
-
-    state = AsyncData(filteredTransactions.toList());
+    state = AsyncData(transactions);
   }
 }

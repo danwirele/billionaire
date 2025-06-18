@@ -160,6 +160,13 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
     _mockTransactionsResponses.clear();
 
     _nextId = 1;
+
+    final today = DateTime.now().add(
+      const Duration(minutes: 10),
+    );
+
+    final yesterday = today.subtract(const Duration(days: 29));
+
     _mockTransactionsResponses.addAll([
       TransactionResponseModel(
         id: 1,
@@ -176,12 +183,10 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
           isIncome: false,
         ),
         amount: '5000',
-        transactionDate: DateTime.now().add(
-          const Duration(minutes: 10),
-        ),
+        transactionDate: yesterday,
         comment: 'аренда',
-        createdAt: DateTime.now().add(const Duration(minutes: 10)),
-        updatedAt: DateTime.now().add(const Duration(minutes: 10)),
+        createdAt: yesterday,
+        updatedAt: today,
       ),
       TransactionResponseModel(
         id: 2,
@@ -198,12 +203,10 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
           isIncome: false,
         ),
         amount: '5000',
-        transactionDate: DateTime.now().add(
-          const Duration(minutes: 10),
-        ),
+        transactionDate: yesterday,
         comment: 'Платье',
-        createdAt: DateTime.now().add(const Duration(minutes: 10)),
-        updatedAt: DateTime.now().add(const Duration(minutes: 10)),
+        createdAt: yesterday,
+        updatedAt: today,
       ),
       TransactionResponseModel(
         id: 3,
@@ -220,12 +223,10 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
           isIncome: false,
         ),
         amount: '5000',
-        transactionDate: DateTime.now().add(
-          const Duration(minutes: 10),
-        ),
+        transactionDate: yesterday,
         comment: 'Собачка',
-        createdAt: DateTime.now().add(const Duration(minutes: 10)),
-        updatedAt: DateTime.now().add(const Duration(minutes: 10)),
+        createdAt: yesterday,
+        updatedAt: today,
       ),
       TransactionResponseModel(
         id: 4,
@@ -242,12 +243,12 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
           isIncome: false,
         ),
         amount: '5000',
-        transactionDate: DateTime.now().add(
+        transactionDate: today.add(
           const Duration(minutes: 10),
         ),
         comment: 'Собачка',
-        createdAt: DateTime.now().add(const Duration(minutes: 10)),
-        updatedAt: DateTime.now().add(const Duration(minutes: 10)),
+        createdAt: today,
+        updatedAt: today,
       ),
       TransactionResponseModel(
         id: 5,
@@ -264,12 +265,12 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
           isIncome: false,
         ),
         amount: '5000',
-        transactionDate: DateTime.now().add(
+        transactionDate: today.add(
           const Duration(minutes: 10),
         ),
         comment: null,
-        createdAt: DateTime.now().add(const Duration(minutes: 10)),
-        updatedAt: DateTime.now().add(const Duration(minutes: 10)),
+        createdAt: today,
+        updatedAt: today,
       ),
       TransactionResponseModel(
         id: 6,
@@ -286,12 +287,12 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
           isIncome: false,
         ),
         amount: '5000',
-        transactionDate: DateTime.now().add(
+        transactionDate: today.add(
           const Duration(minutes: 10),
         ),
         comment: null,
-        createdAt: DateTime.now().add(const Duration(minutes: 10)),
-        updatedAt: DateTime.now().add(const Duration(minutes: 10)),
+        createdAt: today,
+        updatedAt: today,
       ),
       TransactionResponseModel(
         id: 7,
@@ -308,12 +309,12 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
           isIncome: true,
         ),
         amount: '100000',
-        transactionDate: DateTime.now().add(
+        transactionDate: today.add(
           const Duration(minutes: 10),
         ),
         comment: null,
-        createdAt: DateTime.now().add(const Duration(minutes: 10)),
-        updatedAt: DateTime.now().add(const Duration(minutes: 10)),
+        createdAt: today,
+        updatedAt: today,
       ),
       TransactionResponseModel(
         id: 8,
@@ -330,12 +331,12 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
           isIncome: true,
         ),
         amount: '15000',
-        transactionDate: DateTime.now().add(
+        transactionDate: today.add(
           const Duration(minutes: 10),
         ),
         comment: 'Калым',
-        createdAt: DateTime.now().add(const Duration(minutes: 10)),
-        updatedAt: DateTime.now().add(const Duration(minutes: 10)),
+        createdAt: today,
+        updatedAt: today,
       ),
     ]);
   }

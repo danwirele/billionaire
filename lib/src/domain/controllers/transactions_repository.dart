@@ -8,11 +8,14 @@ part 'transactions_repository.g.dart';
 
 @Riverpod(dependencies: [UserAccountRepository])
 class TransactionsRepository extends _$TransactionsRepository {
-  static final TransactionRepository transactionRepo = MockTransactionRepositoryImpl();
+  static final TransactionRepository transactionRepo =
+      MockTransactionRepositoryImpl();
 
   @override
   Future<List<TransactionResponseModel>?> build() async {
-    final account = await ref.watch(userAccountRepositoryProvider.future);
+    final account = await ref.watch(
+      userAccountRepositoryProvider.future,
+    );
 
     if (account == null) return null;
 
@@ -20,12 +23,28 @@ class TransactionsRepository extends _$TransactionsRepository {
     final dateTimeNow = DateTime.now();
 
     // Начало текущего дня
-    final startDate = DateTime(dateTimeNow.year, dateTimeNow.month, dateTimeNow.day);
+    final startDate = DateTime(
+      dateTimeNow.year,
+      dateTimeNow.month,
+      dateTimeNow.day,
+    );
 
     // Конец текущего дня
-    final endDate = DateTime(startDate.year, startDate.month, startDate.day, 23, 59, 59);
+    final endDate = DateTime(
+      startDate.year,
+      startDate.month,
+      startDate.day,
+      23,
+      59,
+      59,
+    );
 
-    final transactions = await transactionRepo.getTransactionsByPeriod(accountId: account.id, startDate: startDate, endDate: endDate);
+    final transactions = await transactionRepo
+        .getTransactionsByPeriod(
+          accountId: account.id,
+          startDate: startDate,
+          endDate: endDate,
+        );
 
     return transactions;
   }

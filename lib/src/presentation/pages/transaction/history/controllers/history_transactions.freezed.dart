@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$HistoryTransactionStateModel {
 
- List<TransactionResponseModel> get transactions; double get amount; ValueNotifier<DateTime> get startDateNotifier; ValueNotifier<DateTime> get endDateNotifier;
+ List<TransactionResponseModel> get transactions; double get amount;
 /// Create a copy of HistoryTransactionStateModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -26,16 +26,16 @@ $HistoryTransactionStateModelCopyWith<HistoryTransactionStateModel> get copyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HistoryTransactionStateModel&&const DeepCollectionEquality().equals(other.transactions, transactions)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.startDateNotifier, startDateNotifier) || other.startDateNotifier == startDateNotifier)&&(identical(other.endDateNotifier, endDateNotifier) || other.endDateNotifier == endDateNotifier));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HistoryTransactionStateModel&&const DeepCollectionEquality().equals(other.transactions, transactions)&&(identical(other.amount, amount) || other.amount == amount));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(transactions),amount,startDateNotifier,endDateNotifier);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(transactions),amount);
 
 @override
 String toString() {
-  return 'HistoryTransactionStateModel(transactions: $transactions, amount: $amount, startDateNotifier: $startDateNotifier, endDateNotifier: $endDateNotifier)';
+  return 'HistoryTransactionStateModel(transactions: $transactions, amount: $amount)';
 }
 
 
@@ -46,7 +46,7 @@ abstract mixin class $HistoryTransactionStateModelCopyWith<$Res>  {
   factory $HistoryTransactionStateModelCopyWith(HistoryTransactionStateModel value, $Res Function(HistoryTransactionStateModel) _then) = _$HistoryTransactionStateModelCopyWithImpl;
 @useResult
 $Res call({
- List<TransactionResponseModel> transactions, double amount, ValueNotifier<DateTime> startDateNotifier, ValueNotifier<DateTime> endDateNotifier
+ List<TransactionResponseModel> transactions, double amount
 });
 
 
@@ -63,13 +63,11 @@ class _$HistoryTransactionStateModelCopyWithImpl<$Res>
 
 /// Create a copy of HistoryTransactionStateModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? transactions = null,Object? amount = null,Object? startDateNotifier = null,Object? endDateNotifier = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? transactions = null,Object? amount = null,}) {
   return _then(_self.copyWith(
 transactions: null == transactions ? _self.transactions : transactions // ignore: cast_nullable_to_non_nullable
 as List<TransactionResponseModel>,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
-as double,startDateNotifier: null == startDateNotifier ? _self.startDateNotifier : startDateNotifier // ignore: cast_nullable_to_non_nullable
-as ValueNotifier<DateTime>,endDateNotifier: null == endDateNotifier ? _self.endDateNotifier : endDateNotifier // ignore: cast_nullable_to_non_nullable
-as ValueNotifier<DateTime>,
+as double,
   ));
 }
 
@@ -80,7 +78,7 @@ as ValueNotifier<DateTime>,
 
 
 class _HistoryTransactionStateModel implements HistoryTransactionStateModel {
-  const _HistoryTransactionStateModel({required final  List<TransactionResponseModel> transactions, required this.amount, required this.startDateNotifier, required this.endDateNotifier}): _transactions = transactions;
+  const _HistoryTransactionStateModel({required final  List<TransactionResponseModel> transactions, required this.amount}): _transactions = transactions;
   
 
  final  List<TransactionResponseModel> _transactions;
@@ -91,8 +89,6 @@ class _HistoryTransactionStateModel implements HistoryTransactionStateModel {
 }
 
 @override final  double amount;
-@override final  ValueNotifier<DateTime> startDateNotifier;
-@override final  ValueNotifier<DateTime> endDateNotifier;
 
 /// Create a copy of HistoryTransactionStateModel
 /// with the given fields replaced by the non-null parameter values.
@@ -104,16 +100,16 @@ _$HistoryTransactionStateModelCopyWith<_HistoryTransactionStateModel> get copyWi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HistoryTransactionStateModel&&const DeepCollectionEquality().equals(other._transactions, _transactions)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.startDateNotifier, startDateNotifier) || other.startDateNotifier == startDateNotifier)&&(identical(other.endDateNotifier, endDateNotifier) || other.endDateNotifier == endDateNotifier));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HistoryTransactionStateModel&&const DeepCollectionEquality().equals(other._transactions, _transactions)&&(identical(other.amount, amount) || other.amount == amount));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_transactions),amount,startDateNotifier,endDateNotifier);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_transactions),amount);
 
 @override
 String toString() {
-  return 'HistoryTransactionStateModel(transactions: $transactions, amount: $amount, startDateNotifier: $startDateNotifier, endDateNotifier: $endDateNotifier)';
+  return 'HistoryTransactionStateModel(transactions: $transactions, amount: $amount)';
 }
 
 
@@ -124,7 +120,7 @@ abstract mixin class _$HistoryTransactionStateModelCopyWith<$Res> implements $Hi
   factory _$HistoryTransactionStateModelCopyWith(_HistoryTransactionStateModel value, $Res Function(_HistoryTransactionStateModel) _then) = __$HistoryTransactionStateModelCopyWithImpl;
 @override @useResult
 $Res call({
- List<TransactionResponseModel> transactions, double amount, ValueNotifier<DateTime> startDateNotifier, ValueNotifier<DateTime> endDateNotifier
+ List<TransactionResponseModel> transactions, double amount
 });
 
 
@@ -141,13 +137,11 @@ class __$HistoryTransactionStateModelCopyWithImpl<$Res>
 
 /// Create a copy of HistoryTransactionStateModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? transactions = null,Object? amount = null,Object? startDateNotifier = null,Object? endDateNotifier = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? transactions = null,Object? amount = null,}) {
   return _then(_HistoryTransactionStateModel(
 transactions: null == transactions ? _self._transactions : transactions // ignore: cast_nullable_to_non_nullable
 as List<TransactionResponseModel>,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
-as double,startDateNotifier: null == startDateNotifier ? _self.startDateNotifier : startDateNotifier // ignore: cast_nullable_to_non_nullable
-as ValueNotifier<DateTime>,endDateNotifier: null == endDateNotifier ? _self.endDateNotifier : endDateNotifier // ignore: cast_nullable_to_non_nullable
-as ValueNotifier<DateTime>,
+as double,
   ));
 }
 
