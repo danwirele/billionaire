@@ -46,24 +46,25 @@ class BillionStatWidget extends StatelessWidget {
               : null,
           title: BillionText.bodyLarge(statTitle),
 
-          subtitle: statDescription != null
-              ? BillionText.bodyMedium(statDescription!)
-              : null,
+          subtitle: statDescription != null ? BillionText.bodyMedium(statDescription!) : null,
 
           trailing: Row(
-            spacing: 16,
             mainAxisSize: MainAxisSize.min,
             children: [
               Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  BillionText.bodyLarge(
-                    '$transactionAmount $currency',
+                  Flexible(
+                    child: BillionText.bodyLarge(
+                      '$transactionAmount $currency',
+                    ),
                   ),
                   transactionTime != null
-                      ? BillionText.bodyLarge(
-                          transactionTime!.toHHmm(),
+                      ? Flexible(
+                          child: BillionText.bodyLarge(
+                            transactionTime!.toHHmm(),
+                          ),
                         )
                       : const SizedBox.shrink(),
                 ],

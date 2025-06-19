@@ -1,9 +1,11 @@
-import 'package:billionaire/src/presentation/pages/transaction/history/controllers/end_date.dart';
+import 'package:billionaire/src/presentation/pages/transaction/history/controllers/date.dart';
 import 'package:billionaire/src/presentation/pages/transaction/history/controllers/history_transactions.dart';
-import 'package:billionaire/src/presentation/pages/transaction/history/controllers/start_date.dart';
+import 'package:billionaire/src/presentation/pages/transaction/history/controllers/transaction_filter.dart';
+import 'package:billionaire/src/presentation/pages/transaction/history/widgets/history_transactions_content.dart';
 import 'package:billionaire/src/presentation/pages/transaction/widgets/billion_pinned_container.dart';
-import 'package:billionaire/src/presentation/pages/transaction/widgets/billion_stat_widget.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/filter_option_extension.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/modal_bottom_sheet_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -25,135 +27,90 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
     );
 
     final currencyProviderValue = ref.getCurrency();
-    final startDate = ref.watch(startDateProviderProvider);
-    final endDate = ref.watch(endDateProviderProvider);
-
+    final filter = ref.read(transactionFilterProvider);
     return BillionScaffold(
       appBar: const BillionAppBar(title: 'Моя история'),
       body: Column(
         children: [
           BillionPinnedContainer(
             onTap: () async {
-              final dateTime = await showDatePicker(
+              final newDate = await showDatePicker(
                 context: context,
                 firstDate: DateTime(2000),
                 lastDate: DateTime.now(),
+                initialDate: ref.watch(dateProvider).$1,
               );
 
-              await ref
-                  .read(
-                    startDateProviderProvider.notifier,
-                  )
-                  .setPeriodStart(
-                    newDate: dateTime!,
-                    endDate: endDate,
-                  );
+              if (newDate != null) {
+                await ref
+                    .read(dateProvider.notifier)
+                    .setStartDate(newDate);
+              }
             },
             leadingText: 'Начало',
             action: BillionText.bodyLarge(
-              startDate.toddMMyyyy(),
+              ref.watch(dateProvider).$1.toddMMyyyy(),
             ),
           ),
           BillionPinnedContainer(
             onTap: () async {
-              final dateTime = await showDatePicker(
+              final newDate = await showDatePicker(
                 context: context,
                 firstDate: DateTime(2000),
                 lastDate: DateTime.now(),
+                initialDate: ref.watch(dateProvider).$2,
               );
 
-              await ref
-                  .read(
-                    endDateProviderProvider.notifier,
-                  )
-                  .setPeriodEnd(
-                    newDate: dateTime!,
-                    startDate: startDate,
-                  );
+              if (newDate != null) {
+                await ref
+                    .read(dateProvider.notifier)
+                    .setEndDate(newDate);
+              }
             },
             leadingText: 'Конец',
             action: BillionText.bodyLarge(
-              endDate.toddMMyyyy(),
+              ref.watch(dateProvider).$2.toddMMyyyy(),
             ),
           ),
-          const BillionPinnedContainer(
+
+          BillionPinnedContainer(
+            onTap: () async => context.showFilterBottomSheet(),
             leadingText: 'Сортировка',
-            action: Flexible(child: Placeholder()),
+            action: BillionText.bodyLarge(
+              filter?.displayName ?? 'Выберите фильтр',
+            ),
           ),
 
-          ref
-              .watch(historyTransactionsController)
-              .when(
-                data: (historyTransactionStateModel) {
-                  if (historyTransactionStateModel == null) {
-                    return const Expanded(
-                      child: Center(
-                        child: Text(
+          Expanded(
+            child: Center(
+              child: ref
+                  .watch(historyTransactionsController)
+                  .when(
+                    skipLoadingOnRefresh: true,
+                    skipLoadingOnReload: true,
+                    data: (historyTransactionStateModel) {
+                      if (historyTransactionStateModel == null) {
+                        return const Text(
                           'Извините, произошла ошибка, счет не найден',
-                        ),
-                      ),
-                    );
-                  }
+                        );
+                      }
 
-                  return Expanded(
-                    child: Column(
-                      children: [
-                        BillionPinnedContainer(
-                          leadingText: 'Всего',
-                          action: BillionText.bodyLarge(
-                            '${historyTransactionStateModel.amount.formatNumber()} ${currencyProviderValue.name}',
-                          ),
-                        ),
-
-                        historyTransactionStateModel
-                                .transactions
-                                .isEmpty
-                            ? const Expanded(
-                                child: Center(
-                                  child: Text(
-                                    'Транзакции отсуствуют',
-                                  ),
-                                ),
-                              )
-                            : Expanded(
-                                child: ListView.builder(
-                                  itemCount:
-                                      historyTransactionStateModel
-                                          .transactions
-                                          .length,
-                                  itemBuilder: (context, index) {
-                                    final transaction =
-                                        historyTransactionStateModel
-                                            .transactions[index];
-                                    final category =
-                                        transaction.category;
-
-                                    return BillionStatWidget(
-                                      statTitle: category.name,
-                                      statDescription:
-                                          transaction.comment,
-                                      transactionAmount:
-                                          transaction.amount,
-
-                                      currency:
-                                          currencyProviderValue.name,
-                                      leadingEmoji: category.emoji,
-                                    );
-                                  },
-                                ),
-                              ),
-                      ],
+                      return HistoryTransactionsContent(
+                        currencyProviderValue: currencyProviderValue,
+                        historyTransactionStateModel:
+                            historyTransactionStateModel,
+                      );
+                    },
+                    error: (error, stackTrace) => Text(
+                      error.toString(),
                     ),
-                  );
-                },
-                error: (error, stackTrace) => Text(error.toString()),
-                loading: () => const Center(
-                  child: CircularProgressIndicator(
-                    backgroundColor: BillionColors.onPrimary,
-                    color: BillionColors.primary,
+                    loading: () => const CircularProgressIndicator(
+                      backgroundColor: BillionColors.onPrimary,
+                      color: BillionColors.primary,
+                    ),
                   ),
-                ),
-              ),
+            ),
+          ),
         ],
       ),
     );

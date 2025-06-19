@@ -7,7 +7,7 @@ part of 'history_transactions.dart';
 // **************************************************************************
 
 String _$historyTransactionsHash() =>
-    r'03e4ce0e5c66f9a68054a2b8c223f4348773b87d';
+    r'cecb9feb4aea04e56d66b6a057412e5b38625d3b';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -61,6 +61,7 @@ class HistoryTransactionsFamily
 
   static final Iterable<ProviderOrFamily> _dependencies = <ProviderOrFamily>[
     historyTransactionsRepositoryProvider,
+    transactionFilterProvider,
   ];
 
   @override
@@ -70,6 +71,8 @@ class HistoryTransactionsFamily
       <ProviderOrFamily>{
         historyTransactionsRepositoryProvider,
         ...?historyTransactionsRepositoryProvider.allTransitiveDependencies,
+        transactionFilterProvider,
+        ...?transactionFilterProvider.allTransitiveDependencies,
       };
 
   @override
