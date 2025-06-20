@@ -11,9 +11,9 @@ class AccountPage extends StatelessWidget {
     return BillionScaffold(
       appBar: BillionAppBar(
         title: AppLocalizations.of(context)!.appBarAccount,
-        actionIcon: GestureDetector(
-          onTap: () {},
-          child: Assets.icons.edit.svg(
+        actionIcon: IconButton(
+          onPressed: () {},
+          icon: Assets.icons.edit.svg(
             width: 24,
             height: 24,
             colorFilter: const ColorFilter.mode(

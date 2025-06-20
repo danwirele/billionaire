@@ -46,10 +46,13 @@ class BillionStatWidget extends StatelessWidget {
               : null,
           title: BillionText.bodyLarge(statTitle),
 
-          subtitle: statDescription != null ? BillionText.bodyMedium(statDescription!) : null,
+          subtitle: statDescription != null
+              ? BillionText.labelMedium(statDescription!)
+              : null,
 
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
+            spacing: 16,
             children: [
               Column(
                 mainAxisSize: MainAxisSize.min,

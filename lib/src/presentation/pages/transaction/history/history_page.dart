@@ -1,3 +1,4 @@
+import 'package:billionaire/core/gen/assets.gen.dart';
 import 'package:billionaire/src/presentation/pages/transaction/history/controllers/date.dart';
 import 'package:billionaire/src/presentation/pages/transaction/history/controllers/history_transactions.dart';
 import 'package:billionaire/src/presentation/pages/transaction/history/controllers/transaction_filter.dart';
@@ -22,56 +23,74 @@ class HistoryPage extends StatelessWidget {
     );
 
     return BillionScaffold(
-      appBar: const BillionAppBar(title: 'Моя история'),
+      appBar: BillionAppBar(
+        title: 'Моя история',
+        actionIcon: IconButton(
+          onPressed: () {},
+          icon: Assets.icons.historyOutline.svg(
+            width: 24,
+            height: 24,
+            colorFilter: const ColorFilter.mode(
+              BillionColors.onSurfaceVariant,
+              BlendMode.srcIn,
+            ),
+          ),
+        ),
+      ),
       body: Column(
         children: [
           Consumer(
             builder: (context, ref, child) {
               final date = ref.read(dateProvider);
-
               return Column(
                 children: [
                   ValueListenableBuilder(
                     valueListenable: date.startDate,
-                    builder: (context, value, child) => BillionPinnedContainer(
-                      onTap: () async {
-                        final newDate = await showDatePicker(
-                          context: context,
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime.now(),
-                          initialDate: value,
-                        );
+                    builder: (context, value, child) =>
+                        BillionPinnedContainer(
+                          onTap: () async {
+                            final newDate = await showDatePicker(
+                              context: context,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime.now(),
+                              initialDate: value,
+                            );
 
-                        if (newDate != null) {
-                          await ref.read(dateProvider.notifier).setStartDate(newDate);
-                        }
-                      },
-                      leadingText: 'Начало',
-                      action: BillionText.bodyLarge(
-                        value.toddMMyyyy(),
-                      ),
-                    ),
+                            if (newDate != null) {
+                              await ref
+                                  .read(dateProvider.notifier)
+                                  .setStartDate(newDate);
+                            }
+                          },
+                          leadingText: 'Начало',
+                          action: BillionText.bodyLarge(
+                            value.toddMMyyyy(),
+                          ),
+                        ),
                   ),
                   ValueListenableBuilder(
                     valueListenable: date.endDate,
-                    builder: (context, value, child) => BillionPinnedContainer(
-                      onTap: () async {
-                        final newDate = await showDatePicker(
-                          context: context,
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime.now(),
-                          initialDate: value,
-                        );
+                    builder: (context, value, child) =>
+                        BillionPinnedContainer(
+                          onTap: () async {
+                            final newDate = await showDatePicker(
+                              context: context,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime.now(),
+                              initialDate: value,
+                            );
 
-                        if (newDate != null) {
-                          await ref.read(dateProvider.notifier).setEndDate(newDate);
-                        }
-                      },
-                      leadingText: 'Конец',
-                      action: BillionText.bodyLarge(
-                        value.toddMMyyyy(),
-                      ),
-                    ),
+                            if (newDate != null) {
+                              await ref
+                                  .read(dateProvider.notifier)
+                                  .setEndDate(newDate);
+                            }
+                          },
+                          leadingText: 'Конец',
+                          action: BillionText.bodyLarge(
+                            value.toddMMyyyy(),
+                          ),
+                        ),
                   ),
                 ],
               );
@@ -89,39 +108,41 @@ class HistoryPage extends StatelessWidget {
               );
             },
           ),
-          Flexible(
-            child: Expanded(
-              child: Center(
-                child: Consumer(
-                  builder: (context, ref, child) {
-                    final currencyProviderValue = ref.getCurrency();
-                    return ref
-                        .watch(historyTransactionsController)
-                        .when(
-                          skipLoadingOnRefresh: true,
-                          skipLoadingOnReload: true,
-                          data: (historyTransactionStateModel) {
-                            if (historyTransactionStateModel == null) {
-                              return const Text(
-                                'Извините, произошла ошибка, счет не найден',
-                              );
-                            }
-
-                            return HistoryTransactionsContent(
-                              currencyProviderValue: currencyProviderValue,
-                              historyTransactionStateModel: historyTransactionStateModel,
+          Expanded(
+            child: Center(
+              child: Consumer(
+                builder: (context, ref, child) {
+                  final currencyProviderValue = ref.getCurrency();
+                  return ref
+                      .watch(historyTransactionsController)
+                      .when(
+                        skipLoadingOnRefresh: true,
+                        skipLoadingOnReload: true,
+                        data: (historyTransactionStateModel) {
+                          if (historyTransactionStateModel == null) {
+                            return const Text(
+                              'Извините, произошла ошибка, счет не найден',
                             );
-                          },
-                          error: (error, stackTrace) => Text(
-                            error.toString(),
-                          ),
-                          loading: () => const CircularProgressIndicator(
-                            backgroundColor: BillionColors.onPrimary,
-                            color: BillionColors.primary,
-                          ),
-                        );
-                  },
-                ),
+                          }
+
+                          return HistoryTransactionsContent(
+                            currencyProviderValue:
+                                currencyProviderValue,
+                            historyTransactionStateModel:
+                                historyTransactionStateModel,
+                          );
+                        },
+                        error: (error, stackTrace) => Text(
+                          error.toString(),
+                        ),
+                        loading: () =>
+                            const CircularProgressIndicator(
+                              backgroundColor:
+                                  BillionColors.onPrimary,
+                              color: BillionColors.primary,
+                            ),
+                      );
+                },
               ),
             ),
           ),

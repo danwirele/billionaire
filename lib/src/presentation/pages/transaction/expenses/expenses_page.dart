@@ -13,14 +13,14 @@ class ExpensesPage extends StatelessWidget {
     return BillionScaffold(
       appBar: BillionAppBar(
         title: AppLocalizations.of(context)!.appBarExpenses,
-        actionIcon: InkWell(
-          onTap: () async {
+        actionIcon: IconButton(
+          onPressed: () async {
             await GoRouter.of(context).pushNamed(
               RoutesUtil.historyPageName,
               pathParameters: {'isIncome': 'false'},
             );
           },
-          child: const Icon(
+          icon: const Icon(
             Icons.history,
             size: 24,
             color: BillionColors.onSurfaceVariant,

@@ -11,8 +11,8 @@ class BillionTextStyle {
   static const labelMedium = TextStyle(
     fontSize: 12,
     height: 16 / 12,
-    color: BillionColors.onSurface,
-    fontWeight: FontWeight.w600,
+    color: BillionColors.onSurfaceVariant,
+    fontWeight: FontWeight.w500,
     letterSpacing: 0.5,
   );
 

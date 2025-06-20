@@ -13,14 +13,14 @@ class IncomePage extends StatelessWidget {
     return BillionScaffold.fab(
       appBar: BillionAppBar(
         title: AppLocalizations.of(context)!.appBarIncome,
-        actionIcon: InkWell(
-          onTap: () async {
+        actionIcon: IconButton(
+          onPressed: () async {
             await GoRouter.of(context).pushNamed(
               RoutesUtil.historyPageName,
               pathParameters: {'isIncome': 'true'},
             );
           },
-          child: const Icon(
+          icon: const Icon(
             Icons.history,
             size: 24,
             color: BillionColors.onSurfaceVariant,
