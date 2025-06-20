@@ -31,4 +31,18 @@ abstract interface class TransactionRepository {
     required int id,
     required TransactionModel deleteModel,
   });
+
+  /// [updateTransaction] метод для обновления существующей транзакции
+  /// [accountId] - ID выбранного счета;
+  ///
+  /// [startDate] - Начальная дата периода (YYYY-MM-DD).
+  /// Если не указана, используется начало текущего месяца;
+  ///
+  /// [endDate] - Конечная дата периода (YYYY-MM-DD).
+  ///  Если не указана, используется конец текущего месяца.
+  Future<List<TransactionResponseModel>> getTransactionsByPeriod({
+    required int accountId,
+    required DateTime startDate,
+    required DateTime endDate,
+  });
 }

@@ -6,8 +6,13 @@ import 'package:billionaire/src/domain/models/transactions/transaction_response.
 import 'package:billionaire/src/domain/repositories/transaction_repository.dart';
 
 class MockTransactionRepositoryImpl implements TransactionRepository {
+  MockTransactionRepositoryImpl() {
+    resetMockData();
+  }
+
   // Список фиктивных транзакций
   final List<TransactionModel> _mockTransactions = [];
+  final List<TransactionResponseModel> _mockTransactionsResponses = [];
 
   // Переменная для контроля ID транзакций
   int _nextId = 1;
@@ -16,7 +21,7 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
   Future<TransactionModel?> createTransaction(
     TransactionRequestModel model,
   ) async {
-    await Future.delayed(const Duration(milliseconds: 300));
+    await Future<void>.delayed(const Duration(milliseconds: 300));
 
     // Создаем новую транзакцию с уникальным ID
     final newTransaction = TransactionModel(
@@ -36,12 +41,11 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
 
   @override
   Future<TransactionResponseModel> getTransactionById(int id) async {
-    await Future.delayed(const Duration(milliseconds: 200));
+    await Future<void>.delayed(const Duration(milliseconds: 200));
 
     final transaction = _mockTransactions.firstWhere(
       (t) => t.id == id,
-      orElse: () =>
-          throw Exception('Transaction with id $id not found'),
+      orElse: () => throw Exception('Transaction with id $id not found'),
     );
 
     // Преобразуем TransactionModel в TransactionResponseModel
@@ -72,7 +76,7 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
     required int id,
     required TransactionRequestModel updatedModel,
   }) async {
-    await Future.delayed(const Duration(milliseconds: 250));
+    await Future<void>.delayed(const Duration(milliseconds: 250));
 
     final index = _mockTransactions.indexWhere((t) => t.id == id);
     if (index == -1) return null;
@@ -117,7 +121,7 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
     required int id,
     required TransactionModel deleteModel,
   }) async {
-    await Future.delayed(const Duration(milliseconds: 200));
+    await Future<void>.delayed(const Duration(milliseconds: 200));
 
     final index = _mockTransactions.indexWhere((t) => t.id == id);
     if (index == -1) {
@@ -127,9 +131,209 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
     _mockTransactions.removeAt(index);
   }
 
+  @override
+  Future<List<TransactionResponseModel>> getTransactionsByPeriod({
+    required int accountId,
+    required DateTime startDate,
+    required DateTime endDate,
+  }) async {
+    final filteredTransactions = _mockTransactionsResponses.where((
+      transaction,
+    ) {
+      final isCorrectAccount = transaction.account.id == accountId;
+
+      final isWithinDateRange = transaction.transactionDate.isAfter(startDate) && transaction.transactionDate.isBefore(endDate);
+
+      return isCorrectAccount && isWithinDateRange;
+    }).toList();
+
+    return filteredTransactions;
+  }
+
   /// Вспомогательный метод для тестов: сброс данных в исходное состояние
   void resetMockData() {
     _mockTransactions.clear();
+    _mockTransactionsResponses.clear();
+
     _nextId = 1;
+
+    final today = DateTime.now().add(
+      const Duration(minutes: 10),
+    );
+
+    final yesterday = today.subtract(const Duration(days: 29));
+
+    _mockTransactionsResponses.addAll([
+      TransactionResponseModel(
+        id: 1,
+        account: const AccountBriefModel(
+          id: 1,
+          name: 'Mock Account',
+          balance: '1000',
+          currency: 'RUB',
+        ),
+        category: const CategoryModel(
+          id: 1,
+          name: 'Аренда квартиры',
+          emoji: '🏠',
+          isIncome: false,
+        ),
+        amount: '5001',
+        transactionDate: yesterday,
+        comment: 'аренда',
+        createdAt: yesterday,
+        updatedAt: today,
+      ),
+      TransactionResponseModel(
+        id: 2,
+        account: const AccountBriefModel(
+          id: 1,
+          name: 'Mock Account',
+          balance: '1000',
+          currency: 'RUB',
+        ),
+        category: const CategoryModel(
+          id: 2,
+          name: 'Одежда',
+          emoji: '💰',
+          isIncome: false,
+        ),
+        amount: '5002',
+        transactionDate: yesterday,
+        comment: 'Платье',
+        createdAt: yesterday,
+        updatedAt: today,
+      ),
+      TransactionResponseModel(
+        id: 3,
+        account: const AccountBriefModel(
+          id: 1,
+          name: 'Mock Account',
+          balance: '1000',
+          currency: 'RUB',
+        ),
+        category: const CategoryModel(
+          id: 3,
+          name: 'На собачку',
+          emoji: '🐶',
+          isIncome: false,
+        ),
+        amount: '5003',
+        transactionDate: yesterday,
+        comment: 'Собачка',
+        createdAt: yesterday,
+        updatedAt: today,
+      ),
+      TransactionResponseModel(
+        id: 4,
+        account: const AccountBriefModel(
+          id: 1,
+          name: 'Mock Account',
+          balance: '1000',
+          currency: 'RUB',
+        ),
+        category: const CategoryModel(
+          id: 4,
+          name: 'Продукты',
+          emoji: '🍭',
+          isIncome: false,
+        ),
+        amount: '5004',
+        transactionDate: today.add(
+          const Duration(minutes: 10),
+        ),
+        comment: 'Собачка',
+        createdAt: today,
+        updatedAt: today,
+      ),
+      TransactionResponseModel(
+        id: 5,
+        account: const AccountBriefModel(
+          id: 1,
+          name: 'Mock Account',
+          balance: '1000',
+          currency: 'RUB',
+        ),
+        category: const CategoryModel(
+          id: 5,
+          name: 'Спортзал',
+          emoji: '🏋',
+          isIncome: false,
+        ),
+        amount: '5005',
+        transactionDate: today.add(
+          const Duration(minutes: 10),
+        ),
+        comment: null,
+        createdAt: today,
+        updatedAt: today,
+      ),
+      TransactionResponseModel(
+        id: 6,
+        account: const AccountBriefModel(
+          id: 1,
+          name: 'Mock Account',
+          balance: '1000',
+          currency: 'RUB',
+        ),
+        category: const CategoryModel(
+          id: 6,
+          name: 'Медицина',
+          emoji: '💊',
+          isIncome: false,
+        ),
+        amount: '5006',
+        transactionDate: today.add(
+          const Duration(minutes: 10),
+        ),
+        comment: null,
+        createdAt: today,
+        updatedAt: today,
+      ),
+      TransactionResponseModel(
+        id: 7,
+        account: const AccountBriefModel(
+          id: 1,
+          name: 'Mock Account',
+          balance: '1000',
+          currency: 'RUB',
+        ),
+        category: const CategoryModel(
+          id: 7,
+          name: 'Зарплата',
+          emoji: '',
+          isIncome: true,
+        ),
+        amount: '100000',
+        transactionDate: today.add(
+          const Duration(minutes: 10),
+        ),
+        comment: null,
+        createdAt: today,
+        updatedAt: today,
+      ),
+      TransactionResponseModel(
+        id: 8,
+        account: const AccountBriefModel(
+          id: 1,
+          name: 'Mock Account',
+          balance: '1000',
+          currency: 'RUB',
+        ),
+        category: const CategoryModel(
+          id: 8,
+          name: 'Подработка',
+          emoji: '',
+          isIncome: true,
+        ),
+        amount: '15000',
+        transactionDate: today.add(
+          const Duration(minutes: 10),
+        ),
+        comment: 'Калым',
+        createdAt: today,
+        updatedAt: today,
+      ),
+    ]);
   }
 }

@@ -13,17 +13,17 @@ class MockBankAccountRepositoryImpl implements BankAccountRepository {
 
   @override
   Future<List<AccountModel>> getAllBankAccounts() async {
-    await Future.delayed(const Duration(milliseconds: 300));
+    await Future<void>.delayed(const Duration(milliseconds: 300));
     return _mockAccounts;
   }
 
   @override
   Future<AccountResponseModel> getBankAccountById(int id) async {
-    await Future.delayed(const Duration(milliseconds: 200));
+    await Future<void>.delayed(const Duration(milliseconds: 200));
 
     return _mockAccountResponses.singleWhere(
       (account) => account.id == id,
-      orElse: () => throw Exception("Счет с ID $id не найден"),
+      orElse: () => throw Exception('Счет с ID $id не найден'),
     );
   }
 
@@ -32,7 +32,7 @@ class MockBankAccountRepositoryImpl implements BankAccountRepository {
     required int id,
     required AccountUpdateRequestModel updatedModel,
   }) async {
-    await Future.delayed(const Duration(milliseconds: 250));
+    await Future<void>.delayed(const Duration(milliseconds: 250));
 
     final index = _mockAccounts.indexWhere(
       (account) => account.id == id,
@@ -57,59 +57,107 @@ class MockBankAccountRepositoryImpl implements BankAccountRepository {
     _mockAccountResponses.clear();
     _mockAccounts.addAll([
       AccountModel.fromJson({
-        "id": 1,
-        "userId": 1,
-        "name": "Основной счёт",
-        "balance": "1000.00",
-        "currency": "RUB",
-        "createdAt": "2025-06-08T14:02:51.133Z",
-        "updatedAt": "2025-06-08T14:02:51.133Z",
+        'id': 1,
+        'userId': 1,
+        'name': 'Основной счёт',
+        'balance': '1000.00',
+        'currency': 'RUB',
+        'createdAt': '2025-06-08T14:02:51.133Z',
+        'updatedAt': '2025-06-08T14:02:51.133Z',
       }),
       AccountModel.fromJson({
-        "id": 2,
-        "userId": 1,
-        "name": "Долларовый счёт",
-        "balance": "1500.00",
-        "currency": "USD",
-        "createdAt": "2025-05-01T10:30:00.000Z",
-        "updatedAt": "2025-06-01T15:45:00.000Z",
+        'id': 2,
+        'userId': 1,
+        'name': 'Долларовый счёт',
+        'balance': '1500.00',
+        'currency': 'USD',
+        'createdAt': '2025-05-01T10:30:00.000Z',
+        'updatedAt': '2025-06-01T15:45:00.000Z',
       }),
     ]);
 
     _mockAccountResponses.addAll([
       AccountResponseModel.fromJson({
-        "id": 1,
-        "name": "Основной счёт",
-        "balance": "1000.00",
-        "currency": "RUB",
-        "incomeStats": [
+        'id': 1,
+        'name': 'Основной счёт',
+        'balance': '1000.00',
+        'currency': 'RUB',
+        'incomeStats': [
           {
-            "categoryId": 1,
-            "categoryName": "Зарплата",
-            "emoji": "💰",
-            "amount": "5000.00",
+            'categoryId': 1,
+            'categoryName': 'Зарплата',
+            'emoji': '',
+            'amount': '5000.00',
+          },
+          {
+            'categoryId': 2,
+            'categoryName': 'Подработка',
+            'emoji': '',
+            'amount': '5000.00',
           },
         ],
-        "expenseStats": [
+        'expenseStats': [
           {
-            "categoryId": 1,
-            "categoryName": "Зарплата",
-            "emoji": "💰",
-            "amount": "5000.00",
+            'categoryId': 1,
+            'categoryName': 'Аренда квартиры',
+            'emoji': '🏠',
+            'amount': '5000.00',
+          },
+          {
+            'categoryId': 2,
+            'categoryName': 'Одежда',
+            'emoji': '👗',
+            'amount': '5000.00',
+          },
+          {
+            'categoryId': 3,
+            'categoryName': 'На собачку',
+            'emoji': '🐶',
+            'amount': '5000.00',
+          },
+          {
+            'categoryId': 4,
+            'categoryName': 'На собачку',
+            'emoji': 'PK',
+            'amount': '5000.00',
+          },
+          {
+            'categoryId': 5,
+            'categoryName': 'Ремонт квартиры',
+            'emoji': 'Продукты',
+            'amount': '5000.00',
+          },
+          {
+            'categoryId': 6,
+            'categoryName': 'Продукты',
+            'emoji': '🍭',
+            'amount': '5000.00',
+          },
+          {
+            'categoryId': 7,
+            'categoryName': 'Спортзал',
+            'emoji': '🏋',
+            'amount': '5000.00',
+          },
+          {
+            'categoryId': 8,
+            'categoryName': 'Медицина',
+            'emoji': '💊',
+            'amount': '5000.00',
           },
         ],
-        "createdAt": "2025-06-08T14:02:51.133Z",
-        "updatedAt": "2025-06-08T14:02:51.133Z",
+        'createdAt': '2025-06-08T14:02:51.133Z',
+        'updatedAt': '2025-06-08T14:02:51.133Z',
       }),
       AccountResponseModel.fromJson({
-        "id": 2,
-        "name": "Долларовый счёт",
-        "balance": "1500.00",
-        "currency": "USD",
-        "incomeStats": [],
-        "expenseStats": [],
-        "createdAt": "2025-05-01T10:30:00.000Z",
-        "updatedAt": "2025-06-01T15:45:00.000Z",
+        'id': 2,
+        'name': 'Долларовый счёт',
+        'balance': '1500.00',
+        'currency': 'USD',
+        'incomeStats': [],
+        'expenseStats': [],
+        'createdAt': '2025-05-01T10:30:00.000Z',
+        'updatedAt': '2025-06-01T15:45:00.000Z',
       }),
     ]);
   }

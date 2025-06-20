@@ -1,8 +1,10 @@
-import 'package:billionaire/src/presentation/ui_kit/common_widgets/billion_bottom_nav_bar.dart';
-import 'package:flutter/material.dart';
+part of '../ui_kit.dart';
 
 class NavBarWrapper extends StatelessWidget {
-  const NavBarWrapper({super.key, required this.child});
+  const NavBarWrapper({
+    required this.child,
+    super.key,
+  });
   final Widget child;
 
   @override
@@ -11,7 +13,7 @@ class NavBarWrapper extends StatelessWidget {
       body: Column(
         children: [
           Expanded(child: child),
-          BillionBottomNavBar(),
+          const BillionBottomNavBar(),
         ],
       ),
     );

@@ -1,6 +1,5 @@
 import 'package:billionaire/core/l10n/app_localizations.dart';
-import 'package:billionaire/src/presentation/ui_kit/common_widgets/billion_app_bar.dart';
-import 'package:billionaire/src/presentation/ui_kit/common_widgets/billion_scaffold.dart';
+import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -12,7 +11,7 @@ class SettingsPage extends StatelessWidget {
       appBar: BillionAppBar(
         title: AppLocalizations.of(context)!.appBarSettings,
       ),
-      body: Center(
+      body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [Text('Настройки')],

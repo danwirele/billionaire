@@ -1,15 +1,15 @@
-import 'package:billionaire/src/presentation/pages/account_page.dart';
-import 'package:billionaire/src/presentation/pages/stats_page.dart';
-import 'package:billionaire/src/presentation/pages/expenses_page.dart';
-import 'package:billionaire/src/presentation/pages/income_page.dart';
-import 'package:billionaire/src/presentation/pages/settings_page.dart';
-import 'package:billionaire/src/presentation/ui_kit/common_widgets/nav_bar_wrapper.dart';
+import 'package:billionaire/src/presentation/pages/account/account_page.dart';
+import 'package:billionaire/src/presentation/pages/settings/settings_page.dart';
+import 'package:billionaire/src/presentation/pages/stats/stats_page.dart';
+import 'package:billionaire/src/presentation/pages/transaction/expenses/expenses_page.dart';
+import 'package:billionaire/src/presentation/pages/transaction/history/history_page.dart';
+import 'package:billionaire/src/presentation/pages/transaction/income/income_page.dart';
+import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/router/routes_util.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-final GlobalKey<NavigatorState> _rootNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'root');
+final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
 final GoRouter router = GoRouter(
   debugLogDiagnostics: true,
@@ -22,34 +22,42 @@ final GoRouter router = GoRouter(
       },
       routes: [
         GoRoute(
+          path: RoutesUtil.historyPagePath,
+          name: RoutesUtil.historyPageName,
+          builder: (context, state) {
+            final isIncome = state.pathParameters['isIncome'] == 'true';
+
+            if (isIncome) {
+              return const HistoryPage.income();
+            }
+
+            return const HistoryPage.expense();
+          },
+        ),
+        GoRoute(
           path: RoutesUtil.incomePagePath,
           name: RoutesUtil.incomePageName,
-          pageBuilder: (context, state) =>
-              const MaterialPage(child: IncomePage()),
+          pageBuilder: (_, _) => const MaterialPage(child: IncomePage()),
         ),
         GoRoute(
           path: RoutesUtil.accountPagePath,
           name: RoutesUtil.accountPageName,
-          pageBuilder: (context, state) =>
-              const MaterialPage(child: AccountPage()),
+          pageBuilder: (_, _) => const MaterialPage(child: AccountPage()),
         ),
         GoRoute(
           path: RoutesUtil.expensesPagePath,
           name: RoutesUtil.expensesPageName,
-          pageBuilder: (context, state) =>
-              const MaterialPage(child: ExpensesPage()),
+          pageBuilder: (_, _) => const MaterialPage(child: ExpensesPage()),
         ),
         GoRoute(
           path: RoutesUtil.statsPagePath,
           name: RoutesUtil.statsPageName,
-          pageBuilder: (context, state) =>
-              const MaterialPage(child: StatsPage()),
+          pageBuilder: (_, _) => const MaterialPage(child: StatsPage()),
         ),
         GoRoute(
           path: RoutesUtil.settingsPagePath,
           name: RoutesUtil.settingsPageName,
-          pageBuilder: (context, state) =>
-              const MaterialPage(child: SettingsPage()),
+          pageBuilder: (_, _) => const MaterialPage(child: SettingsPage()),
         ),
       ],
     ),
