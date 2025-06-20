@@ -1,12 +1,15 @@
 import 'package:billionaire/src/domain/controllers/history_transactions_repository.dart';
+import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'date.g.dart';
+part 'date.freezed.dart';
 
 @riverpod
 class Date extends _$Date {
   @override
-  (DateTime startDate, DateTime endDate) build() {
+  DateStateModel build() {
     final dateTimeNow = DateTime.now();
 
     final endDate = DateTime(
@@ -24,13 +27,13 @@ class Date extends _$Date {
       dateTimeNow.day,
     );
 
-    return (startDate, endDate);
+    return DateStateModel(startDate: ValueNotifier(startDate), endDate: ValueNotifier(endDate));
   }
 
   Future<void> setStartDate(DateTime newStartDate) async {
-    final currentEndDate = state.$2;
+    final currentEndDate = state.endDate.value;
 
-    if (newStartDate.isAfter(currentEndDate)) {
+    if (newStartDate.isAfter(state.endDate.value)) {
       final updatedEndDate = DateTime(
         newStartDate.year,
         newStartDate.month,
@@ -40,18 +43,19 @@ class Date extends _$Date {
         59,
       );
 
-      state = (newStartDate, updatedEndDate);
+      state.startDate.value = newStartDate;
+      state.endDate.value = updatedEndDate;
 
       await _updateRepository(newStartDate, updatedEndDate);
     } else {
-      state = (newStartDate, currentEndDate);
-
+      state.startDate.value = newStartDate;
+      state.endDate.value = currentEndDate;
       await _updateRepository(newStartDate, currentEndDate);
     }
   }
 
   Future<void> setEndDate(DateTime newEndDate) async {
-    final currentStartDate = state.$1;
+    final currentStartDate = state.startDate.value;
 
     final updatedEndDate = DateTime(
       newEndDate.year,
@@ -63,12 +67,12 @@ class Date extends _$Date {
     );
 
     if (updatedEndDate.isBefore(currentStartDate)) {
-      state = (updatedEndDate, updatedEndDate);
-
+      state.startDate.value = updatedEndDate;
+      state.endDate.value = updatedEndDate;
       await _updateRepository(updatedEndDate, updatedEndDate);
     } else {
-      state = (currentStartDate, updatedEndDate);
-
+      state.startDate.value = currentStartDate;
+      state.endDate.value = updatedEndDate;
       await _updateRepository(currentStartDate, updatedEndDate);
     }
   }
@@ -84,4 +88,12 @@ class Date extends _$Date {
           endDate: endDate,
         );
   }
+}
+
+@freezed
+abstract class DateStateModel with _$DateStateModel {
+  const factory DateStateModel({
+    required ValueNotifier<DateTime> startDate,
+    required ValueNotifier<DateTime> endDate,
+  }) = _DateStateModel;
 }

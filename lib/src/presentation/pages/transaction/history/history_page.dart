@@ -9,106 +9,120 @@ import 'package:billionaire/src/presentation/ui_kit/utils/modal_bottom_sheet_ext
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class HistoryPage extends ConsumerStatefulWidget {
+class HistoryPage extends StatelessWidget {
   const HistoryPage.expense({super.key}) : isIncome = false;
   const HistoryPage.income({super.key}) : isIncome = true;
 
   final bool isIncome;
 
   @override
-  ConsumerState<HistoryPage> createState() => _HistoryPageState();
-}
-
-class _HistoryPageState extends ConsumerState<HistoryPage> {
-  @override
   Widget build(BuildContext context) {
     final historyTransactionsController = historyTransactionsProvider(
-      isIncome: widget.isIncome,
+      isIncome: isIncome,
     );
 
-    final currencyProviderValue = ref.getCurrency();
-    final filter = ref.read(transactionFilterProvider);
     return BillionScaffold(
       appBar: const BillionAppBar(title: 'Моя история'),
       body: Column(
         children: [
-          BillionPinnedContainer(
-            onTap: () async {
-              final newDate = await showDatePicker(
-                context: context,
-                firstDate: DateTime(2000),
-                lastDate: DateTime.now(),
-                initialDate: ref.watch(dateProvider).$1,
-              );
+          Consumer(
+            builder: (context, ref, child) {
+              final date = ref.read(dateProvider);
 
-              if (newDate != null) {
-                await ref
-                    .read(dateProvider.notifier)
-                    .setStartDate(newDate);
-              }
-            },
-            leadingText: 'Начало',
-            action: BillionText.bodyLarge(
-              ref.watch(dateProvider).$1.toddMMyyyy(),
-            ),
-          ),
-          BillionPinnedContainer(
-            onTap: () async {
-              final newDate = await showDatePicker(
-                context: context,
-                firstDate: DateTime(2000),
-                lastDate: DateTime.now(),
-                initialDate: ref.watch(dateProvider).$2,
-              );
-
-              if (newDate != null) {
-                await ref
-                    .read(dateProvider.notifier)
-                    .setEndDate(newDate);
-              }
-            },
-            leadingText: 'Конец',
-            action: BillionText.bodyLarge(
-              ref.watch(dateProvider).$2.toddMMyyyy(),
-            ),
-          ),
-
-          BillionPinnedContainer(
-            onTap: () async => context.showFilterBottomSheet(),
-            leadingText: 'Сортировка',
-            action: BillionText.bodyLarge(
-              filter?.displayName ?? 'Выберите фильтр',
-            ),
-          ),
-
-          Expanded(
-            child: Center(
-              child: ref
-                  .watch(historyTransactionsController)
-                  .when(
-                    skipLoadingOnRefresh: true,
-                    skipLoadingOnReload: true,
-                    data: (historyTransactionStateModel) {
-                      if (historyTransactionStateModel == null) {
-                        return const Text(
-                          'Извините, произошла ошибка, счет не найден',
+              return Column(
+                children: [
+                  ValueListenableBuilder(
+                    valueListenable: date.startDate,
+                    builder: (context, value, child) => BillionPinnedContainer(
+                      onTap: () async {
+                        final newDate = await showDatePicker(
+                          context: context,
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime.now(),
+                          initialDate: value,
                         );
-                      }
 
-                      return HistoryTransactionsContent(
-                        currencyProviderValue: currencyProviderValue,
-                        historyTransactionStateModel:
-                            historyTransactionStateModel,
-                      );
-                    },
-                    error: (error, stackTrace) => Text(
-                      error.toString(),
-                    ),
-                    loading: () => const CircularProgressIndicator(
-                      backgroundColor: BillionColors.onPrimary,
-                      color: BillionColors.primary,
+                        if (newDate != null) {
+                          await ref.read(dateProvider.notifier).setStartDate(newDate);
+                        }
+                      },
+                      leadingText: 'Начало',
+                      action: BillionText.bodyLarge(
+                        value.toddMMyyyy(),
+                      ),
                     ),
                   ),
+                  ValueListenableBuilder(
+                    valueListenable: date.endDate,
+                    builder: (context, value, child) => BillionPinnedContainer(
+                      onTap: () async {
+                        final newDate = await showDatePicker(
+                          context: context,
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime.now(),
+                          initialDate: value,
+                        );
+
+                        if (newDate != null) {
+                          await ref.read(dateProvider.notifier).setEndDate(newDate);
+                        }
+                      },
+                      leadingText: 'Конец',
+                      action: BillionText.bodyLarge(
+                        value.toddMMyyyy(),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+          Consumer(
+            builder: (context, ref, child) {
+              final filter = ref.watch(transactionFilterProvider);
+              return BillionPinnedContainer(
+                onTap: () async => context.showFilterBottomSheet(),
+                leadingText: 'Сортировка',
+                action: BillionText.bodyLarge(
+                  filter?.displayName ?? 'Выберите фильтр',
+                ),
+              );
+            },
+          ),
+          Flexible(
+            child: Expanded(
+              child: Center(
+                child: Consumer(
+                  builder: (context, ref, child) {
+                    final currencyProviderValue = ref.getCurrency();
+                    return ref
+                        .watch(historyTransactionsController)
+                        .when(
+                          skipLoadingOnRefresh: true,
+                          skipLoadingOnReload: true,
+                          data: (historyTransactionStateModel) {
+                            if (historyTransactionStateModel == null) {
+                              return const Text(
+                                'Извините, произошла ошибка, счет не найден',
+                              );
+                            }
+
+                            return HistoryTransactionsContent(
+                              currencyProviderValue: currencyProviderValue,
+                              historyTransactionStateModel: historyTransactionStateModel,
+                            );
+                          },
+                          error: (error, stackTrace) => Text(
+                            error.toString(),
+                          ),
+                          loading: () => const CircularProgressIndicator(
+                            backgroundColor: BillionColors.onPrimary,
+                            color: BillionColors.primary,
+                          ),
+                        );
+                  },
+                ),
+              ),
             ),
           ),
         ],
