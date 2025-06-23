@@ -1,5 +1,7 @@
 import 'package:billionaire/core/gen/assets.gen.dart';
 import 'package:billionaire/core/l10n/app_localizations.dart';
+import 'package:billionaire/src/presentation/pages/account/widgets/account_balance.dart';
+import 'package:billionaire/src/presentation/pages/account/widgets/currency_selector.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:flutter/material.dart';
 
@@ -24,11 +26,11 @@ class AccountPage extends StatelessWidget {
         ),
       ),
       floatingActionButton: BillionFAB(onPressed: () {}),
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [Text('Счет')],
-        ),
+      body: const Column(
+        children: [
+          AccountBalance(),
+          CurrencySelector(),
+        ],
       ),
     );
   }

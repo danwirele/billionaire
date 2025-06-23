@@ -29,6 +29,15 @@ class $AssetsIconsGen {
   SvgGenImage get historyOutline =>
       const SvgGenImage('assets/icons/history-outline.svg');
 
+  /// File path: assets/icons/mdi_dollar.svg
+  SvgGenImage get mdiDollar => const SvgGenImage('assets/icons/mdi_dollar.svg');
+
+  /// File path: assets/icons/mdi_euro.svg
+  SvgGenImage get mdiEuro => const SvgGenImage('assets/icons/mdi_euro.svg');
+
+  /// File path: assets/icons/mdi_ruble.svg
+  SvgGenImage get mdiRuble => const SvgGenImage('assets/icons/mdi_ruble.svg');
+
   /// File path: assets/icons/more_vert.svg
   SvgGenImage get moreVert => const SvgGenImage('assets/icons/more_vert.svg');
 
@@ -47,6 +56,9 @@ class $AssetsIconsGen {
     edit,
     expenseStats,
     historyOutline,
+    mdiDollar,
+    mdiEuro,
+    mdiRuble,
     moreVert,
     settings,
     trendDown,

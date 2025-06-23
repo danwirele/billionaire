@@ -3,7 +3,7 @@ import 'package:billionaire/src/presentation/pages/transaction/history/controlle
 import 'package:billionaire/src/presentation/pages/transaction/history/controllers/history_transactions.dart';
 import 'package:billionaire/src/presentation/pages/transaction/history/controllers/transaction_filter.dart';
 import 'package:billionaire/src/presentation/pages/transaction/history/widgets/history_transactions_content.dart';
-import 'package:billionaire/src/presentation/pages/transaction/widgets/billion_pinned_container.dart';
+import 'package:billionaire/src/presentation/ui_kit/common_widgets/billion_pinned_container.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/filter_option_extension.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/modal_bottom_sheet_extension.dart';
@@ -62,7 +62,9 @@ class HistoryPage extends StatelessWidget {
                                   .setStartDate(newDate);
                             }
                           },
-                          leadingText: 'Начало',
+                          leading: const BillionText.bodyLarge(
+                            'Начало',
+                          ),
                           action: BillionText.bodyLarge(
                             value.toddMMyyyy(),
                           ),
@@ -86,7 +88,9 @@ class HistoryPage extends StatelessWidget {
                                   .setEndDate(newDate);
                             }
                           },
-                          leadingText: 'Конец',
+                          leading: const BillionText.bodyLarge(
+                            'Конец',
+                          ),
                           action: BillionText.bodyLarge(
                             value.toddMMyyyy(),
                           ),
@@ -101,7 +105,7 @@ class HistoryPage extends StatelessWidget {
               final filter = ref.watch(transactionFilterProvider);
               return BillionPinnedContainer(
                 onTap: () async => context.showFilterBottomSheet(),
-                leadingText: 'Сортировка',
+                leading: const BillionText.bodyLarge('Сортировка'),
                 action: BillionText.bodyLarge(
                   filter?.displayName ?? 'Выберите фильтр',
                 ),
@@ -138,7 +142,7 @@ class HistoryPage extends StatelessWidget {
                         loading: () =>
                             const CircularProgressIndicator(
                               backgroundColor:
-                                  BillionColors.onPrimary,
+                                  BillionColors.primaryContainer,
                               color: BillionColors.primary,
                             ),
                       );

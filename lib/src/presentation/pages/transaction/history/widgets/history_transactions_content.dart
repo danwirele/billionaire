@@ -1,6 +1,6 @@
 import 'package:billionaire/core/enum/currency_enum.dart';
 import 'package:billionaire/src/presentation/pages/transaction/history/controllers/history_transactions.dart';
-import 'package:billionaire/src/presentation/pages/transaction/widgets/billion_pinned_container.dart';
+import 'package:billionaire/src/presentation/ui_kit/common_widgets/billion_pinned_container.dart';
 import 'package:billionaire/src/presentation/pages/transaction/widgets/billion_stat_widget.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:flutter/material.dart';
@@ -20,9 +20,9 @@ class HistoryTransactionsContent extends StatelessWidget {
     return Column(
       children: [
         BillionPinnedContainer(
-          leadingText: 'Всего',
+          leading: const BillionText.bodyLarge('Всего'),
           action: BillionText.bodyLarge(
-            '${historyTransactionStateModel.amount.formatNumber()} ${currencyProviderValue.name}',
+            '${historyTransactionStateModel.amount.formatNumber()} ${currencyProviderValue.char}',
           ),
         ),
 
@@ -47,7 +47,7 @@ class HistoryTransactionsContent extends StatelessWidget {
                       statDescription: transaction.comment,
                       transactionAmount: transaction.amount,
                       transactionTime: transaction.transactionDate,
-                      currency: currencyProviderValue.name,
+                      currency: currencyProviderValue.char,
                       leadingEmoji: category.emoji,
                     );
                   },

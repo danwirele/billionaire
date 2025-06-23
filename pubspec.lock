@@ -597,6 +597,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.0"
+  plugin_platform_interface:
+    dependency: transitive
+    description:
+      name: plugin_platform_interface
+      sha256: "4820fbfdb9478b1ebae27888254d445073732dae3d6ea81f0b7e06d5dedc3f02"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.8"
   pool:
     dependency: transitive
     description:
@@ -677,6 +685,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.28.0"
+  sensors_plus:
+    dependency: "direct main"
+    description:
+      name: sensors_plus
+      sha256: "905282c917c6bb731c242f928665c2ea15445aa491249dea9d98d7c79dc8fd39"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.1"
+  sensors_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: sensors_plus_platform_interface
+      sha256: "58815d2f5e46c0c41c40fb39375d3f127306f7742efe3b891c0b1c87e2b5cd5d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
+  shake:
+    dependency: "direct main"
+    description:
+      name: shake
+      sha256: "7bb2bd14e9cd23a0d569f8a286b2b63ba1552ac348914d2d41ec757117ddda4e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   shelf:
     dependency: transitive
     description:
@@ -722,6 +754,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.1"
+  spoiler_widget:
+    dependency: "direct main"
+    description:
+      name: spoiler_widget
+      sha256: cb6487aba644f20e0227885d1c50e8e96c91afb3156e4f5e899234bbd24bcd42
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.12"
   sprintf:
     dependency: transitive
     description:

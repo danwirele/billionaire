@@ -40,7 +40,7 @@ class BillionStatWidget extends StatelessWidget {
           leading: leadingEmoji.isNotEmpty
               ? CircleAvatar(
                   radius: 12,
-                  backgroundColor: BillionColors.onPrimary,
+                  backgroundColor: BillionColors.primaryContainer,
                   child: Text(leadingEmoji),
                 )
               : null,
