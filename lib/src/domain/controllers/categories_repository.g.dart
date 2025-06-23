@@ -1,26 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'balance_visibility.dart';
+part of 'categories_repository.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$balanceVisibilityHash() => r'db29865a25f23e0819e59d302c1fd1ebc0cce1a0';
+String _$categoriesRepositoryHash() =>
+    r'd75f7819290c16171856fc48d04cc44bddff7f78';
 
-/// See also [BalanceVisibility].
-@ProviderFor(BalanceVisibility)
-final balanceVisibilityProvider =
-    NotifierProvider<BalanceVisibility, bool>.internal(
-      BalanceVisibility.new,
-      name: r'balanceVisibilityProvider',
+/// See also [CategoriesRepository].
+@ProviderFor(CategoriesRepository)
+final categoriesRepositoryProvider =
+    AsyncNotifierProvider<CategoriesRepository, List<CategoryModel>>.internal(
+      CategoriesRepository.new,
+      name: r'categoriesRepositoryProvider',
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
           ? null
-          : _$balanceVisibilityHash,
+          : _$categoriesRepositoryHash,
       dependencies: null,
       allTransitiveDependencies: null,
     );
 
-typedef _$BalanceVisibility = Notifier<bool>;
+typedef _$CategoriesRepository = AsyncNotifier<List<CategoryModel>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

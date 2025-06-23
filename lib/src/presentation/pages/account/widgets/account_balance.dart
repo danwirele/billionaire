@@ -121,17 +121,6 @@ class _AccountBalanceState extends ConsumerState<AccountBalance> {
                             sigmaX: 2,
                             sigmaY: 2,
                           ),
-                          // particleColor: Colors.red,
-                          // isEnabled: !isVisible,
-                          // fadeRadius: 0,
-                          // enableFadeAnimation: true,
-                          // enableGestureReveal: true,
-                          // particleDensity: 8,
-                          // particleSpeed: 0.1,
-                          // imageFilter: ImageFilter.blur(
-                          //   sigmaX: 15,
-                          //   sigmaY: 15,
-                          // ),
                         ),
                         child: Opacity(
                           opacity: isVisible ? 0 : 1,

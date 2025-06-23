@@ -14,6 +14,7 @@ dependencies:
     sdk: flutter
   flutter_svg: ^2.1.0
   freezed_annotation: ^3.0.0
+  fuzzy: ^0.5.1
   go_router: ^15.1.3
   hooks_riverpod: ^2.6.1
   intl: any
