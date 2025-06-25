@@ -7,11 +7,13 @@ class BillionPinnedContainer extends StatelessWidget {
     required this.action,
     super.key,
     this.onTap,
+    this.containerColor = BillionColors.primaryContainer,
   });
 
   final Widget leading;
   final Widget action;
   final void Function()? onTap;
+  final Color containerColor;
 
   static const double _rowHeight = 56.0;
   static const EdgeInsets _rowPadding = EdgeInsets.symmetric(
@@ -30,7 +32,7 @@ class BillionPinnedContainer extends StatelessWidget {
             Container(
               height: _rowHeight,
               padding: _rowPadding,
-              color: BillionColors.primaryContainer,
+              color: containerColor,
               child: Row(
                 children: [
                   leading,

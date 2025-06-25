@@ -45,9 +45,12 @@ class HistoryTransactionsContent extends StatelessWidget {
                     return BillionStatWidget(
                       statTitle: category.name,
                       statDescription: transaction.comment,
-                      transactionAmount: transaction.amount,
-                      transactionTime: transaction.transactionDate,
-                      currency: currencyProviderValue.char,
+                      subAction: BillionText.bodyLarge(
+                        transaction.transactionDate.toHHmm(),
+                      ),
+                      action: BillionText.bodyLarge(
+                        '${transaction.amount} ${currencyProviderValue.char}',
+                      ),
                       leadingEmoji: category.emoji,
                     );
                   },

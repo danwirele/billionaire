@@ -5,6 +5,7 @@ class RoutesUtil {
   static const String statsPagePath = '/stats';
   static const String settingsPagePath = '/settings';
   static const String historyPagePath = '/history/:isIncome';
+  static const String analysisPagePath = '/analysis/:isIncome';
 
   static const String accountPageName = 'account';
   static const String expensesPageName = 'expenses';
@@ -12,4 +13,5 @@ class RoutesUtil {
   static const String statsPageName = 'stats';
   static const String settingsPageName = 'settings';
   static const String historyPageName = 'history';
+  static const String analysisPageName = 'analysis';
 }

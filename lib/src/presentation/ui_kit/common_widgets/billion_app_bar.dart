@@ -1,12 +1,12 @@
 part of '../ui_kit.dart';
 
-class BillionAppBar extends StatelessWidget
-    implements PreferredSizeWidget {
+class BillionAppBar extends StatelessWidget implements PreferredSizeWidget {
   const BillionAppBar({
     required this.title,
     super.key,
     this.actionIcon,
     this.leading,
+    this.backgroundColor = BillionColors.primary,
   });
 
   @override
@@ -17,11 +17,11 @@ class BillionAppBar extends StatelessWidget
   final String title;
   final Widget? leading;
   final Widget? actionIcon;
-
+  final Color backgroundColor;
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: BillionColors.primary,
+      backgroundColor: backgroundColor,
       title: Text(title, style: BillionTextStyle.titleLarge),
       centerTitle: true,
       leading: leading,

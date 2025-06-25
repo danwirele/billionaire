@@ -7,20 +7,18 @@ class BillionStatWidget extends StatelessWidget {
   const BillionStatWidget({
     required this.leadingEmoji,
     required this.statTitle,
-    required this.transactionAmount,
-    required this.currency,
+    required this.action,
     super.key,
     this.statDescription,
-    this.transactionTime,
+    this.subAction,
     this.actionCallBack,
   });
 
   final String leadingEmoji;
   final String statTitle;
   final String? statDescription;
-  final String transactionAmount;
-  final DateTime? transactionTime;
-  final String currency;
+  final Widget action;
+  final Widget? subAction;
   final Future<void> Function()? actionCallBack;
 
   @override
@@ -59,15 +57,11 @@ class BillionStatWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Flexible(
-                    child: BillionText.bodyLarge(
-                      '$transactionAmount $currency',
-                    ),
+                    child: action,
                   ),
-                  transactionTime != null
+                  subAction != null
                       ? Flexible(
-                          child: BillionText.bodyLarge(
-                            transactionTime!.toHHmm(),
-                          ),
+                          child: subAction!,
                         )
                       : const SizedBox.shrink(),
                 ],

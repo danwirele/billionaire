@@ -1,6 +1,7 @@
 import 'package:billionaire/src/presentation/pages/account/account_page.dart';
 import 'package:billionaire/src/presentation/pages/settings/settings_page.dart';
 import 'package:billionaire/src/presentation/pages/stats/stats_page.dart';
+import 'package:billionaire/src/presentation/pages/transaction/analysis/analysis_page.dart';
 import 'package:billionaire/src/presentation/pages/transaction/expenses/expenses_page.dart';
 import 'package:billionaire/src/presentation/pages/transaction/history/history_page.dart';
 import 'package:billionaire/src/presentation/pages/transaction/income/income_page.dart';
@@ -21,6 +22,19 @@ final GoRouter router = GoRouter(
         return NoTransitionPage(child: NavBarWrapper(child: child));
       },
       routes: [
+        GoRoute(
+          path: RoutesUtil.analysisPagePath,
+          name: RoutesUtil.analysisPageName,
+          builder: (context, state) {
+            final isIncome = state.pathParameters['isIncome'] == 'true';
+
+            if (isIncome) {
+              return const AnalysisPage.income();
+            }
+
+            return const AnalysisPage.expense();
+          },
+        ),
         GoRoute(
           path: RoutesUtil.historyPagePath,
           name: RoutesUtil.historyPageName,
