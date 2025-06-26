@@ -1,6 +1,7 @@
 part of '../ui_kit.dart';
 
-class BillionAppBar extends StatelessWidget implements PreferredSizeWidget {
+class BillionAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
   const BillionAppBar({
     required this.title,
     super.key,

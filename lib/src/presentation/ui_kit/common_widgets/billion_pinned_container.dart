@@ -1,3 +1,4 @@
+import 'package:billionaire/src/presentation/ui_kit/common_widgets/billion_divider.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:flutter/material.dart';
 
@@ -41,10 +42,7 @@ class BillionPinnedContainer extends StatelessWidget {
                 ],
               ),
             ),
-            const Divider(
-              height: 1,
-              color: BillionColors.outlineVariant,
-            ),
+            const BillionDivider(),
           ],
         ),
       ),

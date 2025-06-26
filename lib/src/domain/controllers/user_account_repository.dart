@@ -1,5 +1,6 @@
 import 'package:billionaire/src/data/remote/mock_repository_impl/mock_bank_account_repository_impl.dart';
 import 'package:billionaire/src/domain/models/account/account_model.dart';
+import 'package:billionaire/src/domain/models/account/account_update_request_model.dart';
 import 'package:billionaire/src/domain/repositories/bank_account_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -22,5 +23,27 @@ class UserAccountRepository extends _$UserAccountRepository {
     if (accountsList.isEmpty) return null;
 
     return accountsList.first;
+  }
+
+  Future<void> updateAccount(
+    AccountModel updatedModel,
+  ) async {
+    final currentAccount = state.value;
+    if (currentAccount == null) {
+      return;
+    }
+
+    final newModel = await accountRepo.updateBankAccount(
+      id: updatedModel.id,
+      updatedModel: AccountUpdateRequestModel(
+        balance: updatedModel.balance,
+        currency: updatedModel.currency,
+        name: updatedModel.name,
+      ),
+    );
+
+    if (newModel == null) return;
+
+    state = AsyncData(newModel);
   }
 }
