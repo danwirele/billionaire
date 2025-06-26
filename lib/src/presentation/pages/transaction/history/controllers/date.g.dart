@@ -6,7 +6,7 @@ part of 'date.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$dateHash() => r'dc37eea7cc26ac19e59d5cc3e126703d2acfaddd';
+String _$dateHash() => r'4d34a75454161c848d8a591b192b42d0a6c3fb83';
 
 /// See also [Date].
 @ProviderFor(Date)

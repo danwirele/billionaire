@@ -6,7 +6,7 @@ part of 'analysis_filter.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$analysisFilterHash() => r'ebc10aaba7413faeff7e75ee7faf263d158b78d2';
+String _$analysisFilterHash() => r'76b87694d6b3ece85d7ccee34d7aaf4920fc1196';
 
 /// See also [AnalysisFilter].
 @ProviderFor(AnalysisFilter)

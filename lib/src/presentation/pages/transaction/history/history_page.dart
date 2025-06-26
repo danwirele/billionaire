@@ -48,7 +48,8 @@ class HistoryPage extends StatelessWidget {
         children: [
           Consumer(
             builder: (context, ref, child) {
-              final date = ref.read(dateProvider);
+              final date = ref.watch(dateProvider);
+
               return Column(
                 children: [
                   ValueListenableBuilder(

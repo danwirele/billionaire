@@ -27,6 +27,13 @@ class AnalysisFilter extends _$AnalysisFilter {
       dateTimeNow.day,
     );
 
+    ref.onDispose(
+      () {
+        state.startDate.dispose();
+        state.endDate.dispose();
+      },
+    );
+
     return AnalysisFilterStateModel(
       startDate: ValueNotifier(startDate),
       endDate: ValueNotifier(endDate),
@@ -95,8 +102,7 @@ class AnalysisFilter extends _$AnalysisFilter {
 }
 
 @freezed
-abstract class AnalysisFilterStateModel
-    with _$AnalysisFilterStateModel {
+abstract class AnalysisFilterStateModel with _$AnalysisFilterStateModel {
   const factory AnalysisFilterStateModel({
     required ValueNotifier<DateTime> startDate,
     required ValueNotifier<DateTime> endDate,
