@@ -2,6 +2,7 @@ import 'package:billionaire/core/enum/filter_option.dart';
 import 'package:billionaire/src/presentation/pages/transaction/history/controllers/transaction_filter.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/filter_option_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class FilterElement extends ConsumerWidget {
@@ -21,7 +22,7 @@ class FilterElement extends ConsumerWidget {
         ref
             .read(transactionFilterProvider.notifier)
             .setTransactionFilter(filterOption);
-        Navigator.of(context).pop();
+        GoRouter.of(context).pop();
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(

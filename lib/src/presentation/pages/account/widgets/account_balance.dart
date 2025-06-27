@@ -123,7 +123,7 @@ class _AccountBalanceState extends ConsumerState<AccountBalance> {
                           ),
                         ),
                         child: Opacity(
-                          opacity: isVisible ? 0 : 1,
+                          opacity: isVisible ? 1 : 0,
                           child: BillionText.bodyLarge(
                             '$balance  ${currency.char}',
                           ),

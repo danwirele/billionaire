@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AccountUpdateRequestModel {
 
- String? get name; String? get balance; String? get currency;
+ String get name; String get balance; String get currency;
 /// Create a copy of AccountUpdateRequestModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -49,7 +49,7 @@ abstract mixin class $AccountUpdateRequestModelCopyWith<$Res>  {
   factory $AccountUpdateRequestModelCopyWith(AccountUpdateRequestModel value, $Res Function(AccountUpdateRequestModel) _then) = _$AccountUpdateRequestModelCopyWithImpl;
 @useResult
 $Res call({
- String? name, String? balance, String? currency
+ String name, String balance, String currency
 });
 
 
@@ -66,12 +66,12 @@ class _$AccountUpdateRequestModelCopyWithImpl<$Res>
 
 /// Create a copy of AccountUpdateRequestModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? name = freezed,Object? balance = freezed,Object? currency = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? balance = null,Object? currency = null,}) {
   return _then(_self.copyWith(
-name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String?,balance: freezed == balance ? _self.balance : balance // ignore: cast_nullable_to_non_nullable
-as String?,currency: freezed == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
-as String?,
+name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,balance: null == balance ? _self.balance : balance // ignore: cast_nullable_to_non_nullable
+as String,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
@@ -82,12 +82,12 @@ as String?,
 @JsonSerializable()
 
 class _AccountUpdateRequestModel implements AccountUpdateRequestModel {
-  const _AccountUpdateRequestModel({this.name, this.balance, this.currency});
+  const _AccountUpdateRequestModel({required this.name, required this.balance, required this.currency});
   factory _AccountUpdateRequestModel.fromJson(Map<String, dynamic> json) => _$AccountUpdateRequestModelFromJson(json);
 
-@override final  String? name;
-@override final  String? balance;
-@override final  String? currency;
+@override final  String name;
+@override final  String balance;
+@override final  String currency;
 
 /// Create a copy of AccountUpdateRequestModel
 /// with the given fields replaced by the non-null parameter values.
@@ -122,7 +122,7 @@ abstract mixin class _$AccountUpdateRequestModelCopyWith<$Res> implements $Accou
   factory _$AccountUpdateRequestModelCopyWith(_AccountUpdateRequestModel value, $Res Function(_AccountUpdateRequestModel) _then) = __$AccountUpdateRequestModelCopyWithImpl;
 @override @useResult
 $Res call({
- String? name, String? balance, String? currency
+ String name, String balance, String currency
 });
 
 
@@ -139,12 +139,12 @@ class __$AccountUpdateRequestModelCopyWithImpl<$Res>
 
 /// Create a copy of AccountUpdateRequestModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? name = freezed,Object? balance = freezed,Object? currency = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? balance = null,Object? currency = null,}) {
   return _then(_AccountUpdateRequestModel(
-name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String?,balance: freezed == balance ? _self.balance : balance // ignore: cast_nullable_to_non_nullable
-as String?,currency: freezed == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
-as String?,
+name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,balance: null == balance ? _self.balance : balance // ignore: cast_nullable_to_non_nullable
+as String,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 

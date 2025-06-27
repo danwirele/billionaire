@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:billionaire/core/gen/assets.gen.dart';
 import 'package:billionaire/src/presentation/pages/account/controllers/update_account.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
@@ -63,20 +65,24 @@ class AccountAppBar extends StatelessWidget
                     ),
                   );
                 },
-                error: (error, stackTrace) => BillionAppBar(
-                  title: 'Произошла ошибка получения счета',
-                  actionIcon: IconButton(
-                    onPressed: () {},
-                    icon: Assets.icons.edit.svg(
-                      width: 24,
-                      height: 24,
-                      colorFilter: const ColorFilter.mode(
-                        BillionColors.onSurfaceVariant,
-                        BlendMode.srcIn,
+                error: (error, stackTrace) {
+                  log(error.toString());
+                  log(stackTrace.toString());
+                  return BillionAppBar(
+                    title: 'Произошла ошибка получения счета',
+                    actionIcon: IconButton(
+                      onPressed: () {},
+                      icon: Assets.icons.edit.svg(
+                        width: 24,
+                        height: 24,
+                        colorFilter: const ColorFilter.mode(
+                          BillionColors.onSurfaceVariant,
+                          BlendMode.srcIn,
+                        ),
                       ),
                     ),
-                  ),
-                ),
+                  );
+                },
                 loading: () => BillionAppBar(
                   title: 'Загрузка...',
                   actionIcon: IconButton(

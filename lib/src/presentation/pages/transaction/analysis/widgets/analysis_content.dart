@@ -4,6 +4,7 @@ import 'package:billionaire/src/presentation/shared/controllers/currency_provide
 import 'package:billionaire/src/presentation/ui_kit/common_widgets/billion_divider.dart';
 import 'package:billionaire/src/presentation/ui_kit/common_widgets/billion_pinned_container.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/modal_bottom_sheet_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -74,18 +75,26 @@ class AnalysisContent extends ConsumerWidget {
                           final analysisElement =
                               analysisStateList[index];
 
-                          return BillionStatWidget(
-                            statTitle: analysisElement.category.name,
-                            statDescription: analysisElement
-                                .lastTransactionComment,
-                            subAction: BillionText.bodyLarge(
-                              '${analysisElement.amount} ${currency.char}',
+                          return GestureDetector(
+                            onTap: () {
+                              context.showDetailsTransactions(
+                                analysisElement.transactions,
+                              );
+                            },
+                            child: BillionStatWidget(
+                              statTitle:
+                                  analysisElement.category.name,
+                              statDescription: analysisElement
+                                  .lastTransactionComment,
+                              subAction: BillionText.bodyLarge(
+                                '${analysisElement.amount} ${currency.char}',
+                              ),
+                              action: BillionText.bodyLarge(
+                                '${analysisElement.percentage.toStringAsFixed(0)}%',
+                              ),
+                              leadingEmoji:
+                                  analysisElement.category.emoji,
                             ),
-                            action: BillionText.bodyLarge(
-                              '${analysisElement.percentage.toStringAsFixed(0)}%',
-                            ),
-                            leadingEmoji:
-                                analysisElement.category.emoji,
                           );
                         },
                       ),

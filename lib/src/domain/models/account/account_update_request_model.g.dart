@@ -9,9 +9,9 @@ part of 'account_update_request_model.dart';
 _AccountUpdateRequestModel _$AccountUpdateRequestModelFromJson(
   Map<String, dynamic> json,
 ) => _AccountUpdateRequestModel(
-  name: json['name'] as String?,
-  balance: json['balance'] as String?,
-  currency: json['currency'] as String?,
+  name: json['name'] as String,
+  balance: json['balance'] as String,
+  currency: json['currency'] as String,
 );
 
 Map<String, dynamic> _$AccountUpdateRequestModelToJson(

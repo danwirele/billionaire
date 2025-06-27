@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:billionaire/core/l10n/app_localizations.dart';
 import 'package:billionaire/src/presentation/pages/stats/controllers/stats_controller.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
@@ -25,11 +27,29 @@ class StatsPage extends StatelessWidget {
                     children: [
                       TextField(
                         decoration: const InputDecoration(
+                          filled: true,
+                          fillColor: Color(0xffECE6F0),
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 16,
+                            horizontal: 14,
+                          ),
                           hintText: 'Найти статью',
-                          suffixIcon: Icon(Icons.search),
+
+                          suffixIcon: Icon(
+                            Icons.search,
+                            color: Color(0xff1D1B20),
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                          ),
                         ),
                         onChanged: (query) async {
-                          await ref.read(statsControllerProvider.notifier).fuzzySearchLevenshtein(query, categories);
+                          await ref
+                              .read(statsControllerProvider.notifier)
+                              .fuzzySearchLevenshtein(
+                                query,
+                                categories,
+                              );
                         },
                       ),
                       Expanded(
@@ -42,19 +62,24 @@ class StatsPage extends StatelessWidget {
                               children: [
                                 ListTile(
                                   dense: true,
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 11,
-                                    horizontal: 16,
-                                  ),
+                                  contentPadding:
+                                      const EdgeInsets.symmetric(
+                                        vertical: 11,
+                                        horizontal: 16,
+                                      ),
                                   leading: category.emoji.isNotEmpty
                                       ? CircleAvatar(
                                           radius: 12,
-                                          backgroundColor: BillionColors.primaryContainer,
+                                          backgroundColor:
+                                              BillionColors
+                                                  .primaryContainer,
                                           child: Text(category.emoji),
                                         )
                                       : const SizedBox.shrink(),
 
-                                  title: BillionText.bodyLarge(category.name),
+                                  title: BillionText.bodyLarge(
+                                    category.name,
+                                  ),
                                 ),
                                 const Divider(height: 1),
                               ],
@@ -65,9 +90,15 @@ class StatsPage extends StatelessWidget {
                     ],
                   );
                 },
-                error: (error, stackTrace) => const Center(
-                  child: Text('Произошла ошибка получения категорий'),
-                ),
+                error: (error, stackTrace) {
+                  log(error.toString());
+                  log(stackTrace.toString());
+                  return const Center(
+                    child: Text(
+                      'Произошла ошибка получения категорий',
+                    ),
+                  );
+                },
                 loading: () => const Center(
                   child: CircularProgressIndicator(),
                 ),

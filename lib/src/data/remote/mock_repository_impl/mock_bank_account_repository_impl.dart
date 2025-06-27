@@ -1,20 +1,52 @@
+import 'package:billionaire/src/data/db/db.dart';
+import 'package:billionaire/src/data/local/account_local_datasource.dart';
 import 'package:billionaire/src/domain/models/account/account_model.dart';
 import 'package:billionaire/src/domain/models/account/account_response_model.dart';
 import 'package:billionaire/src/domain/models/account/account_update_request_model.dart';
 import 'package:billionaire/src/domain/repositories/bank_account_repository.dart';
+import 'package:drift/drift.dart';
 
 class MockBankAccountRepositoryImpl implements BankAccountRepository {
   MockBankAccountRepositoryImpl() {
     resetMockData();
   }
 
+  static final AccountLocalDatasource accountLocalDatasource =
+      AccountLocalDatasource();
+
   final List<AccountModel> _mockAccounts = [];
   final List<AccountResponseModel> _mockAccountResponses = [];
 
   @override
   Future<List<AccountModel>> getAllBankAccounts() async {
-    await Future<void>.delayed(const Duration(milliseconds: 300));
-    return _mockAccounts;
+    final accountDbModel = await accountLocalDatasource.getAccount();
+
+    if (accountDbModel == null) {
+      final account = _mockAccounts.first;
+      await accountLocalDatasource.saveAccount(
+        accountDbModel: AccountTableCompanion(
+          apiId: Value(account.id),
+          balance: Value(account.balance),
+          name: Value(account.name),
+          currency: Value(account.currency),
+          userId: Value(account.userId),
+        ),
+      );
+
+      return [account];
+    }
+
+    final accountModel = AccountModel(
+      id: accountDbModel.apiId,
+      userId: accountDbModel.userId,
+      name: accountDbModel.name,
+      balance: accountDbModel.balance,
+      currency: accountDbModel.currency,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
+
+    return [accountModel];
   }
 
   @override
@@ -32,7 +64,14 @@ class MockBankAccountRepositoryImpl implements BankAccountRepository {
     required int id,
     required AccountUpdateRequestModel updatedModel,
   }) async {
-    await Future<void>.delayed(const Duration(milliseconds: 250));
+    await accountLocalDatasource.updateAccount(
+      updatedModel: AccountTableCompanion(
+        apiId: Value(id),
+        name: Value(updatedModel.name),
+        balance: Value(updatedModel.balance),
+        currency: Value(updatedModel.currency),
+      ),
+    );
 
     final index = _mockAccounts.indexWhere(
       (account) => account.id == id,
@@ -42,9 +81,9 @@ class MockBankAccountRepositoryImpl implements BankAccountRepository {
 
     final oldModel = _mockAccounts[index];
     _mockAccounts[index] = oldModel.copyWith(
-      name: updatedModel.name ?? oldModel.name,
-      balance: updatedModel.balance ?? oldModel.balance,
-      currency: updatedModel.currency ?? oldModel.currency,
+      name: updatedModel.name,
+      balance: updatedModel.balance,
+      currency: updatedModel.currency,
     );
 
     return _mockAccounts[index];

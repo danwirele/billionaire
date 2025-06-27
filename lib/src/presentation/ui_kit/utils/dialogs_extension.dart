@@ -15,14 +15,15 @@ extension DialogExtension on BuildContext {
       builder: (context) {
         return HookConsumer(
           builder: (context, ref, child) {
-            final nameController = useTextEditingController();
+            final nameController = useTextEditingController(
+              text: updateAccountModel.name,
+            );
 
             return AlertDialog(
-              title: Text(updateAccountModel.name),
+              title: const Text('Новое название счета'),
               content: TextField(
                 controller: nameController,
                 decoration: const InputDecoration(
-                  labelText: 'Введите новое название счета',
                   labelStyle: BillionTextStyle.labelMedium,
                 ),
               ),
@@ -41,7 +42,7 @@ extension DialogExtension on BuildContext {
                       await ref
                           .read(updateAccountProvider.notifier)
                           .updateAccount(name: newName);
-                      Navigator.of(this).pop();
+                      GoRouter.of(this).pop();
                     }
                   },
                   child: const Text('Сохранить'),

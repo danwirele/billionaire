@@ -3,6 +3,7 @@ import 'package:billionaire/src/presentation/shared/controllers/currency_provide
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class CurrencyTile extends ConsumerWidget {
@@ -28,7 +29,7 @@ class CurrencyTile extends ConsumerWidget {
         ref
             .read(currencyProviderProvider.notifier)
             .setCurrency(currency);
-        Navigator.of(context).pop();
+        GoRouter.of(context).pop();
       },
     );
   }
