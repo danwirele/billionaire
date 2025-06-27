@@ -27,6 +27,13 @@ class Date extends _$Date {
       dateTimeNow.day,
     );
 
+    ref.onDispose(
+      () {
+        state.startDate.dispose();
+        state.endDate.dispose();
+      },
+    );
+
     return DateStateModel(startDate: ValueNotifier(startDate), endDate: ValueNotifier(endDate));
   }
 

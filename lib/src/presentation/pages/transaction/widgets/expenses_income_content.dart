@@ -1,6 +1,6 @@
 import 'package:billionaire/src/presentation/pages/transaction/controllers/filtered_transactions.dart';
-import 'package:billionaire/src/presentation/pages/transaction/widgets/billion_pinned_container.dart';
 import 'package:billionaire/src/presentation/pages/transaction/widgets/billion_stat_widget.dart';
+import 'package:billionaire/src/presentation/ui_kit/common_widgets/billion_pinned_container.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -45,9 +45,9 @@ class ExpensesIncomeContent extends StatelessWidget {
                 return Column(
                   children: [
                     BillionPinnedContainer(
-                      leadingText: 'Всего',
+                      leading: const BillionText.bodyLarge('Всего'),
                       action: BillionText.bodyLarge(
-                        '${transactionStateModel.amount.formatNumber()} ${currencyProviderValue.name}',
+                        '${transactionStateModel.amount.formatNumber()} ${currencyProviderValue.char}',
                       ),
                     ),
                     Expanded(
@@ -62,8 +62,9 @@ class ExpensesIncomeContent extends StatelessWidget {
                           return BillionStatWidget(
                             statTitle: category.name,
                             statDescription: transaction.comment,
-                            transactionAmount: transaction.amount,
-                            currency: currencyProviderValue.name,
+                            action: BillionText.bodyLarge(
+                              '${transaction.amount} ${currencyProviderValue.char}',
+                            ),
                             leadingEmoji: category.emoji,
                           );
                         },
@@ -75,7 +76,7 @@ class ExpensesIncomeContent extends StatelessWidget {
               error: (error, stackTrace) => Text(error.toString()),
               loading: () => const Center(
                 child: CircularProgressIndicator(
-                  backgroundColor: BillionColors.onPrimary,
+                  backgroundColor: BillionColors.primaryContainer,
                   color: BillionColors.primary,
                 ),
               ),

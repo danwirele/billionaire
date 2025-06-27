@@ -7,9 +7,9 @@ part 'account_update_request_model.g.dart';
 abstract class AccountUpdateRequestModel
     with _$AccountUpdateRequestModel {
   const factory AccountUpdateRequestModel({
-    String? name,
-    String? balance,
-    String? currency,
+    required String name,
+    required String balance,
+    required String currency,
   }) = _AccountUpdateRequestModel;
 
   factory AccountUpdateRequestModel.fromJson(

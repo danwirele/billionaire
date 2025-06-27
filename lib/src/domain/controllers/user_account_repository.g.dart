@@ -7,7 +7,7 @@ part of 'user_account_repository.dart';
 // **************************************************************************
 
 String _$userAccountRepositoryHash() =>
-    r'5d67f208adb3e4b247064280d291b172e38d0d6c';
+    r'930be5a8f38fe6d739d381a3a342e4143f9818f5';
 
 /// See also [UserAccountRepository].
 @ProviderFor(UserAccountRepository)

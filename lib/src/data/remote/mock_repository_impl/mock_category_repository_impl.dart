@@ -1,17 +1,62 @@
+import 'package:billionaire/src/data/db/db.dart';
+import 'package:billionaire/src/data/local/categories_local_datasource.dart';
 import 'package:billionaire/src/domain/models/category/category_model.dart';
 import 'package:billionaire/src/domain/repositories/category_repository.dart';
+import 'package:drift/drift.dart';
 
 class MockCategoryRepositoryImpl implements CategoryRepository {
   MockCategoryRepositoryImpl() {
     resetMockData();
   }
 
+  static CategoriesLocalDatasource categoriesLocalDatasource =
+      CategoriesLocalDatasource();
+
   final List<CategoryModel> _mockCategories = [];
 
   @override
   Future<List<CategoryModel>> getAllCategories() async {
-    await Future<void>.delayed(const Duration(milliseconds: 250));
-    return _mockCategories;
+    final categories = await categoriesLocalDatasource
+        .getAllCatgories();
+
+    if (categories.isEmpty) {
+      final categoryDbList = _mockCategories
+          .map(
+            (e) => CategoryTableCompanion(
+              apiId: Value(e.id),
+              name: Value(e.name),
+              emoji: Value(e.emoji),
+              isIncome: Value(e.isIncome),
+            ),
+          )
+          .toList();
+
+      await categoriesLocalDatasource.saveCategories(
+        categoryDbList: categoryDbList,
+      );
+
+      return categoryDbList
+          .map(
+            (category) => CategoryModel(
+              id: category.apiId.value,
+              name: category.name.value,
+              emoji: category.emoji.value,
+              isIncome: category.isIncome.value,
+            ),
+          )
+          .toList();
+    }
+
+    return categories
+        .map(
+          (category) => CategoryModel(
+            id: category.apiId,
+            name: category.name,
+            emoji: category.emoji,
+            isIncome: category.isIncome,
+          ),
+        )
+        .toList();
   }
 
   @override
