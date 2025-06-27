@@ -12,7 +12,8 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
 
   // Список фиктивных транзакций
   final List<TransactionModel> _mockTransactions = [];
-  final List<TransactionResponseModel> _mockTransactionsResponses = [];
+  final List<TransactionResponseModel> _mockTransactionsResponses =
+      [];
 
   // Переменная для контроля ID транзакций
   int _nextId = 1;
@@ -45,7 +46,8 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
 
     final transaction = _mockTransactions.firstWhere(
       (t) => t.id == id,
-      orElse: () => throw Exception('Transaction with id $id not found'),
+      orElse: () =>
+          throw Exception('Transaction with id $id not found'),
     );
 
     // Преобразуем TransactionModel в TransactionResponseModel
@@ -142,7 +144,9 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
     ) {
       final isCorrectAccount = transaction.account.id == accountId;
 
-      final isWithinDateRange = transaction.transactionDate.isAfter(startDate) && transaction.transactionDate.isBefore(endDate);
+      final isWithinDateRange =
+          transaction.transactionDate.isAfter(startDate) &&
+          transaction.transactionDate.isBefore(endDate);
 
       return isCorrectAccount && isWithinDateRange;
     }).toList();

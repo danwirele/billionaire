@@ -11,9 +11,14 @@ class StatsController extends _$StatsController {
     return ref.watch(categoriesRepositoryProvider.future);
   }
 
-  Future<void> fuzzySearchLevenshtein(String query, List<CategoryModel> categories) async {
+  Future<void> fuzzySearchLevenshtein(
+    String query,
+    List<CategoryModel> categories,
+  ) async {
     if (query.isEmpty) {
-      state = AsyncData(await ref.read(categoriesRepositoryProvider.future));
+      state = AsyncData(
+        await ref.read(categoriesRepositoryProvider.future),
+      );
       return;
     }
 

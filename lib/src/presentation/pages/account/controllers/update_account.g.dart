@@ -6,15 +6,12 @@ part of 'update_account.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$updateAccountHash() => r'46ef30e8fc9e750cafaa76944bf9c8fc9bd10a77';
+String _$updateAccountHash() => r'ef86bda9a782a64da73bc5d9e0d1051308af0ced';
 
 /// See also [UpdateAccount].
 @ProviderFor(UpdateAccount)
 final updateAccountProvider =
-    AutoDisposeAsyncNotifierProvider<
-      UpdateAccount,
-      UpdateAccountStateModel?
-    >.internal(
+    AutoDisposeAsyncNotifierProvider<UpdateAccount, AccountModel?>.internal(
       UpdateAccount.new,
       name: r'updateAccountProvider',
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -27,6 +24,6 @@ final updateAccountProvider =
       },
     );
 
-typedef _$UpdateAccount = AutoDisposeAsyncNotifier<UpdateAccountStateModel?>;
+typedef _$UpdateAccount = AutoDisposeAsyncNotifier<AccountModel?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

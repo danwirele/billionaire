@@ -2,7 +2,7 @@ import 'package:billionaire/core/enum/localization_enum.dart';
 import 'package:billionaire/core/enum/theme_enum.dart';
 import 'package:billionaire/src/data/utils/shared_preferences_service.dart';
 
-class LocalDatasource {
+class SettingsLocalDatasource {
   Future<bool> saveTheme(ThemeEnum theme) async {
     return SharedPreferencesService.prefs.setString(SharedPreferencesService.themeKey, theme.name);
   }

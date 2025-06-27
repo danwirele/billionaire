@@ -1,14 +1,18 @@
 import 'package:drift/drift.dart';
-
 part './models/category_table.dart';
+part './models/transaction_table.dart';
+part './models/account_table.dart';
+
 part 'db.g.dart';
 
-@DriftDatabase(tables: [CategoryTable])
+@DriftDatabase(
+  tables: [CategoryTable, TransactionTable, AccountTable],
+)
 class Database extends _$Database {
   Database(super.e);
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 1;
 
   @override
   MigrationStrategy get migration {
@@ -21,5 +25,6 @@ class Database extends _$Database {
 
   /// Returns an auto-updating stream of all todo entries in a given category
   /// id.
-  Stream<List<CategoryDbModel>> entriesInCategory() => select(categoryTable).watch();
+  Stream<List<CategoryDbModel>> entriesInCategory() =>
+      select(categoryTable).watch();
 }

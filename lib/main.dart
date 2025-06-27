@@ -8,6 +8,8 @@ import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+late Database database;
+
 void main() async {
   await runZonedGuarded<Future<void>>(
     () async {
@@ -18,7 +20,7 @@ void main() async {
       ]);
       ImageUtils.svgPrecacheImage();
 
-      final db = Database(NativeDatabase.memory());
+      database = Database(NativeDatabase.memory());
 
       runApp(const App());
     },

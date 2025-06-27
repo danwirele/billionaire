@@ -9,8 +9,12 @@ part 'filtered_transactions.freezed.dart';
 @Riverpod(keepAlive: true)
 class FilteredTransactions extends _$FilteredTransactions {
   @override
-  Future<TransactionStateModel?> build({required bool isIncome}) async {
-    final transactions = await ref.read(transactionsRepositoryProvider.future);
+  Future<TransactionStateModel?> build({
+    required bool isIncome,
+  }) async {
+    final transactions = await ref.read(
+      transactionsRepositoryProvider.future,
+    );
 
     if (transactions == null) return null;
 
@@ -24,7 +28,10 @@ class FilteredTransactions extends _$FilteredTransactions {
       }
     }
 
-    return TransactionStateModel(transactions: filteredTransactions, amount: amount);
+    return TransactionStateModel(
+      transactions: filteredTransactions,
+      amount: amount,
+    );
   }
 }
 

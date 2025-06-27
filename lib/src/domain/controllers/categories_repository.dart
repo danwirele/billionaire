@@ -7,7 +7,8 @@ part 'categories_repository.g.dart';
 
 @Riverpod(keepAlive: true)
 class CategoriesRepository extends _$CategoriesRepository {
-  static final CategoryRepository categoryRepo = MockCategoryRepositoryImpl();
+  static final CategoryRepository categoryRepo =
+      MockCategoryRepositoryImpl();
   @override
   Future<List<CategoryModel>> build() async {
     return categoryRepo.getAllCategories();

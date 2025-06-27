@@ -45,7 +45,7 @@ class AccountAppBar extends StatelessWidget
                   }
 
                   return BillionAppBar(
-                    title: data.account.name,
+                    title: data.name,
                     actionIcon: IconButton(
                       onPressed: () async {
                         await context.showChangeAccountNameDialog(

@@ -4,6 +4,7 @@ import 'package:billionaire/src/presentation/pages/account/widgets/currency_tile
 import 'package:billionaire/src/presentation/pages/transaction/history/widgets/filter_element.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 extension ModalBottomSheet on BuildContext {
   Future<void> showFilterBottomSheet() async {
@@ -59,14 +60,13 @@ extension ModalBottomSheet on BuildContext {
                   currency: currencyList[index],
                 );
               },
-              separatorBuilder: (context, index) =>
-                  const Divider(height: 1),
+              separatorBuilder: (context, index) => const Divider(height: 1),
             ),
           ),
           const Divider(height: 1),
 
           ListTile(
-            onTap: Navigator.of(context).pop,
+            onTap: GoRouter.of(context).pop,
             contentPadding: const EdgeInsets.symmetric(
               vertical: 3,
               horizontal: 14,
