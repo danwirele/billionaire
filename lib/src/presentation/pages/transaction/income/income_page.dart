@@ -1,4 +1,5 @@
 import 'package:billionaire/core/l10n/app_localizations.dart';
+import 'package:billionaire/src/presentation/pages/transaction/transaction_action/transaction_action_page.dart';
 import 'package:billionaire/src/presentation/pages/transaction/widgets/expenses_income_content.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/router/routes_util.dart';
@@ -27,7 +28,20 @@ class IncomePage extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: BillionFAB(onPressed: () {}),
+      floatingActionButton: BillionFAB(
+        onPressed: () {
+          showGeneralDialog(
+            context: context,
+            useRootNavigator: false,
+            // barrierDismissible: true,
+            // barrierLabel: 'barrier',
+            // requestFocus: true,
+            pageBuilder: (context, animation, secondaryAnimation) {
+              return const TransactionActionPage();
+            },
+          );
+        },
+      ),
       body: const ExpensesIncomeContent.income(),
     );
   }

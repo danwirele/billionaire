@@ -1,26 +1,54 @@
-import 'package:billionaire/src/presentation/ui_kit/common_widgets/billion_divider.dart';
-import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
-import 'package:flutter/material.dart';
+part of '../ui_kit.dart';
 
 class BillionPinnedContainer extends StatelessWidget {
-  const BillionPinnedContainer({
+  const BillionPinnedContainer.primaryMedium({
     required this.leading,
     required this.action,
     super.key,
     this.onTap,
     this.containerColor = BillionColors.primaryContainer,
-  });
+  }) : _rowPadding = const EdgeInsets.symmetric(
+         horizontal: 16,
+         vertical: 16,
+       );
+  const BillionPinnedContainer.primaryLarge({
+    required this.leading,
+    required this.action,
+    super.key,
+    this.onTap,
+    this.containerColor = BillionColors.primaryContainer,
+  }) : _rowPadding = const EdgeInsets.symmetric(
+         horizontal: 16,
+         vertical: 16,
+       );
+
+  const BillionPinnedContainer.transparentMedium({
+    required this.leading,
+    required this.action,
+    super.key,
+    this.onTap,
+  }) : containerColor = Colors.transparent,
+       _rowPadding = const EdgeInsets.symmetric(
+         horizontal: 16,
+         vertical: 16,
+       );
+
+  const BillionPinnedContainer.transparentLarge({
+    required this.leading,
+    required this.action,
+    super.key,
+    this.onTap,
+  }) : containerColor = Colors.transparent,
+       _rowPadding = const EdgeInsets.symmetric(
+         horizontal: 16,
+         vertical: 22,
+       );
 
   final Widget leading;
   final Widget action;
   final void Function()? onTap;
   final Color containerColor;
-
-  static const double _rowHeight = 56.0;
-  static const EdgeInsets _rowPadding = EdgeInsets.symmetric(
-    horizontal: 16,
-    vertical: 8,
-  );
+  final EdgeInsets _rowPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +59,6 @@ class BillionPinnedContainer extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              height: _rowHeight,
               padding: _rowPadding,
               color: containerColor,
               child: Row(

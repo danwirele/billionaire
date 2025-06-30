@@ -1,8 +1,7 @@
+import 'package:billion_charts_package/billion_charts_package.dart';
 import 'package:billionaire/src/presentation/pages/transaction/analysis/controllers/analysis_state.dart';
 import 'package:billionaire/src/presentation/pages/transaction/widgets/billion_stat_widget.dart';
 import 'package:billionaire/src/presentation/shared/controllers/currency_provider.dart';
-import 'package:billionaire/src/presentation/ui_kit/common_widgets/billion_divider.dart';
-import 'package:billionaire/src/presentation/ui_kit/common_widgets/billion_pinned_container.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/modal_bottom_sheet_extension.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +47,7 @@ class AnalysisContent extends ConsumerWidget {
 
                 return Column(
                   children: [
-                    BillionPinnedContainer(
+                    BillionPinnedContainer.primaryMedium(
                       containerColor: Colors.transparent,
                       leading: const BillionText.bodyLarge(
                         'Сумма',
@@ -58,14 +57,23 @@ class AnalysisContent extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    const CircleAvatar(
-                      radius: 75,
-                      backgroundColor: Color(0xFFFCE300),
-                      child: CircleAvatar(
-                        radius: 67,
-                        backgroundColor: Colors.white,
+                    BillionPieChart(
+                      config: BillionPieChartConfig(
+                        legends: [
+                          LegendEntity(
+                            percentage: 20,
+                            title: 'Первый',
+                            sectionColor: Colors.yellow,
+                          ),
+                          LegendEntity(
+                            percentage: 80,
+                            title: 'Второй',
+                            sectionColor: Colors.green,
+                          ),
+                        ],
                       ),
                     ),
+
                     const SizedBox(height: 20),
                     const BillionDivider(),
                     Expanded(

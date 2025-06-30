@@ -14,7 +14,7 @@ class AnalysisPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BillionScaffold(
       appBar: BillionAppBar(
-        title: 'Аналитика',
+        title: 'Анализ',
         backgroundColor: BillionColors.surface,
         actionIcon: IconButton(
           onPressed: () {},

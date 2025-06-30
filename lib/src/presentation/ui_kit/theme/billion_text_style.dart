@@ -8,6 +8,14 @@ class BillionTextStyle {
     fontWeight: FontWeight.w400,
   );
 
+  static const titleMedium = TextStyle(
+    fontSize: 16,
+    height: 24 / 16,
+    color: BillionColors.onSurface,
+    fontWeight: FontWeight.w500,
+    letterSpacing: 0.15,
+  );
+
   static const labelMedium = TextStyle(
     fontSize: 12,
     height: 16 / 12,

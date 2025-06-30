@@ -10,6 +10,15 @@ class BillionText extends StatelessWidget {
     this.textStyle = BillionTextStyle.titleLarge,
   });
 
+  const BillionText.titleMedium(
+    this.text, {
+    super.key,
+    this.maxLines,
+    this.textAlign,
+    this.overflow = TextOverflow.ellipsis,
+    this.textStyle = BillionTextStyle.titleMedium,
+  });
+
   const BillionText.labelMedium(
     this.text, {
     super.key,

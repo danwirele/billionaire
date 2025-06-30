@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:billionaire/core/enum/currency_enum.dart';
 import 'package:billionaire/core/enum/filter_option.dart';
+import 'package:billionaire/src/domain/controllers/categories_repository.dart';
+import 'package:billionaire/src/domain/models/category/category_model.dart';
 import 'package:billionaire/src/domain/models/transactions/transaction_response.dart';
 import 'package:billionaire/src/presentation/pages/account/widgets/currency_tile.dart';
 import 'package:billionaire/src/presentation/pages/transaction/history/widgets/filter_element.dart';
@@ -57,7 +61,6 @@ extension ModalBottomSheet on BuildContext {
         children: [
           Flexible(
             child: ListView.separated(
-              shrinkWrap: true,
               itemCount: currencyList.length,
               itemBuilder: (context, index) {
                 return CurrencyTile(
@@ -120,6 +123,52 @@ extension ModalBottomSheet on BuildContext {
               );
             },
           );
+        },
+      ),
+    );
+  }
+
+  Future<CategoryModel?> showCategories() async {
+    return showModalBottomSheet<CategoryModel>(
+      context: this,
+      showDragHandle: true,
+      useSafeArea: true,
+      isScrollControlled: true,
+      builder: (context) => Consumer(
+        builder: (context, ref, child) {
+          return ref
+              .watch(
+                categoriesRepositoryProvider,
+              )
+              .when(
+                data: (categories) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: categories.length,
+                    itemBuilder: (context, index) {
+                      final category = categories[index];
+
+                      return BillionStatWidget(
+                        actionCallBack: () async {
+                          GoRouter.of(context).pop(category);
+                        },
+                        leadingEmoji: category.emoji,
+                        statTitle: category.name,
+                      );
+                    },
+                  );
+                },
+                error: (error, stackTrace) {
+                  log(error.toString());
+                  log(stackTrace.toString());
+                  return const Text(
+                    'Извините, произошла ошибка получения категорий',
+                  );
+                },
+                loading: () => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
         },
       ),
     );

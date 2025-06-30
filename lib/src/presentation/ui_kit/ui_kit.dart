@@ -10,6 +10,8 @@ import 'package:intl/intl.dart';
 
 part './common_widgets/billion_app_bar.dart';
 part 'common_widgets/billion_bottom_nav_bar.dart';
+part 'common_widgets/billion_pinned_container.dart';
+part 'common_widgets/billion_divider.dart';
 part 'common_widgets/billion_fab.dart';
 part 'common_widgets/billion_nav_destination.dart';
 part 'common_widgets/billion_scaffold.dart';

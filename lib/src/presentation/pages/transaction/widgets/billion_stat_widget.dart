@@ -1,13 +1,12 @@
 import 'package:billionaire/core/gen/assets.gen.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class BillionStatWidget extends StatelessWidget {
   const BillionStatWidget({
     required this.leadingEmoji,
     required this.statTitle,
-    required this.action,
+    this.action,
     super.key,
     this.statDescription,
     this.subAction,
@@ -17,7 +16,7 @@ class BillionStatWidget extends StatelessWidget {
   final String leadingEmoji;
   final String statTitle;
   final String? statDescription;
-  final Widget action;
+  final Widget? action;
   final Widget? subAction;
   final Future<void> Function()? actionCallBack;
 
@@ -57,7 +56,7 @@ class BillionStatWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Flexible(
-                    child: action,
+                    child: action ?? const SizedBox.shrink(),
                   ),
                   subAction != null
                       ? Flexible(
@@ -67,14 +66,10 @@ class BillionStatWidget extends StatelessWidget {
                 ],
               ),
 
-              GestureDetector(
-                onTap: actionCallBack,
-                child: SvgPicture.asset(
-                  Assets.icons.moreVert.path,
-                  colorFilter: ColorFilter.mode(
-                    BillionColors.tertiary.withValues(alpha: 0.3),
-                    BlendMode.srcIn,
-                  ),
+              Assets.icons.moreVert.svg(
+                colorFilter: ColorFilter.mode(
+                  BillionColors.tertiary.withValues(alpha: 0.3),
+                  BlendMode.srcIn,
                 ),
               ),
             ],

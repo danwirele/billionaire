@@ -5,10 +5,8 @@ import 'package:billionaire/core/gen/assets.gen.dart';
 import 'package:billionaire/src/domain/controllers/user_account_repository.dart';
 import 'package:billionaire/src/presentation/pages/account/controllers/balance_visibility.dart';
 import 'package:billionaire/src/presentation/shared/controllers/currency_provider.dart';
-import 'package:billionaire/src/presentation/ui_kit/common_widgets/billion_pinned_container.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:shake/shake.dart';
@@ -72,7 +70,7 @@ class _AccountBalanceState extends ConsumerState<AccountBalance> {
   @override
   Widget build(BuildContext context) {
     final currency = ref.watch(currencyProviderProvider);
-    return BillionPinnedContainer(
+    return BillionPinnedContainer.primaryMedium(
       leading: const Row(
         mainAxisSize: MainAxisSize.min,
         spacing: 16,
@@ -140,8 +138,7 @@ class _AccountBalanceState extends ConsumerState<AccountBalance> {
               ),
 
           const SizedBox(width: 16),
-          SvgPicture.asset(
-            Assets.icons.moreVert.path,
+          Assets.icons.moreVert.svg(
             colorFilter: ColorFilter.mode(
               BillionColors.tertiary.withValues(
                 alpha: 0.3,
