@@ -19,89 +19,120 @@ class _BillionColumnBalanceChartState
     final showDaily = widget.config.showDaily;
     final entities = widget.config.entities;
 
+    if (entities.isEmpty) {
+      return const Center(
+        child: Text(
+          'Нет данных для отображения',
+          style: TextStyle(fontSize: 16, color: Colors.grey),
+        ),
+      );
+    }
+
     final filteredData = showDaily
         ? entities
         : _getMonthlyData(entities);
 
-    return BarChart(
-      BarChartData(
-        alignment: BarChartAlignment.spaceBetween,
-        maxY: _calculateMaxY(filteredData),
-        minY: 0,
-        borderData: FlBorderData(show: false),
-        groupsSpace: 0,
-        gridData: const FlGridData(
-          drawHorizontalLine: false,
-          show: false,
-        ),
-        titlesData: FlTitlesData(
-          bottomTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              getTitlesWidget: (value, meta) {
-                final index = value.toInt();
-                if (index < 0 || index >= filteredData.length) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: BarChart(
+        BarChartData(
+          alignment: BarChartAlignment.spaceAround,
+          maxY: _calculateMaxY(filteredData),
+          minY: 0,
+          borderData: FlBorderData(show: false),
+          groupsSpace: 8,
+          gridData: const FlGridData(
+            drawHorizontalLine: false,
+            show: false,
+          ),
+          titlesData: FlTitlesData(
+            bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                getTitlesWidget: (value, meta) {
+                  final index = value.toInt();
+                  if (index < 0 || index >= filteredData.length) {
+                    return Container();
+                  }
+
+                  if (showDaily) {
+                    if (index == 0 ||
+                        index == (filteredData.length - 1) ||
+                        index ==
+                            ((filteredData.length / 2).ceil() - 1)) {
+                      final date = filteredData[index].date;
+                      return Text(
+                        '${date.day}.${date.month}',
+                        style: const TextStyle(fontSize: 10),
+                      );
+                    }
+                  } else {
+                    final date = filteredData[index].date;
+                    return Text(
+                      '${date.month}.${date.year}',
+                      style: const TextStyle(fontSize: 10),
+                    );
+                  }
+
                   return Container();
-                }
-                final date = filteredData[index].date;
-                return Text(
-                  showDaily
-                      ? '${date.day}/${date.month}'
-                      : '${date.month}/${date.year}',
-                  style: const TextStyle(fontSize: 10),
+                },
+              ),
+            ),
+            rightTitles: const AxisTitles(),
+            leftTitles: const AxisTitles(),
+            topTitles: const AxisTitles(),
+          ),
+          barGroups: filteredData.asMap().entries.map((entry) {
+            final index = entry.key;
+            final item = entry.value;
+            final balance = item.balance;
+            return BarChartGroupData(
+              x: index,
+              barRods: [
+                BarChartRodData(
+                  toY: balance.abs(),
+                  color: balance >= 0 ? Colors.green : Colors.red,
+                  width: 6,
+                  backDrawRodData: BackgroundBarChartRodData(
+                    show: true,
+                    color: Colors.grey.withAlpha(50),
+                    toY: 0,
+                    fromY: 0,
+                  ),
+                ),
+              ],
+            );
+          }).toList(),
+          barTouchData: BarTouchData(
+            touchTooltipData: BarTouchTooltipData(
+              fitInsideHorizontally: true,
+              fitInsideVertically: true,
+              getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                final index = group.x;
+                final balance = filteredData[index].balance;
+
+                return BarTooltipItem(
+                  balance.toStringAsFixed(2),
+                  const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 );
               },
             ),
-          ),
-          rightTitles: const AxisTitles(),
-          leftTitles: const AxisTitles(),
-          topTitles: const AxisTitles(),
-        ),
-        barGroups: filteredData.asMap().entries.map((entry) {
-          final index = entry.key;
-          final item = entry.value;
-          final balance = item.balance;
-          return BarChartGroupData(
-            x: index,
-            barRods: [
-              BarChartRodData(
-                toY: balance.abs(),
-                color: balance >= 0 ? Colors.green : Colors.red,
-                width: 6,
-                backDrawRodData: BackgroundBarChartRodData(
-                  show: true,
-                  color: Colors.grey.withValues(alpha: 0.2),
-                  toY: 0,
-                  fromY: 0,
-                ),
-              ),
-            ],
-          );
-        }).toList(),
-        barTouchData: BarTouchData(
-          touchTooltipData: BarTouchTooltipData(
-            getTooltipItem: (group, groupIndex, rod, rodIndex) {
-              final index = group.x;
-              final balance = filteredData[index].balance;
-              return BarTooltipItem(
-                balance.toStringAsFixed(2),
-                const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              );
+            touchCallback: (event, response) {
+              setState(() {
+                if (response == null || response.spot == null) {
+                  touchedIndex = null;
+                } else {
+                  touchedIndex = response.spot!.touchedBarGroupIndex;
+                }
+              });
             },
           ),
-          touchCallback: (event, response) {
-            setState(() {
-              if (response == null || response.spot == null) {
-                touchedIndex = null;
-              } else {
-                touchedIndex = response.spot!.touchedBarGroupIndex;
-              }
-            });
-          },
         ),
+        duration: Duration.zero, // Отключаем анимацию
+        curve: Curves.linear, // Используем линейную кривую
       ),
     );
   }
