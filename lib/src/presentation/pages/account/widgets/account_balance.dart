@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:billionaire/core/gen/assets.gen.dart';
 import 'package:billionaire/src/domain/controllers/user_account_repository.dart';
 import 'package:billionaire/src/presentation/pages/account/controllers/balance_visibility.dart';
 import 'package:billionaire/src/presentation/shared/controllers/currency_provider.dart';
@@ -71,11 +70,11 @@ class _AccountBalanceState extends ConsumerState<AccountBalance> {
   Widget build(BuildContext context) {
     final currency = ref.watch(currencyProviderProvider);
     return BillionPinnedContainer.primaryMedium(
-      leading: const Row(
+      leading: Row(
         mainAxisSize: MainAxisSize.min,
         spacing: 16,
         children: [
-          CircleAvatar(
+          const CircleAvatar(
             backgroundColor: Colors.white,
             radius: 12,
             child: Text('💰'),
@@ -131,21 +130,14 @@ class _AccountBalanceState extends ConsumerState<AccountBalance> {
                   );
                 },
                 error: (error, stackTrace) =>
-                    const BillionText.bodyLarge('Произошла ошибка'),
+                    BillionText.bodyLarge('Произошла ошибка'),
                 loading: () => const Center(
                   child: CircularProgressIndicator(),
                 ),
               ),
 
           const SizedBox(width: 16),
-          Assets.icons.moreVert.svg(
-            colorFilter: ColorFilter.mode(
-              BillionColors.tertiary.withValues(
-                alpha: 0.3,
-              ),
-              BlendMode.srcIn,
-            ),
-          ),
+          const BillionArrowRight(),
         ],
       ),
     );

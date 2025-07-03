@@ -29,15 +29,15 @@ class IncomePage extends StatelessWidget {
         ),
       ),
       floatingActionButton: BillionFAB(
-        onPressed: () {
-          showDialog(
+        onPressed: () async {
+          await showGeneralDialog(
             context: context,
             useRootNavigator: false,
-            // barrierDismissible: true,
-            // barrierLabel: 'barrier',
-            // requestFocus: true,
-            builder: (context) {
-              return const TransactionActionPage();
+            barrierDismissible: true,
+            barrierLabel: 'barrier',
+            requestFocus: true,
+            pageBuilder: (context, animation, secondaryAnimation) {
+              return TransactionActionPage();
             },
           );
         },

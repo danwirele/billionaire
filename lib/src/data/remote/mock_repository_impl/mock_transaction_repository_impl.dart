@@ -268,7 +268,6 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
         transactionDate: today.add(
           const Duration(minutes: 10),
         ),
-        comment: null,
         createdAt: today,
         updatedAt: today,
       ),
@@ -290,7 +289,6 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
         transactionDate: today.add(
           const Duration(minutes: 10),
         ),
-        comment: null,
         createdAt: today,
         updatedAt: today,
       ),
@@ -312,7 +310,6 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
         transactionDate: today.add(
           const Duration(minutes: 10),
         ),
-        comment: null,
         createdAt: today,
         updatedAt: today,
       ),

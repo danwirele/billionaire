@@ -44,7 +44,7 @@ class ExpensesIncomeContent extends StatelessWidget {
                 return Column(
                   children: [
                     BillionPinnedContainer.primaryMedium(
-                      leading: const BillionText.bodyLarge('Всего'),
+                      leading: BillionText.bodyLarge('Всего'),
                       action: BillionText.bodyLarge(
                         '${transactionStateModel.amount.formatNumber()} ${currencyProviderValue.char}',
                       ),
@@ -72,7 +72,8 @@ class ExpensesIncomeContent extends StatelessWidget {
                   ],
                 );
               },
-              error: (error, stackTrace) => Text(error.toString()),
+              error: (error, stackTrace) =>
+                  BillionText.bodyMedium(error.toString()),
               loading: () => const Center(
                 child: CircularProgressIndicator(
                   backgroundColor: BillionColors.primaryContainer,

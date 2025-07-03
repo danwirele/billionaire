@@ -11,9 +11,9 @@ abstract class TransactionModel with _$TransactionModel {
     required int categoryId,
     required String amount,
     required DateTime transactionDate,
-    String? comment,
     required DateTime createdAt,
     required DateTime updatedAt,
+    String? comment,
   }) = _TransactionModel;
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) =>

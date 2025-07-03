@@ -49,7 +49,7 @@ class AnalysisContent extends ConsumerWidget {
                   children: [
                     BillionPinnedContainer.primaryMedium(
                       containerColor: Colors.transparent,
-                      leading: const BillionText.bodyLarge(
+                      leading: BillionText.bodyLarge(
                         'Сумма',
                       ),
                       action: BillionText.bodyLarge(

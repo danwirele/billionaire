@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:billionaire/core/enum/currency_enum.dart';
 import 'package:billionaire/core/enum/filter_option.dart';
 import 'package:billionaire/src/domain/controllers/categories_repository.dart';
+import 'package:billionaire/src/domain/controllers/user_account_repository.dart';
+import 'package:billionaire/src/domain/models/account/account_model.dart';
 import 'package:billionaire/src/domain/models/category/category_model.dart';
 import 'package:billionaire/src/domain/models/transactions/transaction_response.dart';
 import 'package:billionaire/src/presentation/pages/account/widgets/currency_tile.dart';
@@ -85,9 +87,9 @@ extension ModalBottomSheet on BuildContext {
               size: 24,
               color: BillionColors.onPrimary,
             ),
-            title: const Text(
+            title: BillionText.bodyMedium(
               'Отмена',
-              style: TextStyle(color: Colors.white),
+              color: Colors.white,
             ),
           ),
         ],
@@ -161,7 +163,7 @@ extension ModalBottomSheet on BuildContext {
                 error: (error, stackTrace) {
                   log(error.toString());
                   log(stackTrace.toString());
-                  return const Text(
+                  return BillionText.bodyMedium(
                     'Извините, произошла ошибка получения категорий',
                   );
                 },
@@ -171,6 +173,56 @@ extension ModalBottomSheet on BuildContext {
               );
         },
       ),
+    );
+  }
+
+  Future<AccountModel?> showSelectAccountBottomSheet() async {
+    return showModalBottomSheet<AccountModel>(
+      context: this,
+      showDragHandle: true,
+      useSafeArea: true,
+      isScrollControlled: true,
+      builder: (context) {
+        return Consumer(
+          builder: (context, ref, child) {
+            return ref
+                .watch(
+                  userAccountRepositoryProvider,
+                )
+                .when(
+                  data: (account) {
+                    if (account == null) {
+                      return Center(
+                        child: BillionText.bodyMedium(
+                          'Счет не найден',
+                        ),
+                      );
+                    }
+
+                    return ListTile(
+                      title: BillionText.titleMedium(account.name),
+                      subtitle: BillionText.bodyMedium(
+                        'Баланс: ${account.balance}\n${account.currency}',
+                      ),
+                      onTap: () async {
+                        GoRouter.of(context).pop(account);
+                      },
+                    );
+                  },
+                  error: (error, stackTrace) {
+                    log(error.toString());
+                    log(stackTrace.toString());
+                    return BillionText.bodyMedium(
+                      'Извините, произошла ошибка получения категорий',
+                    );
+                  },
+                  loading: () => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+          },
+        );
+      },
     );
   }
 }

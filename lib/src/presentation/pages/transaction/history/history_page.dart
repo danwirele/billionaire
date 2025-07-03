@@ -69,7 +69,7 @@ class HistoryPage extends StatelessWidget {
                                   .setStartDate(newDate);
                             }
                           },
-                          leading: const BillionText.bodyLarge(
+                          leading: BillionText.bodyLarge(
                             'Начало',
                           ),
                           action: BillionText.bodyLarge(
@@ -95,7 +95,7 @@ class HistoryPage extends StatelessWidget {
                                   .setEndDate(newDate);
                             }
                           },
-                          leading: const BillionText.bodyLarge(
+                          leading: BillionText.bodyLarge(
                             'Конец',
                           ),
                           action: BillionText.bodyLarge(
@@ -112,7 +112,7 @@ class HistoryPage extends StatelessWidget {
               final filter = ref.watch(transactionFilterProvider);
               return BillionPinnedContainer.primaryMedium(
                 onTap: () async => context.showFilterBottomSheet(),
-                leading: const BillionText.bodyLarge('Сортировка'),
+                leading: BillionText.bodyLarge('Сортировка'),
                 action: BillionText.bodyLarge(
                   filter?.displayName ?? 'Выберите фильтр',
                 ),

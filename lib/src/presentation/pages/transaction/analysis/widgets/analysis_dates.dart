@@ -32,7 +32,7 @@ class AnalysisDates extends ConsumerWidget {
                       .setStartDate(newDate);
                 }
               },
-              leading: const BillionText.bodyLarge(
+              leading: BillionText.bodyLarge(
                 'Период: начало',
               ),
               action: Container(
@@ -74,7 +74,7 @@ class AnalysisDates extends ConsumerWidget {
                         .setEndDate(newDate);
                   }
                 },
-                leading: const BillionText.bodyLarge(
+                leading: BillionText.bodyLarge(
                   'Период: конец',
                 ),
                 action: Container(

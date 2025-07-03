@@ -19,7 +19,7 @@ class HistoryTransactionsContent extends StatelessWidget {
     return Column(
       children: [
         BillionPinnedContainer.primaryMedium(
-          leading: const BillionText.bodyLarge('Всего'),
+          leading: BillionText.bodyLarge('Всего'),
           action: BillionText.bodyLarge(
             '${historyTransactionStateModel.amount.formatNumber()} ${currencyProviderValue.char}',
           ),
