@@ -1,6 +1,7 @@
 import 'package:billionaire/src/presentation/pages/transaction/controllers/filtered_transactions.dart';
 import 'package:billionaire/src/presentation/pages/transaction/widgets/billion_stat_widget.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/dialogs_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -59,6 +60,9 @@ class ExpensesIncomeContent extends StatelessWidget {
                           final category = transaction.category;
 
                           return BillionStatWidget(
+                            actionCallBack: ()async {
+                              await   context.showTransactionActionDialog(model: transaction);  
+                            },
                             statTitle: category.name,
                             statDescription: transaction.comment,
                             action: BillionText.bodyLarge(

@@ -38,6 +38,7 @@ dev_dependencies:
   custom_lint: ^0.7.5
   drift_dev: ^2.27.0
   flutter_gen_runner: ^5.10.0
+  flutter_launcher_icons: ^0.14.4
   flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
@@ -59,3 +60,8 @@ flutter_gen:
   integrations:
     image: true
     flutter_svg: true
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png"

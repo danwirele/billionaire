@@ -5,19 +5,18 @@ import 'package:billionaire/src/domain/repositories/category_repository.dart';
 import 'package:drift/drift.dart';
 
 class MockCategoryRepositoryImpl implements CategoryRepository {
-  MockCategoryRepositoryImpl() {
+  MockCategoryRepositoryImpl({required Database database}) : _database = database {
+    _categoriesLocalDatasource = CategoriesLocalDatasource(database: _database);
     resetMockData();
   }
-
-  static CategoriesLocalDatasource categoriesLocalDatasource =
-      CategoriesLocalDatasource();
+  final Database _database;
+  late final CategoriesLocalDatasource _categoriesLocalDatasource;
 
   final List<CategoryModel> _mockCategories = [];
 
   @override
   Future<List<CategoryModel>> getAllCategories() async {
-    final categories = await categoriesLocalDatasource
-        .getAllCatgories();
+    final categories = await _categoriesLocalDatasource.getAllCatgories();
 
     if (categories.isEmpty) {
       final categoryDbList = _mockCategories
@@ -31,7 +30,7 @@ class MockCategoryRepositoryImpl implements CategoryRepository {
           )
           .toList();
 
-      await categoriesLocalDatasource.saveCategories(
+      await _categoriesLocalDatasource.saveCategories(
         categoryDbList: categoryDbList,
       );
 
@@ -65,9 +64,7 @@ class MockCategoryRepositoryImpl implements CategoryRepository {
   }) async {
     await Future<void>.delayed(const Duration(milliseconds: 200));
 
-    return _mockCategories
-        .where((category) => category.isIncome == isIncome)
-        .toList();
+    return _mockCategories.where((category) => category.isIncome == isIncome).toList();
   }
 
   /// [resetMockData] Вспомогательный метод для тестов

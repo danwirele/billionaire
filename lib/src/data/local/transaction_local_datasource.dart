@@ -1,22 +1,24 @@
-import 'package:billionaire/main.dart';
 import 'package:billionaire/src/data/db/db.dart';
 import 'package:drift/drift.dart';
 
 class TransactionLocalDatasource {
+  TransactionLocalDatasource({required Database database}) : _database = database;
+  final Database _database;
+
   Future<void> saveTransaction({required TransactionDbModel transaction}) async {
-    await database.transactionTable.insertOne(
+    await _database.transactionTable.insertOne(
       transaction,
       mode: InsertMode.insertOrFail,
     );
   }
 
   Future<List<TransactionDbModel>> getAllTransactions() async {
-    return database.select(database.transactionTable).get();
+    return _database.select(_database.transactionTable).get();
   }
 
   Future<List<TransactionDbModel>> getTransactionsByType({required bool isIncome}) async {
-    final categories = database.categoryTable;
-    final transactions = database.transactionTable;
+    final categories = _database.categoryTable;
+    final transactions = _database.transactionTable;
 
     final result = await (transactions.select().join([
       innerJoin(

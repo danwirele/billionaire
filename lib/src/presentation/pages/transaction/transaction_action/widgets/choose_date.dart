@@ -30,7 +30,7 @@ class ChooseDate extends StatelessWidget {
           leading: BillionText.bodyLarge('Дата'),
           action: Row(
             children: [
-              Text(date.toString().split(' ')[0]),
+              BillionText.bodyLarge(date.toString().split(' ')[0]),
               const BillionArrowRight(),
             ],
           ),

@@ -11,4 +11,12 @@ class TransactionAction extends _$TransactionAction {
   }) {
     return model;
   }
+
+  Future<void> saveTransaction({required TransactionResponseModel newTransaction}) async {
+    if (model == null) {
+      //todo Вызывать создание
+    } else {
+      //todo Вызывать обновление
+    }
+  }
 }

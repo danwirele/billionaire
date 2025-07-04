@@ -6,7 +6,7 @@ part of 'transaction_action.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$transactionActionHash() => r'876303af270a0812e061519a1b7a5e1ccbbd4d7e';
+String _$transactionActionHash() => r'fe7aea02372d86aed23594c617604657fb7e7edc';
 
 /// Copied from Dart SDK
 class _SystemHash {

@@ -32,6 +32,17 @@ class BillionText extends StatelessWidget {
          color: color,
        );
 
+         BillionText.labelLarge(
+    this.text, {
+    super.key,
+    this.maxLines,
+    this.textAlign,
+    this.color,
+    this.overflow = TextOverflow.ellipsis,
+  }) : textStyle = BillionTextStyle.labelLarge.copyWith(
+         color: color,
+       );
+
   BillionText.bodyLarge(
     this.text, {
     super.key,

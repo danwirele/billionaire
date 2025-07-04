@@ -1,8 +1,9 @@
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/dialogs_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ChooseAmount extends StatelessWidget {
+class ChooseAmount extends ConsumerWidget {
   const ChooseAmount({
     required this.amountNotifier,
     super.key,
@@ -11,7 +12,8 @@ class ChooseAmount extends StatelessWidget {
   final ValueNotifier<String> amountNotifier;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currency = ref.getCurrency();
     return ValueListenableBuilder<String>(
       valueListenable: amountNotifier,
       builder: (context, amount, _) {
@@ -28,7 +30,7 @@ class ChooseAmount extends StatelessWidget {
           leading: BillionText.bodyLarge('Сумма'),
           action: Row(
             children: [
-              Text(amount.isEmpty ? 'Не указана' : amount),
+              BillionText.bodyLarge(amount.isEmpty ? 'Не указана' : '$amount ${currency.char}'),
               const BillionArrowRight(),
             ],
           ),

@@ -26,7 +26,7 @@ class ChooseCategory extends StatelessWidget {
           leading: BillionText.bodyLarge('Статья'),
           action: Row(
             children: [
-              Text(category?.name ?? 'Не выбрана'),
+              BillionText.bodyLarge(category?.name ?? 'Не выбрана'),
               const BillionArrowRight(),
             ],
           ),

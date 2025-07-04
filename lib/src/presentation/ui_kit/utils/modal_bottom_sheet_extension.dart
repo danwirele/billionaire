@@ -61,20 +61,18 @@ extension ModalBottomSheet on BuildContext {
       builder: (context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Flexible(
-            child: ListView.separated(
-              itemCount: currencyList.length,
-              itemBuilder: (context, index) {
-                return CurrencyTile(
-                  currency: currencyList[index],
-                );
-              },
-              separatorBuilder: (context, index) =>
-                  const Divider(height: 1),
-            ),
+          ListView.separated(
+            shrinkWrap: true,
+            itemCount: currencyList.length,
+            padding: EdgeInsets.zero,
+            itemBuilder: (context, index) {
+              return CurrencyTile(
+                currency: currencyList[index],
+              );
+            },
+            separatorBuilder: (context, index) => const Divider(height: 1),
           ),
           const Divider(height: 1),
-
           ListTile(
             onTap: GoRouter.of(context).pop,
             contentPadding: const EdgeInsets.symmetric(
@@ -110,6 +108,7 @@ extension ModalBottomSheet on BuildContext {
           final currency = ref.read(currencyProviderProvider);
           return ListView.builder(
             shrinkWrap: true,
+            padding: EdgeInsets.zero,
             itemCount: transactions.length,
             itemBuilder: (context, index) {
               final transaction = transactions[index];
@@ -146,6 +145,7 @@ extension ModalBottomSheet on BuildContext {
                 data: (categories) {
                   return ListView.builder(
                     shrinkWrap: true,
+                    padding: EdgeInsets.zero,
                     itemCount: categories.length,
                     itemBuilder: (context, index) {
                       final category = categories[index];

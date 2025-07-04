@@ -1,11 +1,15 @@
 import 'package:billionaire/src/domain/models/account/account_model.dart';
+import 'package:billionaire/src/domain/models/transactions/transaction_response.dart';
 import 'package:billionaire/src/presentation/pages/account/controllers/update_account.dart';
+import 'package:billionaire/src/presentation/pages/transaction/transaction_action/transaction_action_page.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/text_input_formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 
 extension DialogExtension on BuildContext {
   Future<void> showChangeAccountNameDialog(
@@ -42,9 +46,7 @@ extension DialogExtension on BuildContext {
                     final newName = nameController.text.trim();
 
                     if (newName.isNotEmpty) {
-                      await ref
-                          .read(updateAccountProvider.notifier)
-                          .updateAccount(name: newName);
+                      await ref.read(updateAccountProvider.notifier).updateAccount(name: newName);
                       GoRouter.of(this).pop();
                     }
                   },
@@ -67,8 +69,12 @@ extension DialogExtension on BuildContext {
       builder: (context) {
         return HookBuilder(
           builder: (context) {
-            final amountTextEditingController =
-                useTextEditingController(text: initialAmount);
+            final amountTextEditingController = useTextEditingController(text: initialAmount);
+
+            // Получаем правильный разделитель из текущей локали
+            final locale = Localizations.localeOf(context);
+            final format = NumberFormat.decimalPattern('$locale');
+            final validDecimalSeparator = format.symbols.DECIMAL_SEP;
 
             return AlertDialog(
               title: BillionText.bodyMedium('Сумма транзакции'),
@@ -78,8 +84,8 @@ extension DialogExtension on BuildContext {
                   decimal: true,
                 ),
                 inputFormatters: [
-                  FilteringTextInputFormatter.allow(
-                    RegExp(r'^\d*\.?\d{0,2}'),
+                  LocalizedDecimalAndThousandInputFormatter(
+                    validDecimalSeparator: validDecimalSeparator,
                   ),
                 ],
                 decoration: const InputDecoration(
@@ -97,8 +103,7 @@ extension DialogExtension on BuildContext {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    final amount = amountTextEditingController.text
-                        .trim();
+                    final amount = amountTextEditingController.text.trim();
 
                     GoRouter.of(context).pop(amount);
                   },
@@ -121,12 +126,11 @@ extension DialogExtension on BuildContext {
       builder: (context) {
         return HookBuilder(
           builder: (context) {
-            final commentTextEditingController =
-                useTextEditingController(text: initialComment);
+            final commentTextEditingController = useTextEditingController(text: initialComment);
 
             return AlertDialog(
               title: BillionText.bodyMedium(
-                'Новое название счета',
+                'Новый комментарий транзакции',
               ),
               content: TextField(
                 controller: commentTextEditingController,
@@ -144,8 +148,7 @@ extension DialogExtension on BuildContext {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    final comment = commentTextEditingController.text
-                        .trim();
+                    final comment = commentTextEditingController.text.trim();
 
                     GoRouter.of(context).pop(comment);
                   },
@@ -165,9 +168,10 @@ extension DialogExtension on BuildContext {
       context: this,
       useRootNavigator: false,
       builder: (context) => AlertDialog(
-        title: BillionText.bodyMedium('Ошибка'),
+        title: BillionText.titleMedium('Ошибка'),
         content: BillionText.bodyMedium(
-          'Пожалуйста, заполните следующие поля:\n${errorList.join(', ')}',
+          'Пожалуйста, заполните следующие поля:${errorList.join(', ')}',
+          overflow: TextOverflow.visible,
         ),
         actions: [
           TextButton(
@@ -178,4 +182,14 @@ extension DialogExtension on BuildContext {
       ),
     );
   }
+
+  Future<void> showTransactionActionDialog({TransactionResponseModel? model})async=>  showGeneralDialog(
+            context: this,
+            barrierDismissible: true,
+            requestFocus: true,
+            barrierLabel: 'barrier',
+            pageBuilder: (context, animation, secondaryAnimation) {
+              return TransactionActionPage(model: model);
+            },
+          );
 }

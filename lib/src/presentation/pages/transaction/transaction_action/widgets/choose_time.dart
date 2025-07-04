@@ -28,7 +28,7 @@ class ChooseTime extends StatelessWidget {
           leading: BillionText.bodyLarge('Время'),
           action: Row(
             children: [
-              BillionText.bodyMedium('${time.hour}:${time.minute}'),
+              BillionText.bodyLarge('${time.hour}:${time.minute}'),
               const BillionArrowRight(),
             ],
           ),

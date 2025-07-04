@@ -15,8 +15,7 @@ class AccountBalance extends ConsumerStatefulWidget {
   const AccountBalance({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _AccountBalanceState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _AccountBalanceState();
 }
 
 class _AccountBalanceState extends ConsumerState<AccountBalance> {
@@ -99,11 +98,13 @@ class _AccountBalanceState extends ConsumerState<AccountBalance> {
                     data.balance,
                   ).formatNumber();
 
+                  //TODO! SMTH WENT WRONG
                   return Consumer(
                     builder: (context, ref, child) {
                       final isVisible = ref.watch(
                         balanceVisibilityProvider,
                       );
+                      print('isVisible: $isVisible');
 
                       return SpoilerOverlay(
                         config: WidgetSpoilerConfig(
@@ -129,11 +130,8 @@ class _AccountBalanceState extends ConsumerState<AccountBalance> {
                     },
                   );
                 },
-                error: (error, stackTrace) =>
-                    BillionText.bodyLarge('Произошла ошибка'),
-                loading: () => const Center(
-                  child: CircularProgressIndicator(),
-                ),
+                error: (error, stackTrace) => BillionText.bodyLarge('Произошла ошибка'),
+                loading: () => BillionText.bodyMedium('Загрузка...'),
               ),
 
           const SizedBox(width: 16),

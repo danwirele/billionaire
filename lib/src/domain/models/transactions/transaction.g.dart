@@ -13,9 +13,9 @@ _TransactionModel _$TransactionModelFromJson(Map<String, dynamic> json) =>
       categoryId: (json['categoryId'] as num).toInt(),
       amount: json['amount'] as String,
       transactionDate: DateTime.parse(json['transactionDate'] as String),
-      comment: json['comment'] as String?,
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
+      comment: json['comment'] as String?,
     );
 
 Map<String, dynamic> _$TransactionModelToJson(_TransactionModel instance) =>
@@ -25,7 +25,7 @@ Map<String, dynamic> _$TransactionModelToJson(_TransactionModel instance) =>
       'categoryId': instance.categoryId,
       'amount': instance.amount,
       'transactionDate': instance.transactionDate.toIso8601String(),
-      'comment': instance.comment,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
+      'comment': instance.comment,
     };

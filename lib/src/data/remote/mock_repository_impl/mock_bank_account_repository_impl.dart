@@ -7,23 +7,24 @@ import 'package:billionaire/src/domain/repositories/bank_account_repository.dart
 import 'package:drift/drift.dart';
 
 class MockBankAccountRepositoryImpl implements BankAccountRepository {
-  MockBankAccountRepositoryImpl() {
+  MockBankAccountRepositoryImpl({required Database database}) : _database = database {
+    _accountLocalDatasource = AccountLocalDatasource(database: _database);
     resetMockData();
   }
+  final Database _database;
 
-  static final AccountLocalDatasource accountLocalDatasource =
-      AccountLocalDatasource();
+  late final AccountLocalDatasource _accountLocalDatasource;
 
   final List<AccountModel> _mockAccounts = [];
   final List<AccountResponseModel> _mockAccountResponses = [];
 
   @override
   Future<List<AccountModel>> getAllBankAccounts() async {
-    final accountDbModel = await accountLocalDatasource.getAccount();
+    final accountDbModel = await _accountLocalDatasource.getAccount();
 
     if (accountDbModel == null) {
       final account = _mockAccounts.first;
-      await accountLocalDatasource.saveAccount(
+      await _accountLocalDatasource.saveAccount(
         accountDbModel: AccountTableCompanion(
           apiId: Value(account.id),
           balance: Value(account.balance),
@@ -64,7 +65,7 @@ class MockBankAccountRepositoryImpl implements BankAccountRepository {
     required int id,
     required AccountUpdateRequestModel updatedModel,
   }) async {
-    await accountLocalDatasource.updateAccount(
+    await _accountLocalDatasource.updateAccount(
       updatedModel: AccountTableCompanion(
         apiId: Value(id),
         name: Value(updatedModel.name),

@@ -37,7 +37,7 @@ class _BillionColumnBalanceChartState
       child: BarChart(
         BarChartData(
           alignment: BarChartAlignment.spaceAround,
-          maxY: _calculateMaxY(filteredData),
+          maxY: _calculateMaxY(entities),
           minY: 0,
           borderData: FlBorderData(show: false),
           groupsSpace: 8,
@@ -131,8 +131,8 @@ class _BillionColumnBalanceChartState
             },
           ),
         ),
-        duration: Duration.zero, // Отключаем анимацию
-        curve: Curves.linear, // Используем линейную кривую
+        
+        duration: Duration(seconds: 2), // Отключаем анимацию
       ),
     );
   }
@@ -158,9 +158,8 @@ class _BillionColumnBalanceChartState
   }
 
   double _calculateMaxY(List<BalanceEntity> data) {
-    final maxBalance = data
-        .map((e) => e.balance.abs())
-        .reduce((a, b) => a > b ? a : b);
-    return maxBalance + (maxBalance * 0.1);
+   return data
+      .map((entity) => entity.balance.abs())
+      .reduce((a, b) => a > b ? a : b) ;
   }
 }

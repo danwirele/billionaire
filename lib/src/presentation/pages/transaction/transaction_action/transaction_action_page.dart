@@ -1,6 +1,8 @@
+import 'package:billionaire/src/domain/controllers/user_account_repository.dart';
 import 'package:billionaire/src/domain/models/account/account_brief_model.dart';
 import 'package:billionaire/src/domain/models/category/category_model.dart';
 import 'package:billionaire/src/domain/models/transactions/transaction_response.dart';
+import 'package:billionaire/src/presentation/pages/transaction/transaction_action/controllers/transaction_action.dart';
 import 'package:billionaire/src/presentation/pages/transaction/transaction_action/widgets/choose_account.dart';
 import 'package:billionaire/src/presentation/pages/transaction/transaction_action/widgets/choose_amount.dart';
 import 'package:billionaire/src/presentation/pages/transaction/transaction_action/widgets/choose_category.dart';
@@ -12,8 +14,9 @@ import 'package:billionaire/src/presentation/ui_kit/utils/dialogs_extension.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class TransactionActionPage extends HookWidget {
+class TransactionActionPage extends HookConsumerWidget {
   const TransactionActionPage({
     this.model,
     super.key,
@@ -22,9 +25,11 @@ class TransactionActionPage extends HookWidget {
   final TransactionResponseModel? model;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userAccount = ref.read(userAccountRepositoryProvider).value;
+
     final accountNotifier = useValueNotifier<AccountBriefModel?>(
-      model?.account,
+      AccountBriefModel.fromJson(userAccount!.toJson()),
     );
     final categoryNotifier = useValueNotifier<CategoryModel?>(
       model?.category,
@@ -40,9 +45,7 @@ class TransactionActionPage extends HookWidget {
 
     // Проверка валидности данных перед сохранением
     bool isValid() {
-      return accountNotifier.value != null &&
-          categoryNotifier.value != null &&
-          amountNotifier.value.isNotEmpty;
+      return accountNotifier.value != null && categoryNotifier.value != null && amountNotifier.value.isNotEmpty;
     }
 
     return BillionScaffold(
@@ -62,9 +65,7 @@ class TransactionActionPage extends HookWidget {
           onPressed: () async {
             if (isValid()) {
               final transaction = TransactionResponseModel(
-                id:
-                    model?.id ??
-                    0, // Используйте уникальный ID при создании
+                id: model?.id ?? 0,
                 account: accountNotifier.value!,
                 category: categoryNotifier.value!,
                 amount: amountNotifier.value,
@@ -80,14 +81,12 @@ class TransactionActionPage extends HookWidget {
                 updatedAt: DateTime.now(),
               );
 
-              // Вызов метода save в transactionProvider
-              // await ref
-              //     .read(
-              //       transactionActionProvider(model: model).notifier,
-              //     )
-              //     .save(transaction);
+              await ref
+                  .read(
+                    transactionActionProvider(model: model).notifier,
+                  )
+                  .saveTransaction(newTransaction: transaction);
 
-              // Возврат на предыдущую страницу
               if (context.mounted) {
                 context.pop();
               }
@@ -119,7 +118,20 @@ class TransactionActionPage extends HookWidget {
             ChooseDate(dateNotifier: dateNotifier),
             ChooseTime(timeNotifier: timeNotifier),
             ChooseComment(commentNotifier: commentNotifier),
+            if(model != null) Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16),
+              child: ElevatedButton(onPressed: () {
+              },
+              style: const ButtonStyle(
+                backgroundColor: const WidgetStatePropertyAll(BillionColors.error),
+                foregroundColor:WidgetStatePropertyAll(BillionColors.onPrimary,)
+              ),
+              child: BillionText.labelLarge('Удалить расход',color: BillionColors.onPrimary,),
+              ),
+            ),
           ],
+
         ),
       ),
     );

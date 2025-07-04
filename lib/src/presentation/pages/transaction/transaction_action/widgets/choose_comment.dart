@@ -17,20 +17,31 @@ class ChooseComment extends StatelessWidget {
       builder: (context, comment, _) {
         return BillionPinnedContainer.transparentLarge(
           onTap: () async {
-            final newComment = await context
-                .showSetTransactionCommentDialog(
-                  initialComment: comment,
-                );
+            final newComment = await context.showSetTransactionCommentDialog(
+              initialComment: comment,
+            );
             if (newComment != null) {
               commentNotifier.value = newComment;
             }
           },
-          leading: BillionText.bodyLarge('Описание'),
-          action: Row(
-            children: [
-              Text(comment ?? 'Не указано'),
-              const BillionArrowRight(),
-            ],
+          action: const SizedBox.shrink(),
+          leading: Expanded(
+            child: TextField(
+              decoration: InputDecoration(
+                isDense: true,
+                contentPadding: EdgeInsets.zero,
+                border: InputBorder.none,
+                hintText: 'Комментарий',
+                hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: Colors.grey, 
+                ),
+              ),
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: Colors.black,
+              ),
+              controller: TextEditingController(text: comment),
+              enabled: false, 
+            ),
           ),
         );
       },
