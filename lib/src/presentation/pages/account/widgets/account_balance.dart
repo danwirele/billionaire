@@ -1,14 +1,11 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:billionaire/core/gen/assets.gen.dart';
 import 'package:billionaire/src/domain/controllers/user_account_repository.dart';
 import 'package:billionaire/src/presentation/pages/account/controllers/balance_visibility.dart';
 import 'package:billionaire/src/presentation/shared/controllers/currency_provider.dart';
-import 'package:billionaire/src/presentation/ui_kit/common_widgets/billion_pinned_container.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:shake/shake.dart';
@@ -18,8 +15,7 @@ class AccountBalance extends ConsumerStatefulWidget {
   const AccountBalance({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _AccountBalanceState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _AccountBalanceState();
 }
 
 class _AccountBalanceState extends ConsumerState<AccountBalance> {
@@ -72,12 +68,12 @@ class _AccountBalanceState extends ConsumerState<AccountBalance> {
   @override
   Widget build(BuildContext context) {
     final currency = ref.watch(currencyProviderProvider);
-    return BillionPinnedContainer(
-      leading: const Row(
+    return BillionPinnedContainer.primaryMedium(
+      leading: Row(
         mainAxisSize: MainAxisSize.min,
         spacing: 16,
         children: [
-          CircleAvatar(
+          const CircleAvatar(
             backgroundColor: Colors.white,
             radius: 12,
             child: Text('💰'),
@@ -102,11 +98,13 @@ class _AccountBalanceState extends ConsumerState<AccountBalance> {
                     data.balance,
                   ).formatNumber();
 
+                  //TODO! SMTH WENT WRONG
                   return Consumer(
                     builder: (context, ref, child) {
                       final isVisible = ref.watch(
                         balanceVisibilityProvider,
                       );
+                      print('isVisible: $isVisible');
 
                       return SpoilerOverlay(
                         config: WidgetSpoilerConfig(
@@ -132,23 +130,12 @@ class _AccountBalanceState extends ConsumerState<AccountBalance> {
                     },
                   );
                 },
-                error: (error, stackTrace) =>
-                    const BillionText.bodyLarge('Произошла ошибка'),
-                loading: () => const Center(
-                  child: CircularProgressIndicator(),
-                ),
+                error: (error, stackTrace) => BillionText.bodyLarge('Произошла ошибка'),
+                loading: () => BillionText.bodyMedium('Загрузка...'),
               ),
 
           const SizedBox(width: 16),
-          SvgPicture.asset(
-            Assets.icons.moreVert.path,
-            colorFilter: ColorFilter.mode(
-              BillionColors.tertiary.withValues(
-                alpha: 0.3,
-              ),
-              BlendMode.srcIn,
-            ),
-          ),
+          const BillionArrowRight(),
         ],
       ),
     );

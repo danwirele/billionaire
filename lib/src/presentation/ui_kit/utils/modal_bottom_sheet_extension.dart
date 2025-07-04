@@ -1,5 +1,11 @@
+import 'dart:developer';
+
 import 'package:billionaire/core/enum/currency_enum.dart';
 import 'package:billionaire/core/enum/filter_option.dart';
+import 'package:billionaire/src/domain/controllers/categories_repository.dart';
+import 'package:billionaire/src/domain/controllers/user_account_repository.dart';
+import 'package:billionaire/src/domain/models/account/account_model.dart';
+import 'package:billionaire/src/domain/models/category/category_model.dart';
 import 'package:billionaire/src/domain/models/transactions/transaction_response.dart';
 import 'package:billionaire/src/presentation/pages/account/widgets/currency_tile.dart';
 import 'package:billionaire/src/presentation/pages/transaction/history/widgets/filter_element.dart';
@@ -55,21 +61,18 @@ extension ModalBottomSheet on BuildContext {
       builder: (context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Flexible(
-            child: ListView.separated(
-              shrinkWrap: true,
-              itemCount: currencyList.length,
-              itemBuilder: (context, index) {
-                return CurrencyTile(
-                  currency: currencyList[index],
-                );
-              },
-              separatorBuilder: (context, index) =>
-                  const Divider(height: 1),
-            ),
+          ListView.separated(
+            shrinkWrap: true,
+            itemCount: currencyList.length,
+            padding: EdgeInsets.zero,
+            itemBuilder: (context, index) {
+              return CurrencyTile(
+                currency: currencyList[index],
+              );
+            },
+            separatorBuilder: (context, index) => const Divider(height: 1),
           ),
           const Divider(height: 1),
-
           ListTile(
             onTap: GoRouter.of(context).pop,
             contentPadding: const EdgeInsets.symmetric(
@@ -82,9 +85,9 @@ extension ModalBottomSheet on BuildContext {
               size: 24,
               color: BillionColors.onPrimary,
             ),
-            title: const Text(
+            title: BillionText.bodyMedium(
               'Отмена',
-              style: TextStyle(color: Colors.white),
+              color: Colors.white,
             ),
           ),
         ],
@@ -105,6 +108,7 @@ extension ModalBottomSheet on BuildContext {
           final currency = ref.read(currencyProviderProvider);
           return ListView.builder(
             shrinkWrap: true,
+            padding: EdgeInsets.zero,
             itemCount: transactions.length,
             itemBuilder: (context, index) {
               final transaction = transactions[index];
@@ -122,6 +126,103 @@ extension ModalBottomSheet on BuildContext {
           );
         },
       ),
+    );
+  }
+
+  Future<CategoryModel?> showCategories() async {
+    return showModalBottomSheet<CategoryModel>(
+      context: this,
+      showDragHandle: true,
+      useSafeArea: true,
+      isScrollControlled: true,
+      builder: (context) => Consumer(
+        builder: (context, ref, child) {
+          return ref
+              .watch(
+                categoriesRepositoryProvider,
+              )
+              .when(
+                data: (categories) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    itemCount: categories.length,
+                    itemBuilder: (context, index) {
+                      final category = categories[index];
+
+                      return BillionStatWidget(
+                        actionCallBack: () async {
+                          GoRouter.of(context).pop(category);
+                        },
+                        leadingEmoji: category.emoji,
+                        statTitle: category.name,
+                      );
+                    },
+                  );
+                },
+                error: (error, stackTrace) {
+                  log(error.toString());
+                  log(stackTrace.toString());
+                  return BillionText.bodyMedium(
+                    'Извините, произошла ошибка получения категорий',
+                  );
+                },
+                loading: () => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+        },
+      ),
+    );
+  }
+
+  Future<AccountModel?> showSelectAccountBottomSheet() async {
+    return showModalBottomSheet<AccountModel>(
+      context: this,
+      showDragHandle: true,
+      useSafeArea: true,
+      isScrollControlled: true,
+      builder: (context) {
+        return Consumer(
+          builder: (context, ref, child) {
+            return ref
+                .watch(
+                  userAccountRepositoryProvider,
+                )
+                .when(
+                  data: (account) {
+                    if (account == null) {
+                      return Center(
+                        child: BillionText.bodyMedium(
+                          'Счет не найден',
+                        ),
+                      );
+                    }
+
+                    return ListTile(
+                      title: BillionText.titleMedium(account.name),
+                      subtitle: BillionText.bodyMedium(
+                        'Баланс: ${account.balance}\n${account.currency}',
+                      ),
+                      onTap: () async {
+                        GoRouter.of(context).pop(account);
+                      },
+                    );
+                  },
+                  error: (error, stackTrace) {
+                    log(error.toString());
+                    log(stackTrace.toString());
+                    return BillionText.bodyMedium(
+                      'Извините, произошла ошибка получения категорий',
+                    );
+                  },
+                  loading: () => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+          },
+        );
+      },
     );
   }
 }

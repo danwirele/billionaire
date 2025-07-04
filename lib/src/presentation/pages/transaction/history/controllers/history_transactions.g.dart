@@ -7,7 +7,7 @@ part of 'history_transactions.dart';
 // **************************************************************************
 
 String _$historyTransactionsHash() =>
-    r'abe07c7ce04e6ad34de9cea372f5f43bcf48ba27';
+    r'e7ad935faa17241a249558e1cd60df69906176d1';
 
 /// Copied from Dart SDK
 class _SystemHash {

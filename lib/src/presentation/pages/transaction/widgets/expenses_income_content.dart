@@ -1,7 +1,7 @@
 import 'package:billionaire/src/presentation/pages/transaction/controllers/filtered_transactions.dart';
 import 'package:billionaire/src/presentation/pages/transaction/widgets/billion_stat_widget.dart';
-import 'package:billionaire/src/presentation/ui_kit/common_widgets/billion_pinned_container.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/dialogs_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -44,8 +44,8 @@ class ExpensesIncomeContent extends StatelessWidget {
 
                 return Column(
                   children: [
-                    BillionPinnedContainer(
-                      leading: const BillionText.bodyLarge('Всего'),
+                    BillionPinnedContainer.primaryMedium(
+                      leading: BillionText.bodyLarge('Всего'),
                       action: BillionText.bodyLarge(
                         '${transactionStateModel.amount.formatNumber()} ${currencyProviderValue.char}',
                       ),
@@ -60,6 +60,9 @@ class ExpensesIncomeContent extends StatelessWidget {
                           final category = transaction.category;
 
                           return BillionStatWidget(
+                            actionCallBack: ()async {
+                              await   context.showTransactionActionDialog(model: transaction);  
+                            },
                             statTitle: category.name,
                             statDescription: transaction.comment,
                             action: BillionText.bodyLarge(
@@ -73,7 +76,8 @@ class ExpensesIncomeContent extends StatelessWidget {
                   ],
                 );
               },
-              error: (error, stackTrace) => Text(error.toString()),
+              error: (error, stackTrace) =>
+                  BillionText.bodyMedium(error.toString()),
               loading: () => const Center(
                 child: CircularProgressIndicator(
                   backgroundColor: BillionColors.primaryContainer,

@@ -1,6 +1,6 @@
 part of '../ui_kit.dart';
 
-extension RefExtension on WidgetRef {
+extension WidgetRefExtension on WidgetRef {
   Currency getCurrency() {
     return read(currencyProviderProvider);
   }

@@ -1,5 +1,4 @@
-import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
-import 'package:flutter/material.dart';
+part of '../ui_kit.dart';
 
 class BillionDivider extends StatelessWidget {
   const BillionDivider({

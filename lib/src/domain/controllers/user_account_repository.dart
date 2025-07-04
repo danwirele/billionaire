@@ -1,3 +1,4 @@
+import 'package:billionaire/src/data/db/db_provider.dart';
 import 'package:billionaire/src/data/remote/mock_repository_impl/mock_bank_account_repository_impl.dart';
 import 'package:billionaire/src/domain/models/account/account_model.dart';
 import 'package:billionaire/src/domain/models/account/account_update_request_model.dart';
@@ -13,11 +14,13 @@ P.S. у нас по условию ДЗ 1 всего один аккаунт
 
 @Riverpod(keepAlive: true)
 class UserAccountRepository extends _$UserAccountRepository {
-  static final BankAccountRepository accountRepo =
-      MockBankAccountRepositoryImpl();
+  late final BankAccountRepository accountRepo;
 
   @override
   Future<AccountModel?> build() async {
+    final database = await ref.read(dbProviderProvider.future);
+
+    accountRepo = MockBankAccountRepositoryImpl(database: database);
     final accountsList = await accountRepo.getAllBankAccounts();
 
     if (accountsList.isEmpty) return null;
