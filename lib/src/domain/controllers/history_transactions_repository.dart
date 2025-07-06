@@ -1,5 +1,5 @@
-import 'package:billionaire/src/data/db/db_provider.dart';
-import 'package:billionaire/src/data/remote/mock_repository_impl/mock_transaction_repository_impl.dart';
+import 'package:billionaire/src/data/db/db_service.dart';
+import 'package:billionaire/src/data/repositories/mock/mock_transaction_repository_impl.dart';
 import 'package:billionaire/src/domain/controllers/user_account_repository.dart';
 import 'package:billionaire/src/domain/models/transactions/transaction_response.dart';
 import 'package:billionaire/src/domain/repositories/transaction_repository.dart';
@@ -8,14 +8,17 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'history_transactions_repository.g.dart';
 
 @Riverpod(dependencies: [UserAccountRepository])
-class HistoryTransactionsRepository extends _$HistoryTransactionsRepository {
+class HistoryTransactionsRepository
+    extends _$HistoryTransactionsRepository {
   late final TransactionRepository transactionRepo;
 
   @override
   Future<List<TransactionResponseModel>?> build() async {
-    final database = await ref.read(dbProviderProvider.future);
+    final database = await ref.read(dbServiceProvider.future);
 
-    transactionRepo = MockTransactionRepositoryImpl(database: database);
+    transactionRepo = MockTransactionRepositoryImpl(
+      database: database,
+    );
 
     final account = await ref.watch(
       userAccountRepositoryProvider.future,
@@ -39,11 +42,12 @@ class HistoryTransactionsRepository extends _$HistoryTransactionsRepository {
       59,
       59,
     );
-    final transactions = await transactionRepo.getTransactionsByPeriod(
-      accountId: account.id,
-      startDate: startDate,
-      endDate: endDate,
-    );
+    final transactions = await transactionRepo
+        .getTransactionsByPeriod(
+          accountId: account.id,
+          startDate: startDate,
+          endDate: endDate,
+        );
 
     return transactions;
   }
@@ -66,11 +70,12 @@ class HistoryTransactionsRepository extends _$HistoryTransactionsRepository {
       return;
     }
 
-    final transactions = await transactionRepo.getTransactionsByPeriod(
-      accountId: account.id,
-      startDate: startDate,
-      endDate: endDate,
-    );
+    final transactions = await transactionRepo
+        .getTransactionsByPeriod(
+          accountId: account.id,
+          startDate: startDate,
+          endDate: endDate,
+        );
 
     state = AsyncData(transactions);
   }

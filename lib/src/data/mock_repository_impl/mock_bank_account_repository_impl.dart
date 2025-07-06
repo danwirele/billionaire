@@ -1,14 +1,18 @@
+import 'package:billionaire/src/data/datasources/local/account_local_datasource.dart';
 import 'package:billionaire/src/data/db/db.dart';
-import 'package:billionaire/src/data/local/account_local_datasource.dart';
 import 'package:billionaire/src/domain/models/account/account_model.dart';
 import 'package:billionaire/src/domain/models/account/account_response_model.dart';
 import 'package:billionaire/src/domain/models/account/account_update_request_model.dart';
+import 'package:billionaire/src/domain/models/account/stat_item_model.dart';
 import 'package:billionaire/src/domain/repositories/bank_account_repository.dart';
 import 'package:drift/drift.dart';
 
 class MockBankAccountRepositoryImpl implements BankAccountRepository {
-  MockBankAccountRepositoryImpl({required Database database}) : _database = database {
-    _accountLocalDatasource = AccountLocalDatasource(database: _database);
+  MockBankAccountRepositoryImpl({required Database database})
+    : _database = database {
+    _accountLocalDatasource = AccountLocalDatasourceImpl(
+      database: _database,
+    );
     resetMockData();
   }
   final Database _database;
@@ -194,8 +198,8 @@ class MockBankAccountRepositoryImpl implements BankAccountRepository {
         'name': 'Долларовый счёт',
         'balance': '1500.00',
         'currency': 'USD',
-        'incomeStats': [],
-        'expenseStats': [],
+        'incomeStats': <StatItemModel>[],
+        'expenseStats': <StatItemModel>[],
         'createdAt': '2025-05-01T10:30:00.000Z',
         'updatedAt': '2025-06-01T15:45:00.000Z',
       }),

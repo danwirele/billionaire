@@ -1,5 +1,5 @@
-import 'package:billionaire/src/data/db/db_provider.dart';
-import 'package:billionaire/src/data/remote/mock_repository_impl/mock_bank_account_repository_impl.dart';
+import 'package:billionaire/src/data/db/db_service.dart';
+import 'package:billionaire/src/data/repositories/mock/mock_bank_account_repository_impl.dart';
 import 'package:billionaire/src/domain/models/account/account_model.dart';
 import 'package:billionaire/src/domain/models/account/account_update_request_model.dart';
 import 'package:billionaire/src/domain/repositories/bank_account_repository.dart';
@@ -18,7 +18,7 @@ class UserAccountRepository extends _$UserAccountRepository {
 
   @override
   Future<AccountModel?> build() async {
-    final database = await ref.read(dbProviderProvider.future);
+    final database = await ref.read(dbServiceProvider.future);
 
     accountRepo = MockBankAccountRepositoryImpl(database: database);
     final accountsList = await accountRepo.getAllBankAccounts();

@@ -45,7 +45,9 @@ class TransactionActionPage extends HookConsumerWidget {
 
     // Проверка валидности данных перед сохранением
     bool isValid() {
-      return accountNotifier.value != null && categoryNotifier.value != null && amountNotifier.value.isNotEmpty;
+      return accountNotifier.value != null &&
+          categoryNotifier.value != null &&
+          amountNotifier.value.isNotEmpty;
     }
 
     return BillionScaffold(
@@ -118,20 +120,27 @@ class TransactionActionPage extends HookConsumerWidget {
             ChooseDate(dateNotifier: dateNotifier),
             ChooseTime(timeNotifier: timeNotifier),
             ChooseComment(commentNotifier: commentNotifier),
-            if(model != null) Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
-              child: ElevatedButton(onPressed: () {
-              },
-              style: const ButtonStyle(
-                backgroundColor: const WidgetStatePropertyAll(BillionColors.error),
-                foregroundColor:WidgetStatePropertyAll(BillionColors.onPrimary,)
+            if (model != null)
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: const ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(
+                      BillionColors.error,
+                    ),
+                    foregroundColor: WidgetStatePropertyAll(
+                      BillionColors.onPrimary,
+                    ),
+                  ),
+                  child: BillionText.labelLarge(
+                    'Удалить расход',
+                    color: BillionColors.onPrimary,
+                  ),
+                ),
               ),
-              child: BillionText.labelLarge('Удалить расход',color: BillionColors.onPrimary,),
-              ),
-            ),
           ],
-
         ),
       ),
     );

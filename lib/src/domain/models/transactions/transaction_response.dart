@@ -14,9 +14,9 @@ abstract class TransactionResponseModel
     required CategoryModel category,
     required String amount,
     required DateTime transactionDate,
-    String? comment,
     required DateTime createdAt,
     required DateTime updatedAt,
+    String? comment,
   }) = _TransactionResponseModel;
 
   factory TransactionResponseModel.fromJson(

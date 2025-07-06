@@ -1,21 +1,25 @@
 import 'package:flutter/services.dart';
 
-
-  
-class LocalizedDecimalAndThousandInputFormatter extends TextInputFormatter {
+class LocalizedDecimalAndThousandInputFormatter
+    extends TextInputFormatter {
   LocalizedDecimalAndThousandInputFormatter({
     required this.validDecimalSeparator,
     this.maxDigitsAfterDecimal = 2,
   }) {
     // Неверный разделитель — это противоположный символ
-    invalidDecimalSeparator = validDecimalSeparator == ',' ? '.' : ',';
+    invalidDecimalSeparator = validDecimalSeparator == ','
+        ? '.'
+        : ',';
   }
   final int maxDigitsAfterDecimal;
 
   final String validDecimalSeparator;
   late final String invalidDecimalSeparator;
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     var text = newValue.text;
 
     // Сохраняем позицию курсора
@@ -23,24 +27,30 @@ class LocalizedDecimalAndThousandInputFormatter extends TextInputFormatter {
 
     // Если есть неверный разделитель — заменяем
     if (text.contains(invalidDecimalSeparator)) {
-      text = text.replaceAll(invalidDecimalSeparator, validDecimalSeparator);
+      text = text.replaceAll(
+        invalidDecimalSeparator,
+        validDecimalSeparator,
+      );
     }
 
     // Убираем все лишние символы, кроме цифр и правильного разделителя
     final parts = text.split(validDecimalSeparator);
-    String mainPart = parts[0].replaceAll(RegExp(r'[^\d]'), '');
+    final String mainPart = parts[0].replaceAll(RegExp(r'[^\d]'), '');
     String? decimalPart = parts.length > 1 ? parts[1] : null;
 
     // Ограничиваем дробную часть
-    if (decimalPart != null && decimalPart.length > maxDigitsAfterDecimal) {
+    if (decimalPart != null &&
+        decimalPart.length > maxDigitsAfterDecimal) {
       decimalPart = decimalPart.substring(0, maxDigitsAfterDecimal);
     }
 
     // Форматируем целую часть с пробелами
-    String formattedMainPart = _formatThousands(mainPart);
+    final String formattedMainPart = _formatThousands(mainPart);
 
     // Собираем финальный текст
-    String formattedText = decimalPart != null ? '$formattedMainPart$validDecimalSeparator$decimalPart' : formattedMainPart;
+    final String formattedText = decimalPart != null
+        ? '$formattedMainPart$validDecimalSeparator$decimalPart'
+        : formattedMainPart;
 
     // Обновляем позицию курсора с учётом добавленных пробелов
     final difference = formattedText.length - text.length;
@@ -56,8 +66,11 @@ class LocalizedDecimalAndThousandInputFormatter extends TextInputFormatter {
   String _formatThousands(String numberStr) {
     if (numberStr.isEmpty) return '';
 
-    List<String> characters = numberStr.split('').reversed.toList();
-    List<String> result = [];
+    final List<String> characters = numberStr
+        .split('')
+        .reversed
+        .toList();
+    final List<String> result = [];
 
     for (int i = 0; i < characters.length; i++) {
       if (i != 0 && i % 3 == 0) {
@@ -68,6 +81,4 @@ class LocalizedDecimalAndThousandInputFormatter extends TextInputFormatter {
 
     return result.reversed.join();
   }
-
- 
 }

@@ -1,12 +1,15 @@
+import 'package:billionaire/src/data/datasources/local/categories_local_datasource.dart';
 import 'package:billionaire/src/data/db/db.dart';
-import 'package:billionaire/src/data/local/categories_local_datasource.dart';
 import 'package:billionaire/src/domain/models/category/category_model.dart';
 import 'package:billionaire/src/domain/repositories/category_repository.dart';
 import 'package:drift/drift.dart';
 
 class MockCategoryRepositoryImpl implements CategoryRepository {
-  MockCategoryRepositoryImpl({required Database database}) : _database = database {
-    _categoriesLocalDatasource = CategoriesLocalDatasource(database: _database);
+  MockCategoryRepositoryImpl({required Database database})
+    : _database = database {
+    _categoriesLocalDatasource = CategoriesLocalDatasourceImpl(
+      database: _database,
+    );
     resetMockData();
   }
   final Database _database;
@@ -16,7 +19,8 @@ class MockCategoryRepositoryImpl implements CategoryRepository {
 
   @override
   Future<List<CategoryModel>> getAllCategories() async {
-    final categories = await _categoriesLocalDatasource.getAllCatgories();
+    final categories = await _categoriesLocalDatasource
+        .getAllCatgories();
 
     if (categories.isEmpty) {
       final categoryDbList = _mockCategories
@@ -64,7 +68,9 @@ class MockCategoryRepositoryImpl implements CategoryRepository {
   }) async {
     await Future<void>.delayed(const Duration(milliseconds: 200));
 
-    return _mockCategories.where((category) => category.isIncome == isIncome).toList();
+    return _mockCategories
+        .where((category) => category.isIncome == isIncome)
+        .toList();
   }
 
   /// [resetMockData] Вспомогательный метод для тестов
