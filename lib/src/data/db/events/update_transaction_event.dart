@@ -1,8 +1,8 @@
 part of '../db.dart';
 
-@DataClassName('TransactionDbModel')
-class TransactionTable extends Table {
-  IntColumn get id => integer().autoIncrement()();
+@DataClassName('UpdateTransactionEventDbModel')
+class UpdateTransactionEventTable extends Table {
+  IntColumn get id => integer().autoIncrement()(); // transactionId
 
   IntColumn get accountId => integer()();
   IntColumn get categoryId => integer()();

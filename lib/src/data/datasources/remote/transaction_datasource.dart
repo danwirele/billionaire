@@ -15,10 +15,7 @@ abstract interface class TransactionDatasource {
     required TransactionRequestModel updatedModel,
   });
 
-  Future<void> deleteTransaction({
-    required int id,
-    required TransactionModel deleteModel,
-  });
+  Future<void> deleteTransaction({required int id});
 
   Future<List<TransactionResponseModel>> getTransactionsByPeriod({
     required int accountId,
@@ -48,13 +45,8 @@ class TransactionDatasourceImpl implements TransactionDatasource {
 
   //TODO! THINK
   @override
-  Future<void> deleteTransaction({
-    required int id,
-    required TransactionModel deleteModel,
-  }) async {
-    await _dio.post(
-      '/transactions',
-    );
+  Future<void> deleteTransaction({required int id}) async {
+    await _dio.delete('/transactions/$id');
   }
 
   @override

@@ -14,9 +14,9 @@ _TransactionResponseModel _$TransactionResponseModelFromJson(
   category: CategoryModel.fromJson(json['category'] as Map<String, dynamic>),
   amount: json['amount'] as String,
   transactionDate: DateTime.parse(json['transactionDate'] as String),
-  comment: json['comment'] as String?,
   createdAt: DateTime.parse(json['createdAt'] as String),
   updatedAt: DateTime.parse(json['updatedAt'] as String),
+  comment: json['comment'] as String?,
 );
 
 Map<String, dynamic> _$TransactionResponseModelToJson(
@@ -27,7 +27,7 @@ Map<String, dynamic> _$TransactionResponseModelToJson(
   'category': instance.category,
   'amount': instance.amount,
   'transactionDate': instance.transactionDate.toIso8601String(),
-  'comment': instance.comment,
   'createdAt': instance.createdAt.toIso8601String(),
   'updatedAt': instance.updatedAt.toIso8601String(),
+  'comment': instance.comment,
 };

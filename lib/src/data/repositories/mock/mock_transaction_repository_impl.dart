@@ -19,9 +19,6 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
   final List<TransactionResponseModel> _mockTransactionsResponses =
       [];
 
-  // Переменная для контроля ID транзакций
-  int _nextId = 1;
-
   @override
   Future<TransactionModel?> createTransaction(
     TransactionRequestModel model,
@@ -30,7 +27,7 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
 
     // Создаем новую транзакцию с уникальным ID
     final newTransaction = TransactionModel(
-      id: _nextId++,
+      id: _mockTransactions.length + 1,
       accountId: model.accountId,
       categoryId: model.categoryId,
       amount: model.amount,
@@ -123,10 +120,7 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<void> deleteTransaction({
-    required int id,
-    required TransactionModel deleteModel,
-  }) async {
+  Future<void> deleteTransaction({required int id}) async {
     await Future<void>.delayed(const Duration(milliseconds: 200));
 
     final index = _mockTransactions.indexWhere((t) => t.id == id);
@@ -162,8 +156,6 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
   void resetMockData() {
     _mockTransactions.clear();
     _mockTransactionsResponses.clear();
-
-    _nextId = 1;
 
     final today = DateTime.now().add(
       const Duration(minutes: 10),

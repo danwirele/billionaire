@@ -26,7 +26,7 @@ class MockCategoryRepositoryImpl implements CategoryRepository {
       final categoryDbList = _mockCategories
           .map(
             (e) => CategoryTableCompanion(
-              apiId: Value(e.id),
+              id: Value(e.id),
               name: Value(e.name),
               emoji: Value(e.emoji),
               isIncome: Value(e.isIncome),
@@ -41,7 +41,7 @@ class MockCategoryRepositoryImpl implements CategoryRepository {
       return categoryDbList
           .map(
             (category) => CategoryModel(
-              id: category.apiId.value,
+              id: category.id.value,
               name: category.name.value,
               emoji: category.emoji.value,
               isIncome: category.isIncome.value,
@@ -53,7 +53,7 @@ class MockCategoryRepositoryImpl implements CategoryRepository {
     return categories
         .map(
           (category) => CategoryModel(
-            id: category.apiId,
+            id: category.id,
             name: category.name,
             emoji: category.emoji,
             isIncome: category.isIncome,

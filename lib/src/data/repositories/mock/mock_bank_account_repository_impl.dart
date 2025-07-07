@@ -8,8 +8,7 @@ import 'package:billionaire/src/domain/repositories/bank_account_repository.dart
 import 'package:drift/drift.dart';
 
 class MockBankAccountRepositoryImpl implements BankAccountRepository {
-  MockBankAccountRepositoryImpl({required Database database})
-    : _database = database {
+  MockBankAccountRepositoryImpl({required Database database}) : _database = database {
     _accountLocalDatasource = AccountLocalDatasourceImpl(
       database: _database,
     );
@@ -30,7 +29,7 @@ class MockBankAccountRepositoryImpl implements BankAccountRepository {
       final account = _mockAccounts.first;
       await _accountLocalDatasource.saveAccount(
         accountDbModel: AccountTableCompanion(
-          apiId: Value(account.id),
+          id: Value(account.id),
           balance: Value(account.balance),
           name: Value(account.name),
           currency: Value(account.currency),
@@ -42,7 +41,7 @@ class MockBankAccountRepositoryImpl implements BankAccountRepository {
     }
 
     final accountModel = AccountModel(
-      id: accountDbModel.apiId,
+      id: accountDbModel.id,
       userId: accountDbModel.userId,
       name: accountDbModel.name,
       balance: accountDbModel.balance,
@@ -71,7 +70,7 @@ class MockBankAccountRepositoryImpl implements BankAccountRepository {
   }) async {
     await _accountLocalDatasource.updateAccount(
       updatedModel: AccountTableCompanion(
-        apiId: Value(id),
+        id: Value(id),
         name: Value(updatedModel.name),
         balance: Value(updatedModel.balance),
         currency: Value(updatedModel.currency),

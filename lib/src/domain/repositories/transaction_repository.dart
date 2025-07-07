@@ -26,11 +26,7 @@ abstract interface class TransactionRepository {
 
   /// [deleteTransaction] метод удаления транзакции с возможностью возврата средств на счет
   /// [id] - ID транзакции;
-  /// [deleteModel] - удаляемая модель транзакции;
-  Future<void> deleteTransaction({
-    required int id,
-    required TransactionModel deleteModel,
-  });
+  Future<void> deleteTransaction({required int id});
 
   /// [updateTransaction] метод для обновления существующей транзакции
   /// [accountId] - ID выбранного счета;

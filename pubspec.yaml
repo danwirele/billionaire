@@ -17,6 +17,7 @@ dependencies:
   fl_chart: ^1.0.0
   flutter:
     sdk: flutter
+  flutter_dotenv: ^5.2.1
   flutter_hooks: ^0.21.2
   flutter_localizations:
     sdk: flutter
@@ -55,7 +56,8 @@ flutter:
   uses-material-design: true
   assets:
     - assets/icons/
-
+    - .env
+    
 flutter_gen:
   output: lib/core/gen/ 
   line_length: 80 

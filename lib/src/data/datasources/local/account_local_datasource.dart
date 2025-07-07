@@ -14,15 +14,17 @@ abstract interface class AccountLocalDatasource {
 }
 
 class AccountLocalDatasourceImpl implements AccountLocalDatasource {
-  const AccountLocalDatasourceImpl({required Database database})
-    : _database = database;
+  const AccountLocalDatasourceImpl({required Database database}) : _database = database;
   final Database _database;
 
   @override
   Future<void> saveAccount({
     required AccountTableCompanion accountDbModel,
   }) async {
-    await _database.accountTable.insertOne(accountDbModel);
+    await _database.accountTable.insertOne(
+      accountDbModel,
+      mode: InsertMode.insertOrFail,
+    );
   }
 
   @override
@@ -34,9 +36,7 @@ class AccountLocalDatasourceImpl implements AccountLocalDatasource {
   Future<bool> updateAccount({
     required AccountTableCompanion updatedModel,
   }) async {
-    final result = await _database
-        .update(_database.accountTable)
-        .write(updatedModel);
+    final result = await _database.update(_database.accountTable).write(updatedModel);
     return result > 0;
   }
 }
