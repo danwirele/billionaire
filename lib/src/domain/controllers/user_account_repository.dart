@@ -24,8 +24,8 @@ class UserAccountRepository extends _$UserAccountRepository {
     final accountsList = await accountRepo.getAllBankAccounts();
 
     if (accountsList.isEmpty) return null;
-
-    return accountsList.first;
+    //TODO IMPLEMENT DATASOURCE
+    return accountsList.first.copyWith(id: 157);
   }
 
   Future<void> updateAccount(

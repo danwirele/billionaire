@@ -1,6 +1,7 @@
 import 'package:billionaire/src/domain/controllers/user_account_repository.dart';
 import 'package:billionaire/src/domain/models/account/account_brief_model.dart';
 import 'package:billionaire/src/domain/models/category/category_model.dart';
+import 'package:billionaire/src/domain/models/transactions/transaction_request.dart';
 import 'package:billionaire/src/domain/models/transactions/transaction_response.dart';
 import 'package:billionaire/src/presentation/pages/transaction/transaction_action/controllers/transaction_action.dart';
 import 'package:billionaire/src/presentation/pages/transaction/transaction_action/widgets/choose_account.dart';
@@ -66,10 +67,9 @@ class TransactionActionPage extends HookConsumerWidget {
           ),
           onPressed: () async {
             if (isValid()) {
-              final transaction = TransactionResponseModel(
-                id: model?.id ?? 0,
-                account: accountNotifier.value!,
-                category: categoryNotifier.value!,
+              final transaction = TransactionRequestModel(
+                accountId: userAccount.id,
+                categoryId: categoryNotifier.value!.id,
                 amount: amountNotifier.value,
                 transactionDate: DateTime(
                   dateNotifier.value.year,
@@ -79,15 +79,16 @@ class TransactionActionPage extends HookConsumerWidget {
                   timeNotifier.value.minute,
                 ),
                 comment: commentNotifier.value,
-                createdAt: model?.createdAt ?? DateTime.now(),
-                updatedAt: DateTime.now(),
               );
 
               await ref
                   .read(
                     transactionActionProvider(model: model).notifier,
                   )
-                  .saveTransaction(newTransaction: transaction);
+                  .saveTransaction(
+                    newModel: transaction,
+                    transactionId: model?.id,
+                  );
 
               if (context.mounted) {
                 context.pop();

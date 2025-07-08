@@ -60,8 +60,11 @@ class ExpensesIncomeContent extends StatelessWidget {
                           final category = transaction.category;
 
                           return BillionStatWidget(
-                            actionCallBack: ()async {
-                              await   context.showTransactionActionDialog(model: transaction);  
+                            actionCallBack: () async {
+                              await context
+                                  .showTransactionActionDialog(
+                                    model: transaction,
+                                  );
                             },
                             statTitle: category.name,
                             statDescription: transaction.comment,
@@ -76,8 +79,10 @@ class ExpensesIncomeContent extends StatelessWidget {
                   ],
                 );
               },
-              error: (error, stackTrace) =>
-                  BillionText.bodyMedium(error.toString()),
+              error: (error, stackTrace) => BillionText.bodyMedium(
+                error.toString(),
+                maxLines: 10,
+              ),
               loading: () => const Center(
                 child: CircularProgressIndicator(
                   backgroundColor: BillionColors.primaryContainer,

@@ -1,7 +1,10 @@
+import 'package:billionaire/src/data/datasources/local/transaction_local_datasource.dart';
 import 'package:billionaire/src/data/datasources/remote/transaction_datasource.dart';
 import 'package:billionaire/src/data/db/db.dart';
 import 'package:billionaire/src/data/db/events_datasource/transaction_event_datasource.dart';
+import 'package:billionaire/src/domain/controllers/connection.dart';
 import 'package:billionaire/src/domain/models/account/account_brief_model.dart';
+import 'package:billionaire/src/domain/models/category/category_model.dart';
 import 'package:billionaire/src/domain/models/transactions/transaction.dart';
 import 'package:billionaire/src/domain/models/transactions/transaction_request.dart';
 import 'package:billionaire/src/domain/models/transactions/transaction_response.dart';
@@ -11,24 +14,29 @@ import 'package:drift/drift.dart';
 
 class TransactionRepositoryImpl implements TransactionRepository {
   TransactionRepositoryImpl({
-    required this.datasource,
+    required this.remoteDatasource,
+    required this.localEventDatasource,
+    required this.localDatasource,
     required this.database,
   });
 
   static final Connectivity connectivity = Connectivity();
 
-  final TransactionDatasource datasource;
+  final TransactionDatasource remoteDatasource;
+  final TransactionEventDatasource localEventDatasource;
+  final TransactionLocalDatasource localDatasource;
+
   final Database database;
 
   @override
   Future<TransactionModel?> createTransaction(
     TransactionRequestModel model,
   ) async {
-    final hasConnection = await _hasConnection();
+    final hasConnection = await connectivity.hasConnection();
 
     if (hasConnection) {
       // Если есть подключение, создаем транзакцию через datasource
-      return datasource.createTransaction(model);
+      return remoteDatasource.createTransaction(model);
     } else {
       // Если нет подключения, сохраняем событие в локальную базу
       final event = CreateTransactionEventTableCompanion(
@@ -51,11 +59,11 @@ class TransactionRepositoryImpl implements TransactionRepository {
   Future<void> deleteTransaction({
     required int id,
   }) async {
-    final hasConnection = await _hasConnection();
+    final hasConnection = await connectivity.hasConnection();
 
     if (hasConnection) {
       // Если есть подключение, удаляем транзакцию через datasource
-      await datasource.deleteTransaction(
+      await remoteDatasource.deleteTransaction(
         id: id,
       );
     } else {
@@ -71,39 +79,73 @@ class TransactionRepositoryImpl implements TransactionRepository {
 
   @override
   Future<TransactionResponseModel> getTransactionById(int id) async {
-    final hasConnection = await _hasConnection();
+    final hasConnection = await connectivity.hasConnection();
 
     if (hasConnection) {
       // Если есть подключение, получаем транзакцию через datasource
-      return datasource.getTransactionById(id);
+      return remoteDatasource.getTransactionById(id);
     } else {
-      // Если нет подключения, возвращаем локальные данные
-      final localTransaction = await database
-          .select(database.transactionTable)
-          .where((tbl) => tbl.id.equals(id))
-          .getSingleOrNull();
+      final query = database.selectOnly(database.transactionTable)
+        ..addColumns([
+          database.transactionTable.id,
+          database.transactionTable.amount,
+          database.transactionTable.transactionDate,
+          database.transactionTable.createdAt,
+          database.transactionTable.updatedAt,
+          database.transactionTable.comment,
+          database.accountTable.id,
+          database.accountTable.name,
+          database.accountTable.balance,
+          database.accountTable.currency,
+          database.categoryTable.id,
+          database.categoryTable.name,
+          database.categoryTable.emoji,
+          database.categoryTable.isIncome,
+        ])
+        ..join([
+          innerJoin(
+            database.accountTable,
+            database.accountTable.id.equalsExp(
+              database.transactionTable.accountId,
+            ),
+          ),
+          innerJoin(
+            database.categoryTable,
+            database.categoryTable.id.equalsExp(
+              database.transactionTable.categoryId,
+            ),
+          ),
+        ])
+        ..where(database.transactionTable.id.equals(id));
 
-      if (localTransaction == null) {
+      final result = await query.getSingleOrNull();
+      if (result == null) {
         throw Exception('Transaction not found locally');
       }
 
+      final category = result.readTable(database.categoryTable);
+      final transaction = result.readTable(database.transactionTable);
+      final account = result.readTable(database.accountTable);
+
       return TransactionResponseModel(
-        id: localTransaction.id,
+        id: transaction.id,
         account: AccountBriefModel(
-          id: localTransaction.accountId,
-          name: name,
-          balance: balance,
-          currency: currency,
+          id: account.id,
+          name: account.name,
+          balance: account.balance,
+          currency: account.currency,
         ),
-        category: CategoryDbModel(
-          id: localTransaction.categoryId,
-          name: name,
-          emoji: emoji,
-          isIncome: isIncome,
+        category: CategoryModel(
+          id: category.id,
+          name: category.name,
+          emoji: category.emoji,
+          isIncome: category.isIncome,
         ),
-        amount: localTransaction.amount,
-        transactionDate: localTransaction.transactionDate,
-        comment: localTransaction.comment,
+        createdAt: transaction.createdAt,
+        updatedAt: transaction.updatedAt,
+        amount: transaction.amount,
+        transactionDate: transaction.transactionDate,
+        comment: transaction.comment,
       );
     }
   }
@@ -114,9 +156,9 @@ class TransactionRepositoryImpl implements TransactionRepository {
     required DateTime startDate,
     required DateTime endDate,
   }) async {
-    final hasConnection = await _hasConnection();
+    final hasConnection = await connectivity.hasConnection();
 
-    //TODO GET EVENT DATA
+    // GET EVENT DATA
     final createEvents = await database
         .select(database.createTransactionEventTable)
         .get();
@@ -128,31 +170,120 @@ class TransactionRepositoryImpl implements TransactionRepository {
         .get();
 
     if (hasConnection) {
-      //TRY PUSH EVENT DATA'S TO SERVER && delete
+      // TRY PUSH EVENT DATA'S TO SERVER && delete
       await _syncEventsWithServer(
         createEvents: createEvents,
         updateEvents: updateEvents,
         deleteEvents: deleteEvents,
       );
 
-      //TRY TO GET DATA FROM SERVER
-      final transactions = await datasource.getTransactionsByPeriod(
-        accountId: accountId,
-        startDate: startDate,
-        endDate: endDate,
-      );
+      // TRY TO GET DATA FROM SERVER
+      final transactions = await remoteDatasource
+          .getTransactionsByPeriod(
+            accountId: accountId,
+            startDate: startDate,
+            endDate: endDate,
+          );
 
       //TODO TRY UPDATE LOCAL DATA
+      // Заменяем локальные данные актуальными данными с сервера
+      await _updateLocalTransactions(transactions);
 
       //RETURN SERVER DATA
       return transactions;
     } else {
       //TODO GET LOCAL DATA'S
+      // Если нет подключения, получаем локальные данные
+      final localTransactions =
+          await (database.select(
+                database.transactionTable,
+              )..where(
+                (tbl) =>
+                    tbl.accountId.equals(accountId) &
+                    tbl.transactionDate.isBetweenValues(
+                      startDate,
+                      endDate,
+                    ),
+              ))
+              .get();
 
       //TODO MERGE EVENT DATA ON LOCAL DATA'S
+      // Применяем события как проекцию к локальным данным
+      final mergedTransactionsDbModel = _applyEventsToLocalData(
+        localTransactions,
+        createEvents: createEvents,
+        updateEvents: updateEvents,
+        deleteEvents: deleteEvents,
+      );
 
       //TODO RETURN MERGED DATA
-      return [];
+
+      final List<TransactionResponseModel> mergedTransactions = [];
+
+      for (int i = 0; i < mergedTransactionsDbModel.length; i++) {
+        final transactionDbModel = mergedTransactionsDbModel[i];
+        final id = transactionDbModel.id;
+
+        // Если нет подключения, возвращаем локальные данные
+        final localTransaction = await (database.select(
+          database.transactionTable,
+        )..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
+
+        if (localTransaction == null) {
+          throw Exception('Transaction not found locally');
+        }
+
+        // Получаем связанный аккаунт из AccountTable
+        final account =
+            await (database.select(database.accountTable)..where(
+                  (tbl) => tbl.id.equals(localTransaction.accountId),
+                ))
+                .getSingleOrNull();
+
+        if (account == null) {
+          throw Exception(
+            'Account not found for transaction with ID $id',
+          );
+        }
+
+        // Получаем связанную категорию из CategoryTable
+        final category =
+            await (database.select(database.categoryTable)..where(
+                  (tbl) => tbl.id.equals(localTransaction.categoryId),
+                ))
+                .getSingleOrNull();
+
+        if (category == null) {
+          throw Exception(
+            'Category not found for transaction with ID $id',
+          );
+        }
+
+        final mergedTransaction = TransactionResponseModel(
+          id: transactionDbModel.id,
+          account: AccountBriefModel(
+            id: transactionDbModel.accountId,
+            name: account.name,
+            balance: account.balance,
+            currency: account.currency,
+          ),
+          category: CategoryModel(
+            id: transactionDbModel.categoryId,
+            name: category.name,
+            emoji: category.emoji,
+            isIncome: category.isIncome,
+          ),
+          amount: transactionDbModel.amount,
+          transactionDate: transactionDbModel.transactionDate,
+          comment: transactionDbModel.comment,
+          createdAt: transactionDbModel.createdAt,
+          updatedAt: transactionDbModel.updatedAt,
+        );
+
+        mergedTransactions.add(mergedTransaction);
+      }
+
+      return mergedTransactions;
     }
   }
 
@@ -163,14 +294,6 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }) {
     // TODO: implement updateTransaction
     throw UnimplementedError();
-  }
-
-  Future<bool> _hasConnection() async {
-    final connections = await connectivity.checkConnectivity();
-
-    return !connections.contains(
-      ConnectivityResult.none,
-    );
   }
 
   /// Синхронизирует локальные события с сервером
@@ -188,7 +311,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
         comment: event.comment,
       );
 
-      await datasource.createTransaction(request);
+      await remoteDatasource.createTransaction(request);
 
       await TransactionEventDatasource(
         database: database,
@@ -204,7 +327,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
         comment: event.comment,
       );
 
-      await datasource.updateTransaction(
+      await remoteDatasource.updateTransaction(
         id: event.id,
         updatedModel: request,
       );
@@ -215,7 +338,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
     }
 
     for (final event in deleteEvents) {
-      await datasource.deleteTransaction(
+      await remoteDatasource.deleteTransaction(
         id: event.id,
       );
 
@@ -223,5 +346,77 @@ class TransactionRepositoryImpl implements TransactionRepository {
         database: database,
       ).removeDeleteTransactionEvent(event);
     }
+  }
+
+  Future<void> _updateLocalTransactions(
+    List<TransactionResponseModel> serverTransactions,
+  ) async {
+    // // Удаляем все локальные транзакции
+    // await database.delete(database.transactionTable).go();
+
+    // Вставляем актуальные данные с сервера
+    await database.batch((batch) {
+      for (final transaction in serverTransactions) {
+        batch.insert(
+          database.transactionTable,
+          TransactionTableCompanion(
+            id: Value(transaction.id),
+            accountId: Value(transaction.account.id),
+            categoryId: Value(transaction.category.id),
+            amount: Value(transaction.amount),
+            transactionDate: Value(transaction.transactionDate),
+            comment: Value(transaction.comment),
+          ),
+          mode: InsertMode.insertOrReplace,
+        );
+      }
+    });
+  }
+
+  List<TransactionDbModel> _applyEventsToLocalData(
+    List<TransactionDbModel> localTransactions, {
+    required List<CreateTransactionEventDbModel> createEvents,
+    required List<UpdateTransactionEventDbModel> updateEvents,
+    required List<DeleteTransactionEventDbModel> deleteEvents,
+  }) {
+    // Применяем события создания
+    for (final event in createEvents) {
+      localTransactions.add(
+        TransactionDbModel(
+          id: event.id,
+          accountId: event.accountId,
+          categoryId: event.categoryId,
+          amount: event.amount,
+          transactionDate: event.transactionDate,
+          updatedAt: event.updatedAt,
+          createdAt: event.createdAt,
+          comment: event.comment,
+        ),
+      );
+    }
+
+    // Применяем события обновления
+    for (final event in updateEvents) {
+      final transactionIndex = localTransactions.indexWhere(
+        (t) => t.id == event.id,
+      );
+      if (transactionIndex != -1) {
+        localTransactions[transactionIndex] =
+            localTransactions[transactionIndex].copyWith(
+              accountId: event.accountId,
+              categoryId: event.categoryId,
+              amount: event.amount,
+              transactionDate: event.transactionDate,
+              comment: Value(event.comment),
+            );
+      }
+    }
+
+    // Применяем события удаления
+    for (final event in deleteEvents) {
+      localTransactions.removeWhere((t) => t.id == event.id);
+    }
+
+    return localTransactions;
   }
 }

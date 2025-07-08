@@ -1,5 +1,9 @@
+import 'package:billionaire/src/data/datasources/local/transaction_local_datasource.dart';
+import 'package:billionaire/src/data/datasources/remote/transaction_datasource.dart';
 import 'package:billionaire/src/data/db/db_service.dart';
-import 'package:billionaire/src/data/repositories/mock/mock_transaction_repository_impl.dart';
+import 'package:billionaire/src/data/db/events_datasource/transaction_event_datasource.dart';
+import 'package:billionaire/src/data/repositories/impl/transaction_repository_impl.dart';
+import 'package:billionaire/src/data/utils/dio_service.dart';
 import 'package:billionaire/src/domain/controllers/user_account_repository.dart';
 import 'package:billionaire/src/domain/models/transactions/transaction_request.dart';
 import 'package:billionaire/src/domain/models/transactions/transaction_response.dart';
@@ -10,13 +14,23 @@ part 'transactions_repository.g.dart';
 
 @Riverpod(dependencies: [UserAccountRepository])
 class TransactionsRepository extends _$TransactionsRepository {
+  //TODO отладить почему не инициализировано
   late final TransactionRepository transactionRepo;
 
   @override
   Future<List<TransactionResponseModel>?> build() async {
     final database = await ref.read(dbServiceProvider.future);
-    transactionRepo = MockTransactionRepositoryImpl(
+    final dio = ref.read(dioServiceProvider);
+
+    transactionRepo = TransactionRepositoryImpl(
       database: database,
+      remoteDatasource: TransactionDatasourceImpl(dio: dio),
+      localEventDatasource: TransactionEventDatasource(
+        database: database,
+      ),
+      localDatasource: TransactionLocalDatasourceImpl(
+        database: database,
+      ),
     );
 
     final account = await ref.watch(
@@ -58,10 +72,16 @@ class TransactionsRepository extends _$TransactionsRepository {
   Future<void> createTransaction({
     required TransactionRequestModel newModel,
   }) async {
-    //todo!
+    await transactionRepo.createTransaction(newModel);
   }
 
-  Future<void> updateTransaction({required}) async {
-    //todo!
+  Future<void> updateTransaction({
+    required int id,
+    required TransactionRequestModel newModel,
+  }) async {
+    await transactionRepo.updateTransaction(
+      id: id,
+      updatedModel: newModel,
+    );
   }
 }

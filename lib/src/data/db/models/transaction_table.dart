@@ -9,5 +9,7 @@ class TransactionTable extends Table {
 
   TextColumn get amount => text()();
   DateTimeColumn get transactionDate => dateTime()();
+  DateTimeColumn get updatedAt => dateTime()();
+  DateTimeColumn get createdAt => dateTime()();
   TextColumn get comment => text().nullable()();
 }

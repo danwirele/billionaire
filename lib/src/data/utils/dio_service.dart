@@ -1,6 +1,6 @@
+import 'package:billionaire/core/config/config.dart';
 import 'package:billionaire/src/domain/models/account/account_brief_model.dart';
 import 'package:billionaire/src/domain/models/account/account_model.dart';
-import 'package:billionaire/src/domain/models/account/account_response_model.dart';
 import 'package:billionaire/src/domain/models/account/stat_item_model.dart';
 import 'package:billionaire/src/domain/models/category/category_model.dart';
 import 'package:billionaire/src/domain/models/transactions/transaction.dart';
@@ -26,15 +26,32 @@ class DioService extends _$DioService {
 
 class DeserializationInterceptor extends Interceptor {
   @override
+  void onRequest(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) {
+    final newOptions = options.copyWith(
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${Config.apiKey}',
+      },
+    );
+    super.onRequest(newOptions, handler);
+  }
+
+  @override
   Future<void> onResponse(
     Response<dynamic> response,
     ResponseInterceptorHandler handler,
   ) async {
     try {
-      // Получаем тип DTO из тегов запроса
-      final dtoType = response.requestOptions.extra['dtoType'] as Type?;
+      final dtoType =
+          response.requestOptions.extra['dtoType'] as Type?;
+
       if (dtoType == null) {
-        throw ArgumentError('DTO type is not specified in request options');
+        throw ArgumentError(
+          'DTO type is not specified in request options',
+        );
       }
 
       // Получаем фабричный метод для DTO
@@ -48,24 +65,33 @@ class DeserializationInterceptor extends Interceptor {
 
       if (rawData is List) {
         // Если данные — список, преобразуем каждый элемент в DTO
-        final cancelable = workerManager.execute<List<dynamic>>(
-          () => rawData.map((item) => fromJsonFactory(item as Map<String, dynamic>)).toList(),
-          priority: WorkPriority.immediately,
+        final cancelable = workerManager.executeNow(
+          (p0) => rawData
+              .map(
+                (item) =>
+                    fromJsonFactory(item as Map<String, dynamic>),
+              )
+              .toList(),
         );
 
         final deserializedData = await cancelable.future;
         response.data = deserializedData;
+
+        handler.next(response);
       } else if (rawData is Map<String, dynamic>) {
         // Если данные — словарь, преобразуем их в DTO
-        final cancelable = workerManager.execute<dynamic>(
+        final cancelable = workerManager.execute(
           () => fromJsonFactory(rawData),
           priority: WorkPriority.immediately,
         );
 
         final deserializedData = await cancelable.future;
         response.data = deserializedData;
+        handler.next(response);
       } else {
-        throw FormatException('Unsupported data type: ${rawData.runtimeType}');
+        throw FormatException(
+          'Unsupported data type: ${rawData.runtimeType}',
+        );
       }
     } catch (e) {
       handler.reject(
@@ -76,24 +102,23 @@ class DeserializationInterceptor extends Interceptor {
       );
       return;
     }
-
-    handler.next(response);
   }
 
-  // Вспомогательный метод для получения фабричного метода по типу DTO
-  dynamic Function(Map<String, dynamic>)? _getFromJsonFactory(Type dtoType) {
+  dynamic Function(Map<String, dynamic>)? _getFromJsonFactory(
+    Type dtoType,
+  ) {
     if (dtoType == AccountModel) {
-      return (json) => AccountModel.fromJson(json);
+      return AccountModel.fromJson;
     } else if (dtoType == AccountBriefModel) {
-      return (json) => AccountResponseModel.fromJson(json);
+      return AccountBriefModel.fromJson;
     } else if (dtoType == StatItemModel) {
-      return (json) => StatItemModel.fromJson(json);
+      return StatItemModel.fromJson;
     } else if (dtoType == CategoryModel) {
-      return (json) => CategoryModel.fromJson(json);
+      return CategoryModel.fromJson;
     } else if (dtoType == TransactionResponseModel) {
-      return (json) => TransactionResponseModel.fromJson(json);
+      return TransactionResponseModel.fromJson;
     } else if (dtoType == TransactionModel) {
-      return (json) => TransactionModel.fromJson(json);
+      return TransactionModel.fromJson;
     }
     return null;
   }

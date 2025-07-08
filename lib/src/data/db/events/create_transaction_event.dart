@@ -9,5 +9,7 @@ class CreateTransactionEventTable extends Table {
 
   TextColumn get amount => text()();
   DateTimeColumn get transactionDate => dateTime()();
+  DateTimeColumn get createdAt => dateTime()();
+  DateTimeColumn get updatedAt => dateTime()();
   TextColumn get comment => text().nullable()();
 }

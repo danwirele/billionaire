@@ -1,6 +1,8 @@
+import 'package:billionaire/core/config/config.dart';
 import 'package:billionaire/src/domain/models/transactions/transaction.dart';
 import 'package:billionaire/src/domain/models/transactions/transaction_request.dart';
 import 'package:billionaire/src/domain/models/transactions/transaction_response.dart';
+import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:dio/dio.dart';
 
 abstract interface class TransactionDatasource {
@@ -34,24 +36,28 @@ class TransactionDatasourceImpl implements TransactionDatasource {
     TransactionRequestModel model,
   ) async {
     final response = await _dio.post(
-      '/transactions',
+      '${Config.baseUrl}/transactions',
       data: model.toJson(),
+      options: Options(extra: {'dtoType': TransactionModel}),
     );
 
-    final jsonList = response.data as Map<String, dynamic>;
+    final jsonList = response.data as TransactionModel?;
 
-    return TransactionModel.fromJson(jsonList);
+    return jsonList;
   }
 
   //TODO! THINK
   @override
   Future<void> deleteTransaction({required int id}) async {
-    await _dio.delete('/transactions/$id');
+    await _dio.delete('${Config.baseUrl}/transactions/$id');
   }
 
   @override
   Future<TransactionResponseModel> getTransactionById(int id) async {
-    final response = await _dio.get('/transactions/$id');
+    final response = await _dio.get(
+      '${Config.baseUrl}/transactions/$id',
+      options: Options(extra: {'dtoType': TransactionResponseModel}),
+    );
 
     final jsonList = response.data as Map<String, dynamic>;
 
@@ -65,18 +71,19 @@ class TransactionDatasourceImpl implements TransactionDatasource {
     required DateTime endDate,
   }) async {
     final response = await _dio.get(
-      '/transactions/account/$accountId/period',
+      '${Config.baseUrl}/transactions/account/157/period',
       queryParameters: {
-        'startDate': startDate,
-        'endDate': endDate,
+        'startDate': startDate.toYYYYMMdd(),
+        'endDate': endDate.toYYYYMMdd(),
       },
+      options: Options(extra: {'dtoType': TransactionResponseModel}),
     );
 
-    final jsonList = response.data as List<Map<String, dynamic>>;
-
-    return jsonList
-        .map((e) => TransactionResponseModel.fromJson(e))
+    final jsonList = (response.data as List<dynamic>)
+        .map((e) => e as TransactionResponseModel)
         .toList();
+
+    return jsonList;
   }
 
   @override
@@ -85,12 +92,13 @@ class TransactionDatasourceImpl implements TransactionDatasource {
     required TransactionRequestModel updatedModel,
   }) async {
     final response = await _dio.put(
-      '/transactions/$id',
+      '${Config.baseUrl}/transactions/$id',
       data: updatedModel.toJson(),
+      options: Options(extra: {'dtoType': TransactionResponseModel}),
     );
 
-    final jsonList = response.data as Map<String, dynamic>;
+    final jsonList = response.data as TransactionResponseModel?;
 
-    return TransactionResponseModel.fromJson(jsonList);
+    return jsonList;
   }
 }

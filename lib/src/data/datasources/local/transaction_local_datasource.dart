@@ -13,10 +13,8 @@ abstract interface class TransactionLocalDatasource {
   });
 }
 
-class TransactionLocalDatasourceImpl
-    implements TransactionLocalDatasource {
-  const TransactionLocalDatasourceImpl({required Database database})
-    : _database = database;
+class TransactionLocalDatasourceImpl implements TransactionLocalDatasource {
+  const TransactionLocalDatasourceImpl({required Database database}) : _database = database;
   final Database _database;
 
   @override
@@ -57,6 +55,9 @@ class TransactionLocalDatasourceImpl
           categoryId: data.read('categoryId'),
           amount: data.read('amount'),
           transactionDate: data.read('transactionDate'),
+          createdAt: data.read('createdAt'),
+          updatedAt: data.read('updatedAt'),
+          comment: data.readNullable('comment'),
         );
       },
     ).toList();

@@ -35,5 +35,6 @@ class Database extends _$Database {
 
   /// Returns an auto-updating stream of all todo entries in a given category
   /// id.
-  Stream<List<CategoryDbModel>> entriesInCategory() => select(categoryTable).watch();
+  Stream<List<CategoryDbModel>> entriesInCategory() =>
+      select(categoryTable).watch();
 }
