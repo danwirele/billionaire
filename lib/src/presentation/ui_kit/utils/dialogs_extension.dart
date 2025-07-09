@@ -45,6 +45,7 @@ extension DialogExtension on BuildContext {
                   onPressed: () async {
                     final newName = nameController.text.trim();
 
+                    //TODO! сделай обновление транзакций
                     if (newName.isNotEmpty) {
                       await ref
                           .read(updateAccountProvider.notifier)
