@@ -19,16 +19,11 @@ class AnalysisState extends _$AnalysisState {
 
     if (transactions == null) return null;
 
-    final filtered = transactions
-        .where((c) => c.category.isIncome == isIncome)
-        .toList();
+    final filtered = transactions.where((c) => c.category.isIncome == isIncome).toList();
 
-    final fullAmount = filtered
-        .map((c) => double.parse(c.amount))
-        .reduce((a, b) => a + b);
+    final fullAmount = filtered.map((c) => double.parse(c.amount)).reduce((a, b) => a + b);
 
-    final categoryMap =
-        <CategoryModel, List<TransactionResponseModel>>{};
+    final categoryMap = <CategoryModel, List<TransactionResponseModel>>{};
     for (final transaction in filtered) {
       if (!categoryMap.containsKey(transaction.category)) {
         categoryMap[transaction.category] = [];
@@ -37,9 +32,7 @@ class AnalysisState extends _$AnalysisState {
     }
 
     final analysis = categoryMap.entries.map((e) {
-      final amount = e.value
-          .map((c) => double.parse(c.amount))
-          .reduce((a, b) => a + b);
+      final amount = e.value.map((c) => double.parse(c.amount)).reduce((a, b) => a + b);
       final last = e.value.last;
       final percentage = (amount / fullAmount) * 100;
 
@@ -65,8 +58,7 @@ class AnalysisState extends _$AnalysisState {
 }
 
 @freezed
-abstract class AnalyticsPageStateModel
-    with _$AnalyticsPageStateModel {
+abstract class AnalyticsPageStateModel with _$AnalyticsPageStateModel {
   const factory AnalyticsPageStateModel({
     required List<AnalyticsStateModel> stateModelsList,
     required double summaryAmount,

@@ -88,6 +88,8 @@ class DeserializationInterceptor extends Interceptor {
         final deserializedData = await cancelable.future;
         response.data = deserializedData;
         handler.next(response);
+      } else if (rawData == '') {
+        handler.next(response);
       } else {
         throw FormatException(
           'Unsupported data type: ${rawData.runtimeType}',

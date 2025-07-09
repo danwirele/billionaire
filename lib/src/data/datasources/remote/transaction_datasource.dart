@@ -37,7 +37,15 @@ class TransactionDatasourceImpl implements TransactionDatasource {
   ) async {
     final response = await _dio.post(
       '${Config.baseUrl}/transactions',
-      data: model.toJson(),
+      data: {
+        'accountId': model.accountId,
+        'categoryId': model.categoryId,
+        'amount': model.amount,
+        'transactionDate': model.transactionDate
+            .toUtc()
+            .toIso8601String(),
+        'comment': model.comment,
+      },
       options: Options(extra: {'dtoType': TransactionModel}),
     );
 
@@ -49,7 +57,10 @@ class TransactionDatasourceImpl implements TransactionDatasource {
   //TODO! THINK
   @override
   Future<void> deleteTransaction({required int id}) async {
-    await _dio.delete('${Config.baseUrl}/transactions/$id');
+    await _dio.delete(
+      '${Config.baseUrl}/transactions/$id',
+      options: Options(extra: {'dtoType': TransactionModel}),
+    );
   }
 
   @override
@@ -93,7 +104,15 @@ class TransactionDatasourceImpl implements TransactionDatasource {
   }) async {
     final response = await _dio.put(
       '${Config.baseUrl}/transactions/$id',
-      data: updatedModel.toJson(),
+      data: {
+        'accountId': updatedModel.accountId,
+        'categoryId': updatedModel.categoryId,
+        'amount': updatedModel.amount,
+        'transactionDate': updatedModel.transactionDate
+            .toUtc()
+            .toIso8601String(),
+        'comment': updatedModel.comment,
+      },
       options: Options(extra: {'dtoType': TransactionResponseModel}),
     );
 

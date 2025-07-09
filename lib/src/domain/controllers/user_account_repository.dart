@@ -2,6 +2,7 @@ import 'package:billionaire/src/data/db/db_service.dart';
 import 'package:billionaire/src/data/repositories/mock/mock_bank_account_repository_impl.dart';
 import 'package:billionaire/src/domain/models/account/account_model.dart';
 import 'package:billionaire/src/domain/models/account/account_update_request_model.dart';
+import 'package:billionaire/src/domain/repo_impl_provider/bank_account_repository_impl_di.dart';
 import 'package:billionaire/src/domain/repositories/bank_account_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -14,14 +15,12 @@ P.S. у нас по условию ДЗ 1 всего один аккаунт
 
 @Riverpod(keepAlive: true)
 class UserAccountRepository extends _$UserAccountRepository {
-  late final BankAccountRepository accountRepo;
-
   @override
   Future<AccountModel?> build() async {
-    final database = await ref.read(dbServiceProvider.future);
-
-    accountRepo = MockBankAccountRepositoryImpl(database: database);
-    final accountsList = await accountRepo.getAllBankAccounts();
+    final bankAccountRepo = await ref.read(
+      bankAccountRepositoryImplDiProvider.future,
+    );
+    final accountsList = await bankAccountRepo.getAllBankAccounts();
 
     if (accountsList.isEmpty) return null;
     //TODO IMPLEMENT DATASOURCE
@@ -31,12 +30,16 @@ class UserAccountRepository extends _$UserAccountRepository {
   Future<void> updateAccount(
     AccountModel updatedModel,
   ) async {
+    final bankAccountRepo = await ref.read(
+      bankAccountRepositoryImplDiProvider.future,
+    );
+
     final currentAccount = state.value;
     if (currentAccount == null) {
       return;
     }
 
-    final newModel = await accountRepo.updateBankAccount(
+    final newModel = await bankAccountRepo.updateBankAccount(
       id: updatedModel.id,
       updatedModel: AccountUpdateRequestModel(
         balance: updatedModel.balance,

@@ -6,7 +6,7 @@ part of 'transaction_action.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$transactionActionHash() => r'fe7aea02372d86aed23594c617604657fb7e7edc';
+String _$transactionActionHash() => r'0ea79e1d80e04820ae1cdf8b9cf0fd0a6fd5a625';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -57,12 +57,18 @@ class TransactionActionFamily extends Family<TransactionResponseModel?> {
     return call(model: provider.model);
   }
 
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
+  static final Iterable<ProviderOrFamily> _dependencies = <ProviderOrFamily>[
+    transactionsRepositoryProvider,
+  ];
 
   @override
   Iterable<ProviderOrFamily>? get dependencies => _dependencies;
 
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+  static final Iterable<ProviderOrFamily> _allTransitiveDependencies =
+      <ProviderOrFamily>{
+        transactionsRepositoryProvider,
+        ...?transactionsRepositoryProvider.allTransitiveDependencies,
+      };
 
   @override
   Iterable<ProviderOrFamily>? get allTransitiveDependencies =>

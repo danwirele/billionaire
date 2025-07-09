@@ -7,7 +7,7 @@ part of 'transactions_repository.dart';
 // **************************************************************************
 
 String _$transactionsRepositoryHash() =>
-    r'7086a9457ea4b8a9c314893c6bef7b30ebe93176';
+    r'f63977660fa71557a8bb6efb8a74c68de4b621c2';
 
 /// See also [TransactionsRepository].
 @ProviderFor(TransactionsRepository)
@@ -21,10 +21,18 @@ final transactionsRepositoryProvider =
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
           ? null
           : _$transactionsRepositoryHash,
-      dependencies: <ProviderOrFamily>[userAccountRepositoryProvider],
+      dependencies: <ProviderOrFamily>[
+        userAccountRepositoryProvider,
+        dbServiceProvider,
+        dioServiceProvider,
+      ],
       allTransitiveDependencies: <ProviderOrFamily>{
         userAccountRepositoryProvider,
         ...?userAccountRepositoryProvider.allTransitiveDependencies,
+        dbServiceProvider,
+        ...?dbServiceProvider.allTransitiveDependencies,
+        dioServiceProvider,
+        ...?dioServiceProvider.allTransitiveDependencies,
       },
     );
 

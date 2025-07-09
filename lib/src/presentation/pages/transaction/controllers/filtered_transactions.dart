@@ -6,13 +6,13 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'filtered_transactions.g.dart';
 part 'filtered_transactions.freezed.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class FilteredTransactions extends _$FilteredTransactions {
   @override
   Future<TransactionStateModel?> build({
     required bool isIncome,
   }) async {
-    final transactions = await ref.read(
+    final transactions = await ref.watch(
       transactionsRepositoryProvider.future,
     );
 

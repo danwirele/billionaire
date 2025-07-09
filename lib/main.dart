@@ -22,30 +22,30 @@ void main() async {
       ]);
       ImageUtils.svgPrecacheImage();
 
-      final client = Dio();
+      // final client = Dio();
       final config = await Config().init();
-      client.interceptors.removeImplyContentTypeInterceptor();
-      client..interceptors.add(DeserializationInterceptor());
+      // client.interceptors.removeImplyContentTypeInterceptor();
+      // client..interceptors.add(DeserializationInterceptor());
 
-      final response = await client.get(
-        '${Config.baseUrl}/accounts',
-        options: Options(
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ${Config.apiKey}',
-          },
-          extra: {'dtoType': AccountBriefModel},
-        ),
-      );
+      // final response = await client.get(
+      //   '${Config.baseUrl}/accounts',
+      //   options: Options(
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       'Authorization': 'Bearer ${Config.apiKey}',
+      //     },
+      //     extra: {'dtoType': AccountBriefModel},
+      //   ),
+      // );
 
-      debugPrint(
-        (response.data as List<dynamic>)
-            .map(
-              (e) => e as AccountBriefModel,
-            )
-            .toList()
-            .toString(),
-      );
+      // debugPrint(
+      //   (response.data as List<dynamic>)
+      //       .map(
+      //         (e) => e as AccountBriefModel,
+      //       )
+      //       .toList()
+      //       .toString(),
+      // );
 
       runApp(const ProviderScope(child: App()));
     },

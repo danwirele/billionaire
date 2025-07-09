@@ -30,7 +30,7 @@ class IncomePage extends StatelessWidget {
       ),
       floatingActionButton: BillionFAB(
         onPressed: () async {
-          await context.showTransactionActionDialog();
+          await context.showTransactionActionDialog(isIncome: true);
         },
       ),
       body: const ExpensesIncomeContent.income(),

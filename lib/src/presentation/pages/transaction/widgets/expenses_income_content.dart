@@ -64,6 +64,7 @@ class ExpensesIncomeContent extends StatelessWidget {
                               await context
                                   .showTransactionActionDialog(
                                     model: transaction,
+                                    isIncome: isIncome,
                                   );
                             },
                             statTitle: category.name,

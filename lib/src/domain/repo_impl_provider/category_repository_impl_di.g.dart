@@ -1,27 +1,30 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'categories_repository.dart';
+part of 'category_repository_impl_di.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$categoriesRepositoryHash() =>
-    r'da42069f970d5485243ed5498b0c5d4688dfd418';
+String _$categoryRepositoryImplDiHash() =>
+    r'9a21de93c0b271b78ce323aae2d7a75aaaf108e1';
 
-/// See also [CategoriesRepository].
-@ProviderFor(CategoriesRepository)
-final categoriesRepositoryProvider =
-    AsyncNotifierProvider<CategoriesRepository, List<CategoryModel>>.internal(
-      CategoriesRepository.new,
-      name: r'categoriesRepositoryProvider',
+/// See also [CategoryRepositoryImplDi].
+@ProviderFor(CategoryRepositoryImplDi)
+final categoryRepositoryImplDiProvider =
+    AsyncNotifierProvider<
+      CategoryRepositoryImplDi,
+      CategoryRepository
+    >.internal(
+      CategoryRepositoryImplDi.new,
+      name: r'categoryRepositoryImplDiProvider',
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
           ? null
-          : _$categoriesRepositoryHash,
+          : _$categoryRepositoryImplDiHash,
       dependencies: null,
       allTransitiveDependencies: null,
     );
 
-typedef _$CategoriesRepository = AsyncNotifier<List<CategoryModel>>;
+typedef _$CategoryRepositoryImplDi = AsyncNotifier<CategoryRepository>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

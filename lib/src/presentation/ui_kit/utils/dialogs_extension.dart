@@ -190,6 +190,7 @@ extension DialogExtension on BuildContext {
   }
 
   Future<void> showTransactionActionDialog({
+    required bool isIncome,
     TransactionResponseModel? model,
   }) async => showGeneralDialog(
     context: this,
@@ -197,7 +198,10 @@ extension DialogExtension on BuildContext {
     requestFocus: true,
     barrierLabel: 'barrier',
     pageBuilder: (context, animation, secondaryAnimation) {
-      return TransactionActionPage(model: model);
+      return TransactionActionPage(
+        model: model,
+        isIncome: isIncome,
+      );
     },
   );
 }

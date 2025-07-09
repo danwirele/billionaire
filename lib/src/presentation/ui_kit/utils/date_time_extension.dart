@@ -16,4 +16,27 @@ extension DateTimeExtension on DateTime {
   String toYYYYMMdd() {
     return _toYYYYMMddFormatter.format(this);
   }
+
+  DateTime todayStartDay() {
+    final dateTimeNow = DateTime.now();
+    // Начало текущего дня
+    return DateTime(
+      dateTimeNow.year,
+      dateTimeNow.month,
+      dateTimeNow.day,
+    );
+  }
+
+  DateTime todayEndDay() {
+    final dateTimeNow = DateTime.now();
+    // Конец текущего дня
+    return DateTime(
+      dateTimeNow.year,
+      dateTimeNow.month,
+      dateTimeNow.day,
+      23,
+      59,
+      59,
+    );
+  }
 }

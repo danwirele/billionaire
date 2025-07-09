@@ -7,7 +7,7 @@ part of 'filtered_transactions.dart';
 // **************************************************************************
 
 String _$filteredTransactionsHash() =>
-    r'a76432c2a1887a5d37fed9a6c9c485d2e8f9090a';
+    r'b8f7c7882cd05f0752b2e02088d40f7f45e99e76';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -31,7 +31,7 @@ class _SystemHash {
 }
 
 abstract class _$FilteredTransactions
-    extends BuildlessAsyncNotifier<TransactionStateModel?> {
+    extends BuildlessAutoDisposeAsyncNotifier<TransactionStateModel?> {
   late final bool isIncome;
 
   FutureOr<TransactionStateModel?> build({required bool isIncome});
@@ -77,7 +77,7 @@ class FilteredTransactionsFamily
 /// See also [FilteredTransactions].
 class FilteredTransactionsProvider
     extends
-        AsyncNotifierProviderImpl<
+        AutoDisposeAsyncNotifierProviderImpl<
           FilteredTransactions,
           TransactionStateModel?
         > {
@@ -132,7 +132,10 @@ class FilteredTransactionsProvider
   }
 
   @override
-  AsyncNotifierProviderElement<FilteredTransactions, TransactionStateModel?>
+  AutoDisposeAsyncNotifierProviderElement<
+    FilteredTransactions,
+    TransactionStateModel?
+  >
   createElement() {
     return _FilteredTransactionsProviderElement(this);
   }
@@ -154,14 +157,14 @@ class FilteredTransactionsProvider
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 mixin FilteredTransactionsRef
-    on AsyncNotifierProviderRef<TransactionStateModel?> {
+    on AutoDisposeAsyncNotifierProviderRef<TransactionStateModel?> {
   /// The parameter `isIncome` of this provider.
   bool get isIncome;
 }
 
 class _FilteredTransactionsProviderElement
     extends
-        AsyncNotifierProviderElement<
+        AutoDisposeAsyncNotifierProviderElement<
           FilteredTransactions,
           TransactionStateModel?
         >

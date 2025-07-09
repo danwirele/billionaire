@@ -19,11 +19,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class TransactionActionPage extends HookConsumerWidget {
   const TransactionActionPage({
+    required this.isIncome,
     this.model,
     super.key,
   });
 
   final TransactionResponseModel? model;
+  final bool isIncome;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -81,6 +83,10 @@ class TransactionActionPage extends HookConsumerWidget {
                 comment: commentNotifier.value,
               );
 
+              if (context.mounted) {
+                context.pop();
+              }
+
               await ref
                   .read(
                     transactionActionProvider(model: model).notifier,
@@ -89,10 +95,6 @@ class TransactionActionPage extends HookConsumerWidget {
                     newModel: transaction,
                     transactionId: model?.id,
                   );
-
-              if (context.mounted) {
-                context.pop();
-              }
             } else {
               final errorList = <String>[];
 
@@ -116,7 +118,10 @@ class TransactionActionPage extends HookConsumerWidget {
         child: Column(
           children: [
             ChooseAccount(accountNotifier: accountNotifier),
-            ChooseCategory(categoryNotifier: categoryNotifier),
+            ChooseCategory(
+              categoryNotifier: categoryNotifier,
+              isIncome: isIncome,
+            ),
             ChooseAmount(amountNotifier: amountNotifier),
             ChooseDate(dateNotifier: dateNotifier),
             ChooseTime(timeNotifier: timeNotifier),
@@ -126,7 +131,21 @@ class TransactionActionPage extends HookConsumerWidget {
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    if (context.mounted) {
+                      context.pop();
+                    }
+
+                    await ref
+                        .read(
+                          transactionActionProvider(
+                            model: model,
+                          ).notifier,
+                        )
+                        .deleteTransaction(
+                          transactionId: model!.id,
+                        );
+                  },
                   style: const ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(
                       BillionColors.error,

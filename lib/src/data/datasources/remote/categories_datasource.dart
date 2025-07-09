@@ -1,3 +1,4 @@
+import 'package:billionaire/core/config/config.dart';
 import 'package:billionaire/src/domain/models/category/category_model.dart';
 import 'package:dio/dio.dart';
 
@@ -16,21 +17,27 @@ class CategoriesDatasourceImpl implements CategoriesDatasource {
 
   @override
   Future<List<CategoryModel>> getAllCategories() async {
-    final response = await _dio.get('/categories');
+    final response = await _dio.get(
+      '${Config.baseUrl}/categories',
+      options: Options(extra: {'dtoType': CategoryModel}),
+    );
 
-    final jsonList = response.data as List<Map<String, dynamic>>;
+    final jsonList = (response.data as List<dynamic>).map((e) => e as CategoryModel).toList();
 
-    return jsonList.map((e) => CategoryModel.fromJson(e)).toList();
+    return jsonList;
   }
 
   @override
   Future<List<CategoryModel>> getAllCategoriesByType({
     required bool isIncome,
   }) async {
-    final response = await _dio.get('/categories/type/$isIncome');
+    final response = await _dio.get(
+      '${Config.baseUrl}/categories/type/$isIncome',
+      options: Options(extra: {'dtoType': CategoryModel}),
+    );
 
-    final jsonList = response.data as List<Map<String, dynamic>>;
+    final jsonList = (response.data as List<dynamic>).map((e) => e as CategoryModel).toList();
 
-    return jsonList.map((e) => CategoryModel.fromJson(e)).toList();
+    return jsonList;
   }
 }

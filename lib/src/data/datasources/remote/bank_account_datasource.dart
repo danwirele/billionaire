@@ -1,10 +1,11 @@
+import 'package:billionaire/core/config/config.dart';
 import 'package:billionaire/src/domain/models/account/account_model.dart';
 import 'package:billionaire/src/domain/models/account/account_response_model.dart';
 import 'package:billionaire/src/domain/models/account/account_update_request_model.dart';
 import 'package:dio/dio.dart';
 
-abstract interface class AccountRemoteDatasource {
-  Future<AccountModel?> getAllAccounts();
+abstract interface class BankAccountRemoteDatasource {
+  Future<List<AccountModel>> getAllAccounts();
 
   Future<AccountResponseModel?> getBankAccountById(int id);
 
@@ -14,26 +15,31 @@ abstract interface class AccountRemoteDatasource {
   });
 }
 
-class AccountRemoteDatasourceImpl implements AccountRemoteDatasource {
-  const AccountRemoteDatasourceImpl({required Dio dio}) : _dio = dio;
+class BankAccountRemoteDatasourceImpl
+    implements BankAccountRemoteDatasource {
+  const BankAccountRemoteDatasourceImpl({required Dio dio})
+    : _dio = dio;
 
   final Dio _dio;
 
   @override
-  Future<AccountModel?> getAllAccounts() async {
+  Future<List<AccountModel>> getAllAccounts() async {
     final response = await _dio.get(
-      '/accounts',
+      '${Config.baseUrl}/accounts',
       options: Options(
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ',
+          'Authorization': 'Bearer ${Config.apiKey}',
         },
+        extra: {'dtoType': AccountModel},
       ),
     );
 
-    final json = response.data as Map<String, dynamic>;
+    final jsonList = (response.data as List<dynamic>)
+        .map((e) => e as AccountModel)
+        .toList();
 
-    return AccountModel.fromJson(json);
+    return jsonList;
   }
 
   @override

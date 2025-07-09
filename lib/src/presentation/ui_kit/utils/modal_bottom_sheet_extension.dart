@@ -70,7 +70,8 @@ extension ModalBottomSheet on BuildContext {
                 currency: currencyList[index],
               );
             },
-            separatorBuilder: (context, index) => const Divider(height: 1),
+            separatorBuilder: (context, index) =>
+                const Divider(height: 1),
           ),
           const Divider(height: 1),
           ListTile(
@@ -129,7 +130,9 @@ extension ModalBottomSheet on BuildContext {
     );
   }
 
-  Future<CategoryModel?> showCategories() async {
+  Future<CategoryModel?> showCategories({
+    required bool isIncome,
+  }) async {
     return showModalBottomSheet<CategoryModel>(
       context: this,
       showDragHandle: true,
@@ -143,12 +146,18 @@ extension ModalBottomSheet on BuildContext {
               )
               .when(
                 data: (categories) {
+                  final filteredCategories = categories
+                      .where(
+                        (element) => element.isIncome == isIncome,
+                      )
+                      .toList();
+
                   return ListView.builder(
                     shrinkWrap: true,
                     padding: EdgeInsets.zero,
-                    itemCount: categories.length,
+                    itemCount: filteredCategories.length,
                     itemBuilder: (context, index) {
-                      final category = categories[index];
+                      final category = filteredCategories[index];
 
                       return BillionStatWidget(
                         actionCallBack: () async {

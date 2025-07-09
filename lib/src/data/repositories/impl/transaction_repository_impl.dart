@@ -45,6 +45,8 @@ class TransactionRepositoryImpl implements TransactionRepository {
         amount: Value(model.amount),
         transactionDate: Value(model.transactionDate),
         comment: Value(model.comment),
+        createdAt: Value(DateTime.now()),
+        updatedAt: Value(DateTime.now()),
       );
 
       await TransactionEventDatasource(
@@ -68,6 +70,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
       );
     } else {
       // Если нет подключения, сохраняем событие удаления в локальную базу
+
       final event = DeleteTransactionEventTableCompanion(
         id: Value(id),
       );
@@ -234,7 +237,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
         }
 
         // Получаем связанный аккаунт из AccountTable
-        final account =
+        final account = 
             await (database.select(database.accountTable)..where(
                   (tbl) => tbl.id.equals(localTransaction.accountId),
                 ))
@@ -291,9 +294,31 @@ class TransactionRepositoryImpl implements TransactionRepository {
   Future<TransactionResponseModel?> updateTransaction({
     required int id,
     required TransactionRequestModel updatedModel,
-  }) {
-    // TODO: implement updateTransaction
-    throw UnimplementedError();
+  }) async {
+    final hasConnection = await connectivity.hasConnection();
+
+    if (hasConnection) {
+      // Если есть подключение, обновляем транзакцию через datasource
+      return remoteDatasource.updateTransaction(
+        id: id,
+        updatedModel: updatedModel,
+      );
+    } else {
+      // Если нет подключения, сохраняем событие обновления в локальную базу
+      final event = UpdateTransactionEventTableCompanion(
+        id: Value(id),
+        accountId: Value(updatedModel.accountId),
+        categoryId: Value(updatedModel.categoryId),
+        amount: Value(updatedModel.amount),
+        transactionDate: Value(updatedModel.transactionDate),
+        comment: Value(updatedModel.comment),
+      );
+
+      await TransactionEventDatasource(
+        database: database,
+      ).addUpdateTransactionEvent(event);
+      return null; // Возвращаем null, так как транзакция не обновлена на сервере
+    }
   }
 
   /// Синхронизирует локальные события с сервером
@@ -351,8 +376,8 @@ class TransactionRepositoryImpl implements TransactionRepository {
   Future<void> _updateLocalTransactions(
     List<TransactionResponseModel> serverTransactions,
   ) async {
-    // // Удаляем все локальные транзакции
-    // await database.delete(database.transactionTable).go();
+    // Удаляем все локальные транзакции
+    await database.delete(database.transactionTable).go();
 
     // Вставляем актуальные данные с сервера
     await database.batch((batch) {
@@ -366,6 +391,8 @@ class TransactionRepositoryImpl implements TransactionRepository {
             amount: Value(transaction.amount),
             transactionDate: Value(transaction.transactionDate),
             comment: Value(transaction.comment),
+            createdAt: Value(transaction.createdAt),
+            updatedAt: Value(transaction.updatedAt),
           ),
           mode: InsertMode.insertOrReplace,
         );

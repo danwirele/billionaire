@@ -28,10 +28,11 @@ class ExpensesPage extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: BillionFAB(onPressed: ()async {
-    await   context.showTransactionActionDialog(); 
-
-      }),
+      floatingActionButton: BillionFAB(
+        onPressed: () async {
+          await context.showTransactionActionDialog(isIncome: false);
+        },
+      ),
       body: const ExpensesIncomeContent.expenses(),
     );
   }

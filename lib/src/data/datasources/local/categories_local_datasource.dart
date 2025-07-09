@@ -19,7 +19,10 @@ class CategoriesLocalDatasourceImpl
   Future<void> saveCategories({
     required List<CategoryTableCompanion> categoryDbList,
   }) async {
-    await _database.categoryTable.insertAll(categoryDbList);
+    await _database.categoryTable.insertAll(
+      categoryDbList,
+      mode: InsertMode.insertOrReplace,
+    );
   }
 
   @override

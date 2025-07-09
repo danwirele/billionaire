@@ -23,7 +23,9 @@ class BillionStatWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final EdgeInsets listTilePadding = EdgeInsets.symmetric(
-      vertical: statDescription == null ? 11 : 3,
+      vertical: statDescription == null || statDescription == ''
+          ? 11
+          : 3,
       horizontal: 16,
     );
 
@@ -43,7 +45,7 @@ class BillionStatWidget extends StatelessWidget {
               : null,
           title: BillionText.bodyLarge(statTitle),
 
-          subtitle: statDescription != null
+          subtitle: statDescription != null && statDescription != ''
               ? BillionText.labelMedium(statDescription!)
               : null,
 
