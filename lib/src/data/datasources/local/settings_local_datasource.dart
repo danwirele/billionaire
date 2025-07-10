@@ -1,6 +1,6 @@
 import 'package:billionaire/core/enum/localization_enum.dart';
 import 'package:billionaire/core/enum/theme_enum.dart';
-import 'package:billionaire/src/data/utils/shared_preferences_service.dart';
+import 'package:billionaire/src/data/services/shared_preferences_service.dart';
 
 abstract interface class SettingsLocalDatasource {
   Future<bool> saveTheme(ThemeEnum theme);
@@ -44,8 +44,7 @@ class SettingsLocalDatasourceImpl implements SettingsLocalDatasource {
 
   @override
   Future<LocalizationEnum> loadLocalization() async {
-    final String? localization = SharedPreferencesService.prefs
-        .getString(SharedPreferencesService.localizationKey);
+    final String? localization = SharedPreferencesService.prefs.getString(SharedPreferencesService.localizationKey);
 
     if (localization != null) {
       LocalizationEnum.values.byName(localization);

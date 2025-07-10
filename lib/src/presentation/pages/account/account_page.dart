@@ -1,4 +1,5 @@
 import 'package:billion_charts_package/billion_column_chart/billion_column_chart_imports.dart';
+import 'package:billionaire/src/domain/controllers/connection.dart';
 import 'package:billionaire/src/presentation/pages/account/widgets/account_app_bar.dart';
 import 'package:billionaire/src/presentation/pages/account/widgets/account_balance.dart';
 import 'package:billionaire/src/presentation/pages/account/widgets/currency_selector.dart';

@@ -1,9 +1,7 @@
-import 'package:billionaire/src/data/db/db_service.dart';
-import 'package:billionaire/src/data/repositories/mock/mock_bank_account_repository_impl.dart';
+import 'package:billionaire/src/domain/controllers/connection.dart';
 import 'package:billionaire/src/domain/models/account/account_model.dart';
 import 'package:billionaire/src/domain/models/account/account_update_request_model.dart';
 import 'package:billionaire/src/domain/repo_impl_provider/bank_account_repository_impl_di.dart';
-import 'package:billionaire/src/domain/repositories/bank_account_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'user_account_repository.g.dart';
@@ -13,18 +11,21 @@ P.S. у нас по условию ДЗ 1 всего один аккаунт
 После этого получить информацию о счете [AccountResponseModel] уже по id
 */
 
-@Riverpod(keepAlive: true)
+@Riverpod(keepAlive: true, dependencies: [Connection])
 class UserAccountRepository extends _$UserAccountRepository {
   @override
   Future<AccountModel?> build() async {
     final bankAccountRepo = await ref.read(
       bankAccountRepositoryImplDiProvider.future,
     );
+
+    final connection = ref.watch(connectionProvider.future);
+
     final accountsList = await bankAccountRepo.getAllBankAccounts();
 
     if (accountsList.isEmpty) return null;
-    //TODO IMPLEMENT DATASOURCE
-    return accountsList.first.copyWith(id: 157);
+
+    return accountsList.first;
   }
 
   Future<void> updateAccount(

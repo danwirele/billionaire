@@ -35,7 +35,7 @@ class LegendContent extends StatelessWidget {
                     radius: 3.5,
                   ),
                   Text(
-                    '${legend.percentage.toStringAsFixed(0)}& ${legend.title}',
+                    '${legend.percentage.toStringAsFixed(0)}% ${legend.title}',
                     style: const TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 7,

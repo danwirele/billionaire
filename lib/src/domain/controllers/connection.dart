@@ -13,7 +13,8 @@ class Connection extends _$Connection {
     final connectionSub = connectivity.onConnectivityChanged.listen((
       List<ConnectivityResult> result,
     ) {
-      final hasConnection = result.contains(ConnectivityResult.none);
+      print(result);
+      final hasConnection = !result.contains(ConnectivityResult.none);
 
       state = AsyncData(hasConnection);
     });
@@ -24,15 +25,8 @@ class Connection extends _$Connection {
 
     return initialState.contains(ConnectivityResult.none);
   }
-}
 
-//TODO EXTRACT EXTENSION
-extension CheckConnection on Connectivity {
-  Future<bool> hasConnection() async {
-    final connections = await checkConnectivity();
-
-    return !connections.contains(
-      ConnectivityResult.none,
-    );
+  Future<void> togleState() async {
+    state = AsyncData(!state.value!);
   }
 }

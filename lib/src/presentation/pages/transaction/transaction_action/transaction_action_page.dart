@@ -55,7 +55,6 @@ class TransactionActionPage extends HookConsumerWidget {
 
     return BillionScaffold(
       appBar: BillionAppBar(
-        //TODO
         leading: IconButton(
           onPressed: GoRouter.of(context).pop,
           icon: const Icon(Icons.close),
@@ -72,7 +71,7 @@ class TransactionActionPage extends HookConsumerWidget {
               final transaction = TransactionRequestModel(
                 accountId: userAccount.id,
                 categoryId: categoryNotifier.value!.id,
-                amount: amountNotifier.value,
+                amount: amountNotifier.value.replaceAll(' ', ''),
                 transactionDate: DateTime(
                   dateNotifier.value.year,
                   dateNotifier.value.month,

@@ -6,7 +6,7 @@ part of 'balance_visibility.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$balanceVisibilityHash() => r'db29865a25f23e0819e59d302c1fd1ebc0cce1a0';
+String _$balanceVisibilityHash() => r'dbe69ff6b200a338372c83e1f749c2226cb761bb';
 
 /// See also [BalanceVisibility].
 @ProviderFor(BalanceVisibility)

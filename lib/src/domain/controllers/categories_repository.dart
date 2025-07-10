@@ -4,11 +4,13 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'categories_repository.g.dart';
 
-@Riverpod(keepAlive: true)
+@Riverpod()
 class CategoriesRepository extends _$CategoriesRepository {
   @override
   Future<List<CategoryModel>> build() async {
-    final categoryRepo = await ref.read(categoryRepositoryImplDiProvider.future);
+    final categoryRepo = await ref.read(
+      categoryRepositoryImplDiProvider.future,
+    );
     return categoryRepo.getAllCategories();
   }
 }

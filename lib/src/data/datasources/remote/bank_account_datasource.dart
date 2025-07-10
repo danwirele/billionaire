@@ -15,10 +15,8 @@ abstract interface class BankAccountRemoteDatasource {
   });
 }
 
-class BankAccountRemoteDatasourceImpl
-    implements BankAccountRemoteDatasource {
-  const BankAccountRemoteDatasourceImpl({required Dio dio})
-    : _dio = dio;
+class BankAccountRemoteDatasourceImpl implements BankAccountRemoteDatasource {
+  const BankAccountRemoteDatasourceImpl({required Dio dio}) : _dio = dio;
 
   final Dio _dio;
 
@@ -27,28 +25,27 @@ class BankAccountRemoteDatasourceImpl
     final response = await _dio.get(
       '${Config.baseUrl}/accounts',
       options: Options(
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${Config.apiKey}',
-        },
         extra: {'dtoType': AccountModel},
       ),
     );
 
-    final jsonList = (response.data as List<dynamic>)
-        .map((e) => e as AccountModel)
-        .toList();
+    final jsonList = (response.data as List<dynamic>).map((e) => e as AccountModel).toList();
 
     return jsonList;
   }
 
   @override
   Future<AccountResponseModel?> getBankAccountById(int id) async {
-    final response = await _dio.get('/accounts/$id');
+    final response = await _dio.get(
+      '${Config.baseUrl}/accounts/$id',
+      options: Options(
+        extra: {'dtoType': AccountModel},
+      ),
+    );
 
-    final json = response.data as Map<String, dynamic>;
+    final json = response.data as AccountResponseModel;
 
-    return AccountResponseModel.fromJson(json);
+    return json;
   }
 
   @override
@@ -56,10 +53,20 @@ class BankAccountRemoteDatasourceImpl
     required int id,
     required AccountUpdateRequestModel updatedModel,
   }) async {
-    final response = await _dio.get('/accounts/$id');
+    final response = await _dio.put(
+      '${Config.baseUrl}/accounts/$id',
+      data: {
+        'name': updatedModel.name,
+        'balance': updatedModel.balance,
+        'currency': updatedModel.currency,
+      },
+      options: Options(
+        extra: {'dtoType': AccountModel},
+      ),
+    );
 
-    final json = response.data as Map<String, dynamic>;
+    final json = response.data as AccountModel;
 
-    return AccountModel.fromJson(json);
+    return json;
   }
 }

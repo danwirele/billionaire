@@ -40,7 +40,7 @@ class TransactionDatasourceImpl implements TransactionDatasource {
       data: {
         'accountId': model.accountId,
         'categoryId': model.categoryId,
-        'amount': model.amount,
+        'amount': model.amount.replaceAll(' ', ''),
         'transactionDate': model.transactionDate
             .toUtc()
             .toIso8601String(),
@@ -97,6 +97,7 @@ class TransactionDatasourceImpl implements TransactionDatasource {
     return jsonList;
   }
 
+  //TODO FIX BUG WHEN CREATE LOCAL TRANSACTION THEN UPDATE IT
   @override
   Future<TransactionResponseModel?> updateTransaction({
     required int id,

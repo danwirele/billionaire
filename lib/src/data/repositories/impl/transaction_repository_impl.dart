@@ -1,8 +1,8 @@
+import 'package:billionaire/core/utils/conecction_extension.dart';
 import 'package:billionaire/src/data/datasources/local/transaction_local_datasource.dart';
 import 'package:billionaire/src/data/datasources/remote/transaction_datasource.dart';
 import 'package:billionaire/src/data/db/db.dart';
 import 'package:billionaire/src/data/db/events_datasource/transaction_event_datasource.dart';
-import 'package:billionaire/src/domain/controllers/connection.dart';
 import 'package:billionaire/src/domain/models/account/account_brief_model.dart';
 import 'package:billionaire/src/domain/models/category/category_model.dart';
 import 'package:billionaire/src/domain/models/transactions/transaction.dart';
@@ -161,7 +161,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }) async {
     final hasConnection = await connectivity.hasConnection();
 
-    // GET EVENT DATA
+    //! GET EVENT DATA
     final createEvents = await database
         .select(database.createTransactionEventTable)
         .get();
@@ -173,14 +173,14 @@ class TransactionRepositoryImpl implements TransactionRepository {
         .get();
 
     if (hasConnection) {
-      // TRY PUSH EVENT DATA'S TO SERVER && delete
+      //! TRY PUSH EVENT DATA'S TO SERVER && delete
       await _syncEventsWithServer(
         createEvents: createEvents,
         updateEvents: updateEvents,
         deleteEvents: deleteEvents,
       );
 
-      // TRY TO GET DATA FROM SERVER
+      //! TRY TO GET DATA FROM SERVER
       final transactions = await remoteDatasource
           .getTransactionsByPeriod(
             accountId: accountId,
@@ -188,14 +188,14 @@ class TransactionRepositoryImpl implements TransactionRepository {
             endDate: endDate,
           );
 
-      //TODO TRY UPDATE LOCAL DATA
+      //! TRY UPDATE LOCAL DATA
       // Заменяем локальные данные актуальными данными с сервера
       await _updateLocalTransactions(transactions);
 
-      //RETURN SERVER DATA
+      //! RETURN SERVER DATA
       return transactions;
     } else {
-      //TODO GET LOCAL DATA'S
+      //! GET LOCAL DATA'S
       // Если нет подключения, получаем локальные данные
       final localTransactions =
           await (database.select(
@@ -210,7 +210,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
               ))
               .get();
 
-      //TODO MERGE EVENT DATA ON LOCAL DATA'S
+      //! MERGE EVENT DATA ON LOCAL DATA'S
       // Применяем события как проекцию к локальным данным
       final mergedTransactionsDbModel = _applyEventsToLocalData(
         localTransactions,
@@ -219,27 +219,24 @@ class TransactionRepositoryImpl implements TransactionRepository {
         deleteEvents: deleteEvents,
       );
 
-      //TODO RETURN MERGED DATA
-
+      //! RETURN MERGED DATA
       final List<TransactionResponseModel> mergedTransactions = [];
 
       for (int i = 0; i < mergedTransactionsDbModel.length; i++) {
         final transactionDbModel = mergedTransactionsDbModel[i];
         final id = transactionDbModel.id;
 
-        // Если нет подключения, возвращаем локальные данные
-        final localTransaction = await (database.select(
-          database.transactionTable,
-        )..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
+        final accounts = await database
+            .select(database.accountTable)
+            .get();
 
-        if (localTransaction == null) {
-          throw Exception('Transaction not found locally');
-        }
+        print(accounts);
 
         // Получаем связанный аккаунт из AccountTable
-        final account = 
+        final account =
             await (database.select(database.accountTable)..where(
-                  (tbl) => tbl.id.equals(localTransaction.accountId),
+                  (tbl) =>
+                      tbl.id.equals(transactionDbModel.accountId),
                 ))
                 .getSingleOrNull();
 
@@ -252,7 +249,8 @@ class TransactionRepositoryImpl implements TransactionRepository {
         // Получаем связанную категорию из CategoryTable
         final category =
             await (database.select(database.categoryTable)..where(
-                  (tbl) => tbl.id.equals(localTransaction.categoryId),
+                  (tbl) =>
+                      tbl.id.equals(transactionDbModel.categoryId),
                 ))
                 .getSingleOrNull();
 

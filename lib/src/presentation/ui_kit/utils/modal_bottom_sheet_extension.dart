@@ -152,6 +152,9 @@ extension ModalBottomSheet on BuildContext {
                       )
                       .toList();
 
+                  //TODO!
+                  if (categories.isEmpty) {}
+
                   return ListView.builder(
                     shrinkWrap: true,
                     padding: EdgeInsets.zero,

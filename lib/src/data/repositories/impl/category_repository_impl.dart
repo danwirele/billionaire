@@ -1,7 +1,7 @@
+import 'package:billionaire/core/utils/conecction_extension.dart';
 import 'package:billionaire/src/data/datasources/local/categories_local_datasource.dart';
 import 'package:billionaire/src/data/datasources/remote/categories_datasource.dart';
 import 'package:billionaire/src/data/db/db.dart';
-import 'package:billionaire/src/domain/controllers/connection.dart';
 import 'package:billionaire/src/domain/models/category/category_model.dart';
 import 'package:billionaire/src/domain/repositories/category_repository.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';

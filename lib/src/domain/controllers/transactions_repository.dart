@@ -1,5 +1,5 @@
 import 'package:billionaire/src/data/db/db_service.dart';
-import 'package:billionaire/src/data/utils/dio_service.dart';
+import 'package:billionaire/src/data/services/dio_service.dart';
 import 'package:billionaire/src/domain/controllers/user_account_repository.dart';
 import 'package:billionaire/src/domain/models/transactions/transaction_request.dart';
 import 'package:billionaire/src/domain/models/transactions/transaction_response.dart';
@@ -14,7 +14,6 @@ part 'transactions_repository.g.dart';
 class TransactionsRepository extends _$TransactionsRepository {
   @override
   Future<List<TransactionResponseModel>?> build() async {
-    //TODO! Сделай екстеншен
     final transactions = getTransactionsByPeriod();
 
     return transactions;
@@ -56,8 +55,7 @@ class TransactionsRepository extends _$TransactionsRepository {
     await transactionRepo.deleteTransaction(id: id);
   }
 
-  Future<List<TransactionResponseModel>?>
-  getTransactionsByPeriod() async {
+  Future<List<TransactionResponseModel>?> getTransactionsByPeriod() async {
     final transactionRepo = await ref.read(
       transactionRepositoryImplDiProvider.future,
     );

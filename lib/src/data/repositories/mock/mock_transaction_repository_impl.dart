@@ -1,4 +1,3 @@
-import 'package:billionaire/src/data/db/db.dart';
 import 'package:billionaire/src/domain/models/account/account_brief_model.dart';
 import 'package:billionaire/src/domain/models/category/category_model.dart';
 import 'package:billionaire/src/domain/models/transactions/transaction.dart';
@@ -7,17 +6,13 @@ import 'package:billionaire/src/domain/models/transactions/transaction_response.
 import 'package:billionaire/src/domain/repositories/transaction_repository.dart';
 
 class MockTransactionRepositoryImpl implements TransactionRepository {
-  MockTransactionRepositoryImpl({required Database database})
-    : _database = database {
+  MockTransactionRepositoryImpl() {
     resetMockData();
   }
 
-  final Database _database;
-
   // Список фиктивных транзакций
   final List<TransactionModel> _mockTransactions = [];
-  final List<TransactionResponseModel> _mockTransactionsResponses =
-      [];
+  final List<TransactionResponseModel> _mockTransactionsResponses = [];
 
   @override
   Future<TransactionModel?> createTransaction(
@@ -47,8 +42,7 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
 
     final transaction = _mockTransactions.firstWhere(
       (t) => t.id == id,
-      orElse: () =>
-          throw Exception('Transaction with id $id not found'),
+      orElse: () => throw Exception('Transaction with id $id not found'),
     );
 
     // Преобразуем TransactionModel в TransactionResponseModel
@@ -142,9 +136,7 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
     ) {
       final isCorrectAccount = transaction.account.id == accountId;
 
-      final isWithinDateRange =
-          transaction.transactionDate.isAfter(startDate) &&
-          transaction.transactionDate.isBefore(endDate);
+      final isWithinDateRange = transaction.transactionDate.isAfter(startDate) && transaction.transactionDate.isBefore(endDate);
 
       return isCorrectAccount && isWithinDateRange;
     }).toList();

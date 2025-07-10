@@ -1,7 +1,7 @@
+import 'package:billionaire/core/utils/conecction_extension.dart';
 import 'package:billionaire/src/data/datasources/local/bank_account_local_datasource.dart';
 import 'package:billionaire/src/data/datasources/remote/bank_account_datasource.dart';
 import 'package:billionaire/src/data/db/db.dart';
-import 'package:billionaire/src/domain/controllers/connection.dart';
 import 'package:billionaire/src/domain/models/account/account_model.dart';
 import 'package:billionaire/src/domain/models/account/account_response_model.dart';
 import 'package:billionaire/src/domain/models/account/account_update_request_model.dart';
@@ -34,12 +34,14 @@ class BankAccountRepositoryImpl implements BankAccountRepository {
       await localDatasource.saveAllAccounts(
         accountList: accounts
             .map(
-              (e) => AccountTableCompanion(
-                id: Value(e.id),
-                userId: Value(e.userId),
-                name: Value(e.name),
-                currency: Value(e.currency),
-                balance: Value(e.balance),
+              (e) => AccountTableCompanion.insert(
+                id: e.id,
+                userId: e.userId,
+                name: e.name,
+                currency: e.currency,
+                balance: e.balance,
+                createdAt: e.createdAt,
+                updatedAt: e.updatedAt,
               ),
             )
             .toList(),
@@ -48,12 +50,23 @@ class BankAccountRepositoryImpl implements BankAccountRepository {
       return accounts;
     } else {
       final accounts = await localDatasource.getAllAccounts();
+      print(accounts);
 
-      return accounts
-          .map(
-            (e) => AccountModel.fromJson(e.toJson()),
-          )
-          .toList();
+      final modelAccounts = accounts.map(
+        (e) {
+          print(e);
+          return AccountModel(
+            id: e.id,
+            userId: e.userId,
+            balance: e.balance,
+            createdAt: e.createdAt,
+            currency: e.currency,
+            name: e.name,
+            updatedAt: e.updatedAt,
+          );
+        },
+      ).toList();
+      return modelAccounts;
     }
   }
 
@@ -67,8 +80,28 @@ class BankAccountRepositoryImpl implements BankAccountRepository {
   Future<AccountModel?> updateBankAccount({
     required int id,
     required AccountUpdateRequestModel updatedModel,
-  }) {
-    // TODO: implement updateBankAccount
-    throw UnimplementedError();
+  }) async {
+    final hasConnection = await connectivity.hasConnection();
+
+    if (hasConnection) {
+      // Если есть подключение, создаем транзакцию через datasource
+      final account = await remoteDatasource.updateBankAccount(
+        id: id,
+        updatedModel: updatedModel,
+      );
+
+      await localDatasource.updateAccount(
+        updatedModel: AccountTableCompanion(
+          id: Value(id),
+          name: Value(updatedModel.name),
+          balance: Value(updatedModel.balance),
+          currency: Value(updatedModel.currency),
+        ),
+      );
+
+      return account;
+    } else {
+      return null;
+    }
   }
 }

@@ -14,6 +14,5 @@ class BalanceVisibility extends _$BalanceVisibility {
 
   void toggle() {
     state = !state;
-    print(state);
   }
 }

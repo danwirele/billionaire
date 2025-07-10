@@ -15,12 +15,9 @@ class $CategoryTableTable extends CategoryTable
     'id',
     aliasedName,
     false,
-    hasAutoIncrement: true,
     type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'PRIMARY KEY AUTOINCREMENT',
-    ),
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
   );
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
@@ -70,6 +67,8 @@ class $CategoryTableTable extends CategoryTable
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
     }
     if (data.containsKey('name')) {
       context.handle(
@@ -99,7 +98,7 @@ class $CategoryTableTable extends CategoryTable
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => const {};
   @override
   CategoryDbModel map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
@@ -230,18 +229,22 @@ class CategoryTableCompanion extends UpdateCompanion<CategoryDbModel> {
   final Value<String> name;
   final Value<String> emoji;
   final Value<bool> isIncome;
+  final Value<int> rowid;
   const CategoryTableCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.emoji = const Value.absent(),
     this.isIncome = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   CategoryTableCompanion.insert({
-    this.id = const Value.absent(),
+    required int id,
     required String name,
     required String emoji,
     required bool isIncome,
-  }) : name = Value(name),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       name = Value(name),
        emoji = Value(emoji),
        isIncome = Value(isIncome);
   static Insertable<CategoryDbModel> custom({
@@ -249,12 +252,14 @@ class CategoryTableCompanion extends UpdateCompanion<CategoryDbModel> {
     Expression<String>? name,
     Expression<String>? emoji,
     Expression<bool>? isIncome,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (emoji != null) 'emoji': emoji,
       if (isIncome != null) 'is_income': isIncome,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
@@ -263,12 +268,14 @@ class CategoryTableCompanion extends UpdateCompanion<CategoryDbModel> {
     Value<String>? name,
     Value<String>? emoji,
     Value<bool>? isIncome,
+    Value<int>? rowid,
   }) {
     return CategoryTableCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       emoji: emoji ?? this.emoji,
       isIncome: isIncome ?? this.isIncome,
+      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -287,6 +294,9 @@ class CategoryTableCompanion extends UpdateCompanion<CategoryDbModel> {
     if (isIncome.present) {
       map['is_income'] = Variable<bool>(isIncome.value);
     }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
     return map;
   }
 
@@ -296,7 +306,8 @@ class CategoryTableCompanion extends UpdateCompanion<CategoryDbModel> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('emoji: $emoji, ')
-          ..write('isIncome: $isIncome')
+          ..write('isIncome: $isIncome, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -314,12 +325,9 @@ class $TransactionTableTable extends TransactionTable
     'id',
     aliasedName,
     false,
-    hasAutoIncrement: true,
     type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'PRIMARY KEY AUTOINCREMENT',
-    ),
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
   );
   static const VerificationMeta _accountIdMeta = const VerificationMeta(
     'accountId',
@@ -422,6 +430,8 @@ class $TransactionTableTable extends TransactionTable
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
     }
     if (data.containsKey('account_id')) {
       context.handle(
@@ -484,7 +494,7 @@ class $TransactionTableTable extends TransactionTable
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => const {};
   @override
   TransactionDbModel map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
@@ -697,6 +707,7 @@ class TransactionTableCompanion extends UpdateCompanion<TransactionDbModel> {
   final Value<DateTime> updatedAt;
   final Value<DateTime> createdAt;
   final Value<String?> comment;
+  final Value<int> rowid;
   const TransactionTableCompanion({
     this.id = const Value.absent(),
     this.accountId = const Value.absent(),
@@ -706,9 +717,10 @@ class TransactionTableCompanion extends UpdateCompanion<TransactionDbModel> {
     this.updatedAt = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.comment = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   TransactionTableCompanion.insert({
-    this.id = const Value.absent(),
+    required int id,
     required int accountId,
     required int categoryId,
     required String amount,
@@ -716,7 +728,9 @@ class TransactionTableCompanion extends UpdateCompanion<TransactionDbModel> {
     required DateTime updatedAt,
     required DateTime createdAt,
     this.comment = const Value.absent(),
-  }) : accountId = Value(accountId),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       accountId = Value(accountId),
        categoryId = Value(categoryId),
        amount = Value(amount),
        transactionDate = Value(transactionDate),
@@ -731,6 +745,7 @@ class TransactionTableCompanion extends UpdateCompanion<TransactionDbModel> {
     Expression<DateTime>? updatedAt,
     Expression<DateTime>? createdAt,
     Expression<String>? comment,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -741,6 +756,7 @@ class TransactionTableCompanion extends UpdateCompanion<TransactionDbModel> {
       if (updatedAt != null) 'updated_at': updatedAt,
       if (createdAt != null) 'created_at': createdAt,
       if (comment != null) 'comment': comment,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
@@ -753,6 +769,7 @@ class TransactionTableCompanion extends UpdateCompanion<TransactionDbModel> {
     Value<DateTime>? updatedAt,
     Value<DateTime>? createdAt,
     Value<String?>? comment,
+    Value<int>? rowid,
   }) {
     return TransactionTableCompanion(
       id: id ?? this.id,
@@ -763,6 +780,7 @@ class TransactionTableCompanion extends UpdateCompanion<TransactionDbModel> {
       updatedAt: updatedAt ?? this.updatedAt,
       createdAt: createdAt ?? this.createdAt,
       comment: comment ?? this.comment,
+      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -793,6 +811,9 @@ class TransactionTableCompanion extends UpdateCompanion<TransactionDbModel> {
     if (comment.present) {
       map['comment'] = Variable<String>(comment.value);
     }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
     return map;
   }
 
@@ -806,7 +827,8 @@ class TransactionTableCompanion extends UpdateCompanion<TransactionDbModel> {
           ..write('transactionDate: $transactionDate, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('createdAt: $createdAt, ')
-          ..write('comment: $comment')
+          ..write('comment: $comment, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -824,12 +846,9 @@ class $AccountTableTable extends AccountTable
     'id',
     aliasedName,
     false,
-    hasAutoIncrement: true,
     type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'PRIMARY KEY AUTOINCREMENT',
-    ),
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
   );
   static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
   @override
@@ -871,8 +890,38 @@ class $AccountTableTable extends AccountTable
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
   @override
-  List<GeneratedColumn> get $columns => [id, userId, name, balance, currency];
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    userId,
+    name,
+    balance,
+    currency,
+    updatedAt,
+    createdAt,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -887,6 +936,8 @@ class $AccountTableTable extends AccountTable
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
     }
     if (data.containsKey('user_id')) {
       context.handle(
@@ -920,11 +971,27 @@ class $AccountTableTable extends AccountTable
     } else if (isInserting) {
       context.missing(_currencyMeta);
     }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => const {};
   @override
   AccountDbModel map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
@@ -949,6 +1016,14 @@ class $AccountTableTable extends AccountTable
         DriftSqlType.string,
         data['${effectivePrefix}currency'],
       )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
     );
   }
 
@@ -964,12 +1039,16 @@ class AccountDbModel extends DataClass implements Insertable<AccountDbModel> {
   final String name;
   final String balance;
   final String currency;
+  final DateTime updatedAt;
+  final DateTime createdAt;
   const AccountDbModel({
     required this.id,
     required this.userId,
     required this.name,
     required this.balance,
     required this.currency,
+    required this.updatedAt,
+    required this.createdAt,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -979,6 +1058,8 @@ class AccountDbModel extends DataClass implements Insertable<AccountDbModel> {
     map['name'] = Variable<String>(name);
     map['balance'] = Variable<String>(balance);
     map['currency'] = Variable<String>(currency);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['created_at'] = Variable<DateTime>(createdAt);
     return map;
   }
 
@@ -989,6 +1070,8 @@ class AccountDbModel extends DataClass implements Insertable<AccountDbModel> {
       name: Value(name),
       balance: Value(balance),
       currency: Value(currency),
+      updatedAt: Value(updatedAt),
+      createdAt: Value(createdAt),
     );
   }
 
@@ -1003,6 +1086,8 @@ class AccountDbModel extends DataClass implements Insertable<AccountDbModel> {
       name: serializer.fromJson<String>(json['name']),
       balance: serializer.fromJson<String>(json['balance']),
       currency: serializer.fromJson<String>(json['currency']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
   }
   @override
@@ -1014,6 +1099,8 @@ class AccountDbModel extends DataClass implements Insertable<AccountDbModel> {
       'name': serializer.toJson<String>(name),
       'balance': serializer.toJson<String>(balance),
       'currency': serializer.toJson<String>(currency),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
     };
   }
 
@@ -1023,12 +1110,16 @@ class AccountDbModel extends DataClass implements Insertable<AccountDbModel> {
     String? name,
     String? balance,
     String? currency,
+    DateTime? updatedAt,
+    DateTime? createdAt,
   }) => AccountDbModel(
     id: id ?? this.id,
     userId: userId ?? this.userId,
     name: name ?? this.name,
     balance: balance ?? this.balance,
     currency: currency ?? this.currency,
+    updatedAt: updatedAt ?? this.updatedAt,
+    createdAt: createdAt ?? this.createdAt,
   );
   AccountDbModel copyWithCompanion(AccountTableCompanion data) {
     return AccountDbModel(
@@ -1037,6 +1128,8 @@ class AccountDbModel extends DataClass implements Insertable<AccountDbModel> {
       name: data.name.present ? data.name.value : this.name,
       balance: data.balance.present ? data.balance.value : this.balance,
       currency: data.currency.present ? data.currency.value : this.currency,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
     );
   }
 
@@ -1047,13 +1140,16 @@ class AccountDbModel extends DataClass implements Insertable<AccountDbModel> {
           ..write('userId: $userId, ')
           ..write('name: $name, ')
           ..write('balance: $balance, ')
-          ..write('currency: $currency')
+          ..write('currency: $currency, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, userId, name, balance, currency);
+  int get hashCode =>
+      Object.hash(id, userId, name, balance, currency, updatedAt, createdAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1062,7 +1158,9 @@ class AccountDbModel extends DataClass implements Insertable<AccountDbModel> {
           other.userId == this.userId &&
           other.name == this.name &&
           other.balance == this.balance &&
-          other.currency == this.currency);
+          other.currency == this.currency &&
+          other.updatedAt == this.updatedAt &&
+          other.createdAt == this.createdAt);
 }
 
 class AccountTableCompanion extends UpdateCompanion<AccountDbModel> {
@@ -1071,29 +1169,44 @@ class AccountTableCompanion extends UpdateCompanion<AccountDbModel> {
   final Value<String> name;
   final Value<String> balance;
   final Value<String> currency;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime> createdAt;
+  final Value<int> rowid;
   const AccountTableCompanion({
     this.id = const Value.absent(),
     this.userId = const Value.absent(),
     this.name = const Value.absent(),
     this.balance = const Value.absent(),
     this.currency = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   AccountTableCompanion.insert({
-    this.id = const Value.absent(),
+    required int id,
     required int userId,
     required String name,
     required String balance,
     required String currency,
-  }) : userId = Value(userId),
+    required DateTime updatedAt,
+    required DateTime createdAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       userId = Value(userId),
        name = Value(name),
        balance = Value(balance),
-       currency = Value(currency);
+       currency = Value(currency),
+       updatedAt = Value(updatedAt),
+       createdAt = Value(createdAt);
   static Insertable<AccountDbModel> custom({
     Expression<int>? id,
     Expression<int>? userId,
     Expression<String>? name,
     Expression<String>? balance,
     Expression<String>? currency,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? createdAt,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -1101,6 +1214,9 @@ class AccountTableCompanion extends UpdateCompanion<AccountDbModel> {
       if (name != null) 'name': name,
       if (balance != null) 'balance': balance,
       if (currency != null) 'currency': currency,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
@@ -1110,6 +1226,9 @@ class AccountTableCompanion extends UpdateCompanion<AccountDbModel> {
     Value<String>? name,
     Value<String>? balance,
     Value<String>? currency,
+    Value<DateTime>? updatedAt,
+    Value<DateTime>? createdAt,
+    Value<int>? rowid,
   }) {
     return AccountTableCompanion(
       id: id ?? this.id,
@@ -1117,6 +1236,9 @@ class AccountTableCompanion extends UpdateCompanion<AccountDbModel> {
       name: name ?? this.name,
       balance: balance ?? this.balance,
       currency: currency ?? this.currency,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -1138,6 +1260,15 @@ class AccountTableCompanion extends UpdateCompanion<AccountDbModel> {
     if (currency.present) {
       map['currency'] = Variable<String>(currency.value);
     }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
     return map;
   }
 
@@ -1148,7 +1279,10 @@ class AccountTableCompanion extends UpdateCompanion<AccountDbModel> {
           ..write('userId: $userId, ')
           ..write('name: $name, ')
           ..write('balance: $balance, ')
-          ..write('currency: $currency')
+          ..write('currency: $currency, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -2276,10 +2410,11 @@ abstract class _$Database extends GeneratedDatabase {
 
 typedef $$CategoryTableTableCreateCompanionBuilder =
     CategoryTableCompanion Function({
-      Value<int> id,
+      required int id,
       required String name,
       required String emoji,
       required bool isIncome,
+      Value<int> rowid,
     });
 typedef $$CategoryTableTableUpdateCompanionBuilder =
     CategoryTableCompanion Function({
@@ -2287,6 +2422,7 @@ typedef $$CategoryTableTableUpdateCompanionBuilder =
       Value<String> name,
       Value<String> emoji,
       Value<bool> isIncome,
+      Value<int> rowid,
     });
 
 class $$CategoryTableTableFilterComposer
@@ -2406,23 +2542,27 @@ class $$CategoryTableTableTableManager
                 Value<String> name = const Value.absent(),
                 Value<String> emoji = const Value.absent(),
                 Value<bool> isIncome = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
               }) => CategoryTableCompanion(
                 id: id,
                 name: name,
                 emoji: emoji,
                 isIncome: isIncome,
+                rowid: rowid,
               ),
           createCompanionCallback:
               ({
-                Value<int> id = const Value.absent(),
+                required int id,
                 required String name,
                 required String emoji,
                 required bool isIncome,
+                Value<int> rowid = const Value.absent(),
               }) => CategoryTableCompanion.insert(
                 id: id,
                 name: name,
                 emoji: emoji,
                 isIncome: isIncome,
+                rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
@@ -2451,7 +2591,7 @@ typedef $$CategoryTableTableProcessedTableManager =
     >;
 typedef $$TransactionTableTableCreateCompanionBuilder =
     TransactionTableCompanion Function({
-      Value<int> id,
+      required int id,
       required int accountId,
       required int categoryId,
       required String amount,
@@ -2459,6 +2599,7 @@ typedef $$TransactionTableTableCreateCompanionBuilder =
       required DateTime updatedAt,
       required DateTime createdAt,
       Value<String?> comment,
+      Value<int> rowid,
     });
 typedef $$TransactionTableTableUpdateCompanionBuilder =
     TransactionTableCompanion Function({
@@ -2470,6 +2611,7 @@ typedef $$TransactionTableTableUpdateCompanionBuilder =
       Value<DateTime> updatedAt,
       Value<DateTime> createdAt,
       Value<String?> comment,
+      Value<int> rowid,
     });
 
 class $$TransactionTableTableFilterComposer
@@ -2655,6 +2797,7 @@ class $$TransactionTableTableTableManager
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<String?> comment = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
               }) => TransactionTableCompanion(
                 id: id,
                 accountId: accountId,
@@ -2664,10 +2807,11 @@ class $$TransactionTableTableTableManager
                 updatedAt: updatedAt,
                 createdAt: createdAt,
                 comment: comment,
+                rowid: rowid,
               ),
           createCompanionCallback:
               ({
-                Value<int> id = const Value.absent(),
+                required int id,
                 required int accountId,
                 required int categoryId,
                 required String amount,
@@ -2675,6 +2819,7 @@ class $$TransactionTableTableTableManager
                 required DateTime updatedAt,
                 required DateTime createdAt,
                 Value<String?> comment = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
               }) => TransactionTableCompanion.insert(
                 id: id,
                 accountId: accountId,
@@ -2684,6 +2829,7 @@ class $$TransactionTableTableTableManager
                 updatedAt: updatedAt,
                 createdAt: createdAt,
                 comment: comment,
+                rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
@@ -2712,11 +2858,14 @@ typedef $$TransactionTableTableProcessedTableManager =
     >;
 typedef $$AccountTableTableCreateCompanionBuilder =
     AccountTableCompanion Function({
-      Value<int> id,
+      required int id,
       required int userId,
       required String name,
       required String balance,
       required String currency,
+      required DateTime updatedAt,
+      required DateTime createdAt,
+      Value<int> rowid,
     });
 typedef $$AccountTableTableUpdateCompanionBuilder =
     AccountTableCompanion Function({
@@ -2725,6 +2874,9 @@ typedef $$AccountTableTableUpdateCompanionBuilder =
       Value<String> name,
       Value<String> balance,
       Value<String> currency,
+      Value<DateTime> updatedAt,
+      Value<DateTime> createdAt,
+      Value<int> rowid,
     });
 
 class $$AccountTableTableFilterComposer
@@ -2758,6 +2910,16 @@ class $$AccountTableTableFilterComposer
 
   ColumnFilters<String> get currency => $composableBuilder(
     column: $table.currency,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -2795,6 +2957,16 @@ class $$AccountTableTableOrderingComposer
     column: $table.currency,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$AccountTableTableAnnotationComposer
@@ -2820,6 +2992,12 @@ class $$AccountTableTableAnnotationComposer
 
   GeneratedColumn<String> get currency =>
       $composableBuilder(column: $table.currency, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
 }
 
 class $$AccountTableTableTableManager
@@ -2858,26 +3036,38 @@ class $$AccountTableTableTableManager
                 Value<String> name = const Value.absent(),
                 Value<String> balance = const Value.absent(),
                 Value<String> currency = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
               }) => AccountTableCompanion(
                 id: id,
                 userId: userId,
                 name: name,
                 balance: balance,
                 currency: currency,
+                updatedAt: updatedAt,
+                createdAt: createdAt,
+                rowid: rowid,
               ),
           createCompanionCallback:
               ({
-                Value<int> id = const Value.absent(),
+                required int id,
                 required int userId,
                 required String name,
                 required String balance,
                 required String currency,
+                required DateTime updatedAt,
+                required DateTime createdAt,
+                Value<int> rowid = const Value.absent(),
               }) => AccountTableCompanion.insert(
                 id: id,
                 userId: userId,
                 name: name,
                 balance: balance,
                 currency: currency,
+                updatedAt: updatedAt,
+                createdAt: createdAt,
+                rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))

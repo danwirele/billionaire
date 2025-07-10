@@ -44,7 +44,15 @@ class AnalysisContent extends ConsumerWidget {
                     child: Text('Транзакции отсутствуют'),
                   );
                 }
-
+                final sum = analysisStateList.fold(0.0, (
+                  previousValue,
+                  element,
+                ) {
+                  print(previousValue);
+                  print(element);
+                  return previousValue + element.percentage;
+                }).floor();
+                print(sum);
                 return Column(
                   children: [
                     BillionPinnedContainer.primaryMedium(
@@ -59,18 +67,18 @@ class AnalysisContent extends ConsumerWidget {
                     const SizedBox(height: 20),
                     BillionPieChart(
                       config: BillionPieChartConfig(
-                        legends: [
-                          LegendEntity(
-                            percentage: 20,
-                            title: 'Первый',
-                            sectionColor: Colors.yellow,
-                          ),
-                          LegendEntity(
-                            percentage: 80,
-                            title: 'Второй',
-                            sectionColor: Colors.green,
-                          ),
-                        ],
+                        legends: List.generate(
+                          analysisStateList.length,
+                          (index) {
+                            final analysisElement =
+                                analysisStateList[index];
+                            return LegendEntity(
+                              percentage: analysisElement.percentage,
+                              title: analysisElement.category.name,
+                              sectionColor: Colors.yellow,
+                            );
+                          },
+                        ),
                       ),
                     ),
 

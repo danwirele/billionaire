@@ -3,7 +3,7 @@ import 'package:billionaire/src/data/datasources/remote/transaction_datasource.d
 import 'package:billionaire/src/data/db/db_service.dart';
 import 'package:billionaire/src/data/db/events_datasource/transaction_event_datasource.dart';
 import 'package:billionaire/src/data/repositories/impl/transaction_repository_impl.dart';
-import 'package:billionaire/src/data/utils/dio_service.dart';
+import 'package:billionaire/src/data/services/dio_service.dart';
 import 'package:billionaire/src/domain/repositories/transaction_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -13,8 +13,9 @@ part 'transaction_repository_impl_di.g.dart';
 class TransactionRepositoryImplDi
     extends _$TransactionRepositoryImplDi {
   @override
-  FutureOr<TransactionRepository> build() {
-    final database = ref.read(dbServiceProvider).value!;
+  FutureOr<TransactionRepository> build() async {
+    final database = await ref.read(dbServiceProvider.future);
+
     final dio = ref.read(dioServiceProvider);
 
     return TransactionRepositoryImpl(

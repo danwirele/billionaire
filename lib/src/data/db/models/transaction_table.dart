@@ -2,7 +2,7 @@ part of '../db.dart';
 
 @DataClassName('TransactionDbModel')
 class TransactionTable extends Table {
-  IntColumn get id => integer().autoIncrement()();
+  IntColumn get id => integer().unique()();
 
   IntColumn get accountId => integer()();
   IntColumn get categoryId => integer()();

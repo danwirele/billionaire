@@ -45,11 +45,8 @@ extension DialogExtension on BuildContext {
                   onPressed: () async {
                     final newName = nameController.text.trim();
 
-                    //TODO! сделай обновление транзакций
                     if (newName.isNotEmpty) {
-                      await ref
-                          .read(updateAccountProvider.notifier)
-                          .updateAccount(name: newName);
+                      await ref.read(updateAccountProvider.notifier).updateAccount(name: newName);
                       GoRouter.of(this).pop();
                     }
                   },
@@ -72,8 +69,7 @@ extension DialogExtension on BuildContext {
       builder: (context) {
         return HookBuilder(
           builder: (context) {
-            final amountTextEditingController =
-                useTextEditingController(text: initialAmount);
+            final amountTextEditingController = useTextEditingController(text: initialAmount);
 
             // Получаем правильный разделитель из текущей локали
             final locale = Localizations.localeOf(context);
@@ -107,8 +103,7 @@ extension DialogExtension on BuildContext {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    final amount = amountTextEditingController.text
-                        .trim();
+                    final amount = amountTextEditingController.text.trim();
 
                     GoRouter.of(context).pop(amount);
                   },
@@ -131,8 +126,7 @@ extension DialogExtension on BuildContext {
       builder: (context) {
         return HookBuilder(
           builder: (context) {
-            final commentTextEditingController =
-                useTextEditingController(text: initialComment);
+            final commentTextEditingController = useTextEditingController(text: initialComment);
 
             return AlertDialog(
               title: BillionText.bodyMedium(
@@ -154,8 +148,7 @@ extension DialogExtension on BuildContext {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    final comment = commentTextEditingController.text
-                        .trim();
+                    final comment = commentTextEditingController.text.trim();
 
                     GoRouter.of(context).pop(comment);
                   },

@@ -1,25 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'connection.dart';
+part of 'dio_service.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$connectionHash() => r'c6d5327212d3de34d9b4b2d2b39c3314ab6dc46c';
+String _$dioServiceHash() => r'749648178ef7ae31b8e796c18170188cd9b185fc';
 
-/// See also [Connection].
-@ProviderFor(Connection)
-final connectionProvider = AsyncNotifierProvider<Connection, bool>.internal(
-  Connection.new,
-  name: r'connectionProvider',
+/// See also [DioService].
+@ProviderFor(DioService)
+final dioServiceProvider = NotifierProvider<DioService, Dio>.internal(
+  DioService.new,
+  name: r'dioServiceProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$connectionHash,
+      : _$dioServiceHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$Connection = AsyncNotifier<bool>;
+typedef _$DioService = Notifier<Dio>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

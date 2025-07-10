@@ -1,7 +1,9 @@
 import 'package:billionaire/core/l10n/app_localizations.dart';
 import 'package:billionaire/src/data/db/db_service.dart';
+import 'package:billionaire/src/data/services/dio_service.dart';
 import 'package:billionaire/src/router/router.dart' show router;
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class App extends ConsumerWidget {
@@ -9,7 +11,7 @@ class App extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // ref.read(dbServiceProvider);
+    ref.read(dioServiceProvider);
     return MaterialApp.router(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,

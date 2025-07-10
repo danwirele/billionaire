@@ -2,7 +2,7 @@ import 'package:billionaire/src/data/datasources/local/bank_account_local_dataso
 import 'package:billionaire/src/data/datasources/remote/bank_account_datasource.dart';
 import 'package:billionaire/src/data/db/db_service.dart';
 import 'package:billionaire/src/data/repositories/impl/bank_account_repository_impl.dart';
-import 'package:billionaire/src/data/utils/dio_service.dart';
+import 'package:billionaire/src/data/services/dio_service.dart';
 import 'package:billionaire/src/domain/repositories/bank_account_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
