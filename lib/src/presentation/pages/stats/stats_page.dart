@@ -33,7 +33,6 @@ class StatsPage extends StatelessWidget {
                             vertical: 16,
                             horizontal: 14,
                           ),
-                          //TODO! CHECK WHAT WENT WRONG WHY 2 GIFTS
                           hintText: 'Найти статью',
 
                           suffixIcon: Icon(

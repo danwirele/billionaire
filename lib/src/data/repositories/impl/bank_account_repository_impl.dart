@@ -70,7 +70,6 @@ class BankAccountRepositoryImpl implements BankAccountRepository {
 
   @override
   Future<AccountResponseModel> getBankAccountById(int id) {
-    // TODO: implement getBankAccountById
     throw UnimplementedError();
   }
 

@@ -12,6 +12,7 @@ import 'package:billionaire/src/domain/repositories/transaction_repository.dart'
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:drift/drift.dart';
 
+//TODO! ВЫНЕСТИ ВСЕ ВЗАИМОДЕЙСТВИЕ С БД В ЛОКАЛЬНЫЕ ДАТАСУРСЫ
 class TransactionRepositoryImpl implements TransactionRepository {
   TransactionRepositoryImpl({
     required this.remoteDatasource,
@@ -225,12 +226,6 @@ class TransactionRepositoryImpl implements TransactionRepository {
       for (int i = 0; i < mergedTransactionsDbModel.length; i++) {
         final transactionDbModel = mergedTransactionsDbModel[i];
         final id = transactionDbModel.id;
-
-        final accounts = await database
-            .select(database.accountTable)
-            .get();
-
-        print(accounts);
 
         // Получаем связанный аккаунт из AccountTable
         final account =
