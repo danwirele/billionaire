@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:billion_charts_package/billion_charts_package.dart';
 import 'package:billionaire/src/presentation/pages/transaction/analysis/controllers/analysis_state.dart';
 import 'package:billionaire/src/presentation/pages/transaction/widgets/billion_stat_widget.dart';
 import 'package:billionaire/src/presentation/shared/controllers/currency_provider.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/error_helper.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/modal_bottom_sheet_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -44,15 +47,20 @@ class AnalysisContent extends ConsumerWidget {
                     child: Text('Транзакции отсутствуют'),
                   );
                 }
-                final sum = analysisStateList.fold(0.0, (
-                  previousValue,
-                  element,
-                ) {
-                  print(previousValue);
-                  print(element);
-                  return previousValue + element.percentage;
-                }).floor();
-                print(sum);
+                final random = Random();
+                final Set<Color> uniqueColors = {};
+                while (uniqueColors.length <
+                    analysisStateList.length) {
+                  final color = Color.fromRGBO(
+                    random.nextInt(256),
+                    random.nextInt(256),
+                    random.nextInt(256),
+                    1,
+                  );
+                  uniqueColors.add(color);
+                }
+                final randomColors = uniqueColors.toList();
+
                 return Column(
                   children: [
                     BillionPinnedContainer.primaryMedium(
@@ -75,7 +83,7 @@ class AnalysisContent extends ConsumerWidget {
                             return LegendEntity(
                               percentage: analysisElement.percentage,
                               title: analysisElement.category.name,
-                              sectionColor: Colors.yellow,
+                              sectionColor: randomColors[index],
                             );
                           },
                         ),
@@ -118,9 +126,11 @@ class AnalysisContent extends ConsumerWidget {
                   ],
                 );
               },
-              error: (error, stackTrace) => Text(
-                error.toString(),
-              ),
+              error: (error, stackTrace) {
+                final errorMessage = ErrorHelper.whenError(error);
+
+                return BillionText.bodyMedium(errorMessage);
+              },
               loading: () => const Center(
                 child: CircularProgressIndicator(
                   backgroundColor: BillionColors.primaryContainer,

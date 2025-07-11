@@ -1,17 +1,15 @@
-import 'dart:developer' show log;
-
 import 'package:billionaire/src/presentation/pages/transaction/controllers/filtered_transactions.dart';
 import 'package:billionaire/src/presentation/pages/transaction/widgets/billion_stat_widget.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/dialogs_extension.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/error_helper.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/invoke_function.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ExpensesIncomeContent extends StatelessWidget {
   const ExpensesIncomeContent.income({super.key}) : isIncome = true;
-  const ExpensesIncomeContent.expenses({super.key})
-    : isIncome = false;
+  const ExpensesIncomeContent.expenses({super.key}) : isIncome = false;
 
   final bool isIncome;
 
@@ -33,20 +31,17 @@ class ExpensesIncomeContent extends StatelessWidget {
                   .watch(accountTransactionRepo)
                   .when(
                     data: (transactionStateModel) {
-                      final amountText =
-                          transactionStateModel?.amount
-                              .formatNumber() ??
-                          'Информация отсутствует';
+                      final amountText = transactionStateModel?.amount.formatNumber() ?? 'Информация отсутствует';
 
                       return BillionText.bodyLarge(
                         '$amountText ${currencyProviderValue.char}',
                       );
                     },
                     error: (error, stackTrace) {
-                      log(error.toString());
-                      log(stackTrace.toString());
+                      final errorMessage = ErrorHelper.whenError(error);
+
                       return BillionText.bodyMedium(
-                        error.toString(),
+                        errorMessage,
                         maxLines: 10,
                       );
                     },
@@ -74,59 +69,30 @@ class ExpensesIncomeContent extends StatelessWidget {
                         );
                       }
 
-                      if (transactionStateModel
-                          .transactions
-                          .isEmpty) {
+                      if (transactionStateModel.transactions.isEmpty) {
                         return const Center(
                           child: Text(
-                            'Отсутствуют информации о транзакциях',
+                            'Список транзакций пуст',
                           ),
                         );
                       }
 
                       return ListView.builder(
-                        itemCount:
-                            transactionStateModel.transactions.length,
+                        itemCount: transactionStateModel.transactions.length,
                         itemBuilder: (context, index) {
-                          final transaction = transactionStateModel
-                              .transactions[index];
+                          final transaction = transactionStateModel.transactions[index];
                           final category = transaction.category;
 
                           return BillionStatWidget(
                             actionCallBack: () async {
-                              final account = await ref.read(
-                                accountTransactionRepo.future,
-                              );
-                              if (account == null) {
-                                if (context.mounted) {
-                                  return showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      content: BillionText.titleLarge(
-                                        'Счет не найден!',
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            GoRouter.of(
-                                              context,
-                                            ).pop();
-                                          },
-                                          child:
-                                              BillionText.bodyMedium(
-                                                'Закрыть',
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }
-                              }
-                              await context
-                                  .showTransactionActionDialog(
+                              await context.invokeMethodWrapper(
+                                () async {
+                                  await context.showTransactionActionDialog(
                                     model: transaction,
                                     isIncome: isIncome,
                                   );
+                                },
+                              );
                             },
                             statTitle: category.name,
                             statDescription: transaction.comment,
@@ -138,15 +104,19 @@ class ExpensesIncomeContent extends StatelessWidget {
                         },
                       );
                     },
-                    error: (error, stackTrace) =>
-                        BillionText.bodyMedium(
-                          error.toString(),
+                    error: (error, stackTrace) {
+                      final errorMessage = ErrorHelper.whenError(error);
+
+                      return Center(
+                        child: BillionText.bodyMedium(
+                          errorMessage,
                           maxLines: 10,
                         ),
+                      );
+                    },
                     loading: () => const Center(
                       child: CircularProgressIndicator(
-                        backgroundColor:
-                            BillionColors.primaryContainer,
+                        backgroundColor: BillionColors.primaryContainer,
                         color: BillionColors.primary,
                       ),
                     ),

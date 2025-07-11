@@ -17,7 +17,6 @@ class HistoryTransactionsRepository extends _$HistoryTransactionsRepository {
       userAccountRepositoryProvider.future,
     );
 
-    if (account == null) return null;
     final dateTimeNow = DateTime.now();
     // Начало текущего дня
     final startDate = DateTime(
@@ -57,15 +56,6 @@ class HistoryTransactionsRepository extends _$HistoryTransactionsRepository {
     final account = await ref.read(
       userAccountRepositoryProvider.future,
     );
-
-    if (account == null) {
-      state = AsyncError(
-        'Ошибка, счета не существует',
-        StackTrace.current,
-      );
-
-      return;
-    }
 
     final transactions = await transactionRepo.getTransactionsByPeriod(
       accountId: account.id,

@@ -64,13 +64,35 @@ class DeserializationInterceptor extends Interceptor {
   }
 
   @override
-  Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
+  Future<void> onError(
+    DioException err,
+    ErrorInterceptorHandler handler,
+  ) async {
     int retryCount = 0;
 
     while (retryCount <= maxRetries) {
       final statusCode = err.response?.statusCode;
-
-      if (statusCode == null || ![500, 502, 503, 504, 408, 429].contains(statusCode)) {
+      if (statusCode == null) {
+        handler.reject(
+          DioException(
+            requestOptions: err.requestOptions,
+            response: err.response,
+            message:
+                'Ошибка клиента, пожалуйста, обратитесь в поддержку',
+            error:
+                'Ошибка клиента, пожалуйста, обратитесь в поддержку',
+          ),
+        );
+      }
+      if (![500, 502, 503, 504, 408, 429].contains(statusCode)) {
+        handler.reject(
+          DioException(
+            requestOptions: err.requestOptions,
+            response: err.response,
+            message: 'Серверная ошибка',
+            error: 'Произошла ошибка выполнения запроса на сервере',
+          ),
+        );
         break;
       }
 
@@ -88,7 +110,9 @@ class DeserializationInterceptor extends Interceptor {
         final requestOptions = err.requestOptions.copyWith();
 
         final rawResponse = await Dio().fetch(requestOptions);
-        final deserializedResponse = await deserializeData(rawResponse);
+        final deserializedResponse = await deserializeData(
+          rawResponse,
+        );
         handler.resolve(deserializedResponse);
         return;
       } catch (e) {
@@ -101,7 +125,8 @@ class DeserializationInterceptor extends Interceptor {
             DioException(
               requestOptions: err.requestOptions,
               response: err.response,
-              error: 'Max retry attempts exceeded. Last error: $e',
+              message: 'Ошибка, сервер не отвечает',
+              error: 'Ошибка, сервер не отвечает',
             ),
           );
           return;
@@ -109,14 +134,18 @@ class DeserializationInterceptor extends Interceptor {
       }
     }
 
-    handler.reject(err);
+    // handler.reject(err);
   }
 
-  Future<Response<dynamic>> deserializeData(Response<dynamic> response) async {
+  Future<Response<dynamic>> deserializeData(
+    Response<dynamic> response,
+  ) async {
     final dtoType = response.requestOptions.extra['dtoType'] as Type?;
 
     if (dtoType == null) {
-      throw ArgumentError('DTO type is not specified in request options');
+      throw ArgumentError(
+        'DTO type is not specified in request options',
+      );
     }
 
     final fromJsonFactory = _getFromJsonFactory(dtoType);
@@ -129,25 +158,35 @@ class DeserializationInterceptor extends Interceptor {
 
     if (rawData is List) {
       final cancelable = workerManager.executeNow(
-        (p0) => rawData.map((item) => fromJsonFactory(item as Map<String, dynamic>)).toList(),
+        (p0) => rawData
+            .map(
+              (item) => fromJsonFactory(item as Map<String, dynamic>),
+            )
+            .toList(),
       );
 
       final deserializedData = await cancelable.future;
       response.data = deserializedData;
       return response;
     } else if (rawData is Map<String, dynamic>) {
-      final cancelable = workerManager.execute(() => fromJsonFactory(rawData));
+      final cancelable = workerManager.execute(
+        () => fromJsonFactory(rawData),
+      );
       final deserializedData = await cancelable.future;
       response.data = deserializedData;
       return response;
     } else if (rawData == '') {
       return response;
     } else {
-      throw FormatException('Unsupported data type: ${rawData.runtimeType}');
+      throw FormatException(
+        'Unsupported data type: ${rawData.runtimeType}',
+      );
     }
   }
 
-  dynamic Function(Map<String, dynamic>)? _getFromJsonFactory(Type dtoType) {
+  dynamic Function(Map<String, dynamic>)? _getFromJsonFactory(
+    Type dtoType,
+  ) {
     if (dtoType == AccountModel) {
       return AccountModel.fromJson;
     } else if (dtoType == AccountBriefModel) {

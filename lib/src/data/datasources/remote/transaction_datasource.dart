@@ -54,7 +54,6 @@ class TransactionDatasourceImpl implements TransactionDatasource {
     return jsonList;
   }
 
-  //TODO! THINK
   @override
   Future<void> deleteTransaction({required int id}) async {
     await _dio.delete(
@@ -97,7 +96,6 @@ class TransactionDatasourceImpl implements TransactionDatasource {
     return jsonList;
   }
 
-  //TODO FIX BUG WHEN CREATE LOCAL TRANSACTION THEN UPDATE IT
   @override
   Future<TransactionResponseModel?> updateTransaction({
     required int id,

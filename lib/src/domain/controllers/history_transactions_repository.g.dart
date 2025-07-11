@@ -7,7 +7,7 @@ part of 'history_transactions_repository.dart';
 // **************************************************************************
 
 String _$historyTransactionsRepositoryHash() =>
-    r'531dc23b8ec57be87812095646f2935e22feac19';
+    r'd40e41ad691d67fd5d22d0240b94518b887404ce';
 
 /// See also [HistoryTransactionsRepository].
 @ProviderFor(HistoryTransactionsRepository)

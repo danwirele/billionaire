@@ -4,8 +4,7 @@ class BillionBottomNavBar extends StatefulWidget {
   const BillionBottomNavBar({super.key});
 
   @override
-  State<BillionBottomNavBar> createState() =>
-      _BillionBottomNavBarState();
+  State<BillionBottomNavBar> createState() => _BillionBottomNavBarState();
 }
 
 class _BillionBottomNavBarState extends State<BillionBottomNavBar> {
@@ -32,12 +31,9 @@ class _BillionBottomNavBarState extends State<BillionBottomNavBar> {
             animationDuration: const Duration(seconds: 1),
             selectedIndex: _index,
             labelTextStyle: WidgetStateTextStyle.resolveWith(
-              (Set<WidgetState> states) =>
-                  BillionTextStyle.labelMedium.copyWith(
-                    color: states.contains(WidgetState.selected)
-                        ? null
-                        : BillionColors.onSurfaceVariant,
-                  ),
+              (Set<WidgetState> states) => BillionTextStyle.labelMedium.copyWith(
+                color: states.contains(WidgetState.selected) ? null : BillionColors.onSurfaceVariant,
+              ),
             ),
             onDestinationSelected: (value) {
               switch (value) {
@@ -91,13 +87,10 @@ class ConnectionContainer extends ConsumerStatefulWidget {
   const ConnectionContainer({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _ConnectionContainerState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _ConnectionContainerState();
 }
 
-class _ConnectionContainerState
-    extends ConsumerState<ConnectionContainer>
-    with SingleTickerProviderStateMixin {
+class _ConnectionContainerState extends ConsumerState<ConnectionContainer> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return ref
@@ -117,8 +110,8 @@ class _ConnectionContainerState
               ),
             );
           },
-          error: (error, stackTrace) => SizedBox.shrink(),
-          loading: () => SizedBox.shrink(),
+          error: (error, stackTrace) => const SizedBox.shrink(),
+          loading: () => const SizedBox.shrink(),
           skipLoadingOnRefresh: true,
           skipError: true,
           skipLoadingOnReload: true,

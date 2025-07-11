@@ -79,6 +79,7 @@ extension DialogExtension on BuildContext {
             return AlertDialog(
               title: BillionText.bodyMedium('Сумма транзакции'),
               content: TextField(
+                autofocus: true,
                 controller: amountTextEditingController,
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,

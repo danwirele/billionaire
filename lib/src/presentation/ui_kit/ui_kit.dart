@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:billionaire/core/enum/currency_enum.dart';
 import 'package:billionaire/core/gen/assets.gen.dart';
 import 'package:billionaire/core/l10n/app_localizations.dart';

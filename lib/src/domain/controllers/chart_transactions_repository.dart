@@ -3,10 +3,10 @@ import 'package:billionaire/src/domain/models/transactions/transaction_response.
 import 'package:billionaire/src/domain/repo_impl_provider/transaction_repository_impl_di.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'analysis_transactions_repository.g.dart';
+part 'chart_transactions_repository.g.dart';
 
 @Riverpod(dependencies: [UserAccountRepository])
-class AnalysisTransactionsRepository extends _$AnalysisTransactionsRepository {
+class ChartTransactionsRepository extends _$ChartTransactionsRepository {
   @override
   Future<List<TransactionResponseModel>?> build() async {
     final transactionRepo = await ref.read(

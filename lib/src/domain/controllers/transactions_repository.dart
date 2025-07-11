@@ -64,8 +64,6 @@ class TransactionsRepository extends _$TransactionsRepository {
       userAccountRepositoryProvider.future,
     );
 
-    if (account == null) return null;
-
     final dateTimeNow = DateTime.now();
 
     // Начало текущего дня

@@ -9,12 +9,12 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'bank_account_repository_impl_di.g.dart';
 
 @Riverpod(keepAlive: true)
-class BankAccountRepositoryImplDi
-    extends _$BankAccountRepositoryImplDi {
+class BankAccountRepositoryImplDi extends _$BankAccountRepositoryImplDi {
   @override
   FutureOr<BankAccountRepository> build() async {
-    final dio = ref.read(dioServiceProvider);
     final database = await ref.read(dbServiceProvider.future);
+
+    final dio = ref.read(dioServiceProvider);
 
     return BankAccountRepositoryImpl(
       database: database,

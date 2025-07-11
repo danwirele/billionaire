@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TransactionResponseModel {
 
- int get id; AccountBriefModel get account; CategoryModel get category; String get amount; DateTime get transactionDate; DateTime get createdAt; DateTime get updatedAt; String? get comment;
+ int get id; AccountBriefModel get account; CategoryModel get category; String get amount;@DateTimeConverter() DateTime get transactionDate; DateTime get createdAt; DateTime get updatedAt; String? get comment;
 /// Create a copy of TransactionResponseModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -49,7 +49,7 @@ abstract mixin class $TransactionResponseModelCopyWith<$Res>  {
   factory $TransactionResponseModelCopyWith(TransactionResponseModel value, $Res Function(TransactionResponseModel) _then) = _$TransactionResponseModelCopyWithImpl;
 @useResult
 $Res call({
- int id, AccountBriefModel account, CategoryModel category, String amount, DateTime transactionDate, DateTime createdAt, DateTime updatedAt, String? comment
+ int id, AccountBriefModel account, CategoryModel category, String amount,@DateTimeConverter() DateTime transactionDate, DateTime createdAt, DateTime updatedAt, String? comment
 });
 
 
@@ -105,14 +105,14 @@ $CategoryModelCopyWith<$Res> get category {
 @JsonSerializable()
 
 class _TransactionResponseModel implements TransactionResponseModel {
-  const _TransactionResponseModel({required this.id, required this.account, required this.category, required this.amount, required this.transactionDate, required this.createdAt, required this.updatedAt, this.comment});
+  const _TransactionResponseModel({required this.id, required this.account, required this.category, required this.amount, @DateTimeConverter() required this.transactionDate, required this.createdAt, required this.updatedAt, this.comment});
   factory _TransactionResponseModel.fromJson(Map<String, dynamic> json) => _$TransactionResponseModelFromJson(json);
 
 @override final  int id;
 @override final  AccountBriefModel account;
 @override final  CategoryModel category;
 @override final  String amount;
-@override final  DateTime transactionDate;
+@override@DateTimeConverter() final  DateTime transactionDate;
 @override final  DateTime createdAt;
 @override final  DateTime updatedAt;
 @override final  String? comment;
@@ -150,7 +150,7 @@ abstract mixin class _$TransactionResponseModelCopyWith<$Res> implements $Transa
   factory _$TransactionResponseModelCopyWith(_TransactionResponseModel value, $Res Function(_TransactionResponseModel) _then) = __$TransactionResponseModelCopyWithImpl;
 @override @useResult
 $Res call({
- int id, AccountBriefModel account, CategoryModel category, String amount, DateTime transactionDate, DateTime createdAt, DateTime updatedAt, String? comment
+ int id, AccountBriefModel account, CategoryModel category, String amount,@DateTimeConverter() DateTime transactionDate, DateTime createdAt, DateTime updatedAt, String? comment
 });
 
 

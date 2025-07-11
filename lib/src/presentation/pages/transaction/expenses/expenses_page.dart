@@ -1,8 +1,8 @@
 import 'package:billionaire/core/l10n/app_localizations.dart';
-import 'package:billionaire/src/domain/controllers/user_account_repository.dart';
 import 'package:billionaire/src/presentation/pages/transaction/widgets/expenses_income_content.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/dialogs_extension.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/invoke_function.dart';
 import 'package:billionaire/src/router/routes_util.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -33,35 +33,15 @@ class ExpensesPage extends StatelessWidget {
       floatingActionButton: Consumer(
         builder: (context, ref, child) => BillionFAB(
           onPressed: () async {
-            final account = await ref.read(
-              userAccountRepositoryProvider.future,
+            await context.invokeMethodWrapper(
+              () async {
+                if (context.mounted) {
+                  await context.showTransactionActionDialog(
+                    isIncome: false,
+                  );
+                }
+              },
             );
-            if (account == null) {
-              if (context.mounted) {
-                return showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    content: BillionText.titleLarge(
-                      'Счет не найден!',
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          GoRouter.of(context).pop();
-                        },
-                        child: BillionText.bodyMedium('Закрыть'),
-                      ),
-                    ],
-                  ),
-                );
-              }
-            }
-
-            if (context.mounted) {
-              await context.showTransactionActionDialog(
-                isIncome: false,
-              );
-            }
           },
         ),
       ),

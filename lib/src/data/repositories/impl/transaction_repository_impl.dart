@@ -334,8 +334,21 @@ class TransactionRepositoryImpl implements TransactionRepository {
         comment: event.comment,
       );
 
-      await remoteDatasource.createTransaction(request);
+      // Отправляем запрос на создание транзакции на сервер
+      final createdTransactionModel = await remoteDatasource
+          .createTransaction(request);
 
+      if (createdTransactionModel == null) {
+        throw Exception('Ошибка создания транзакции');
+      }
+
+      // Обновляем локальные события с новым serverId
+      final serverId = createdTransactionModel.id;
+
+      // Обновляем id в событиях обновления
+      await _updateEventIds(event.id, serverId);
+
+      // Удаляем событие создания из локальной базы
       await TransactionEventDatasource(
         database: database,
       ).removeCreateTransactionEvent(event);
@@ -355,16 +368,16 @@ class TransactionRepositoryImpl implements TransactionRepository {
         updatedModel: request,
       );
 
+      // Удаляем событие обновления из локальной базы
       await TransactionEventDatasource(
         database: database,
       ).removeUpdateTransactionEvent(event);
     }
 
     for (final event in deleteEvents) {
-      await remoteDatasource.deleteTransaction(
-        id: event.id,
-      );
+      await remoteDatasource.deleteTransaction(id: event.id);
 
+      // Удаляем событие удаления из локальной базы
       await TransactionEventDatasource(
         database: database,
       ).removeDeleteTransactionEvent(event);
@@ -443,5 +456,30 @@ class TransactionRepositoryImpl implements TransactionRepository {
     }
 
     return localTransactions;
+  }
+
+  Future<void> _updateEventIds(int oldId, int newId) async {
+    // Обновляем id в событиях обновления
+    final filteredUpdates = database.update(
+      database.updateTransactionEventTable,
+    )..where((tbl) => tbl.id.equals(oldId));
+
+    await filteredUpdates.write(
+      UpdateTransactionEventTableCompanion(
+        id: Value(newId),
+      ),
+    );
+
+    final filteredDeletes = database.update(
+      database.deleteTransactionEventTable,
+    )..where((tbl) => tbl.id.equals(oldId));
+
+    // Обновляем id в событиях удаления
+
+    await filteredDeletes.write(
+      DeleteTransactionEventTableCompanion(
+        id: Value(newId),
+      ),
+    );
   }
 }

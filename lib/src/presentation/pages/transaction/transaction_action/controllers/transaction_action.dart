@@ -23,10 +23,8 @@ class TransactionAction extends _$TransactionAction {
     );
 
     if (model == null) {
-      //todo Вызывать создание
       await controller.createTransaction(newModel: newModel);
     } else {
-      //todo Вызывать обновление
       await controller.updateTransaction(
         id: transactionId!,
         newModel: newModel,

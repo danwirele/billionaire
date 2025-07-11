@@ -1,3 +1,5 @@
+import 'dart:developer' show log;
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'connection.g.dart';
@@ -13,7 +15,7 @@ class Connection extends _$Connection {
     final connectionSub = connectivity.onConnectivityChanged.listen((
       List<ConnectivityResult> result,
     ) {
-      print(result);
+      log(result.toString());
       final hasConnection = !result.contains(ConnectivityResult.none);
 
       state = AsyncData(hasConnection);

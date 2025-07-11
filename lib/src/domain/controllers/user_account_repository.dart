@@ -14,16 +14,14 @@ P.S. у нас по условию ДЗ 1 всего один аккаунт
 @Riverpod(keepAlive: true, dependencies: [Connection])
 class UserAccountRepository extends _$UserAccountRepository {
   @override
-  Future<AccountModel?> build() async {
+  Future<AccountModel> build() async {
     final bankAccountRepo = await ref.read(
       bankAccountRepositoryImplDiProvider.future,
     );
 
-    final connection = ref.watch(connectionProvider.future);
+    await ref.watch(connectionProvider.future);
 
     final accountsList = await bankAccountRepo.getAllBankAccounts();
-
-    if (accountsList.isEmpty) return null;
 
     return accountsList.first;
   }

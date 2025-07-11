@@ -20,8 +20,9 @@ void main() async {
       ImageUtils.svgPrecacheImage();
 
       await Config().init();
-      // workerManager.log = true;
-      // await workerManager.init();
+
+      workerManager.log = true;
+      await workerManager.init();
       runApp(const ProviderScope(child: App()));
     },
     (error, st) {

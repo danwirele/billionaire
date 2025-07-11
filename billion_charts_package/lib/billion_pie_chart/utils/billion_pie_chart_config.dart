@@ -5,14 +5,11 @@ class BillionPieChartConfig {
     : assert(
         legends.fold(0.0, (previousValue, element) {
               return previousValue + element.percentage;
-            }).floor() ==
+            }).round() ==
             100,
         'incomePercentage & expensePercentage summary need to bee 100%',
       ),
-      assert(
-        legends.length <= 8 && legends.isNotEmpty,
-        'legentds.length must be <= 8',
-      );
+      assert(legends.isNotEmpty, 'legentds.length must be not empty');
 
   final double radius;
   final List<LegendEntity> legends;

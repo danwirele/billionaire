@@ -1,5 +1,5 @@
-import 'package:billionaire/src/data/db/db.dart';
 import 'package:billionaire/src/data/datasources/local/bank_account_local_datasource.dart';
+import 'package:billionaire/src/data/db/db.dart';
 import 'package:billionaire/src/domain/models/account/account_model.dart';
 import 'package:billionaire/src/domain/models/account/account_response_model.dart';
 import 'package:billionaire/src/domain/models/account/account_update_request_model.dart';
@@ -8,8 +8,7 @@ import 'package:billionaire/src/domain/repositories/bank_account_repository.dart
 import 'package:drift/drift.dart';
 
 class MockBankAccountRepositoryImpl implements BankAccountRepository {
-  MockBankAccountRepositoryImpl({required Database database})
-    : _database = database {
+  MockBankAccountRepositoryImpl({required Database database}) : _database = database {
     _accountLocalDatasource = BankAccountLocalDatasourceImpl(
       database: _database,
     );

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:billionaire/core/enum/currency_enum.dart';
 import 'package:billionaire/core/enum/filter_option.dart';
 import 'package:billionaire/src/domain/controllers/categories_repository.dart';
@@ -12,6 +10,7 @@ import 'package:billionaire/src/presentation/pages/transaction/history/widgets/f
 import 'package:billionaire/src/presentation/pages/transaction/widgets/billion_stat_widget.dart';
 import 'package:billionaire/src/presentation/shared/controllers/currency_provider.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/error_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -70,8 +69,7 @@ extension ModalBottomSheet on BuildContext {
                 currency: currencyList[index],
               );
             },
-            separatorBuilder: (context, index) =>
-                const Divider(height: 1),
+            separatorBuilder: (context, index) => const Divider(height: 1),
           ),
           const Divider(height: 1),
           ListTile(
@@ -152,8 +150,11 @@ extension ModalBottomSheet on BuildContext {
                       )
                       .toList();
 
-                  //TODO!
-                  if (categories.isEmpty) {}
+                  if (categories.isEmpty) {
+                    return Center(
+                      child: BillionText.bodyMedium('Категории отсутствуют'),
+                    );
+                  }
 
                   return ListView.builder(
                     shrinkWrap: true,
@@ -173,11 +174,9 @@ extension ModalBottomSheet on BuildContext {
                   );
                 },
                 error: (error, stackTrace) {
-                  log(error.toString());
-                  log(stackTrace.toString());
-                  return BillionText.bodyMedium(
-                    'Извините, произошла ошибка получения категорий',
-                  );
+                  final errorMessage = ErrorHelper.whenError(error, 'Ошибка получения категорий');
+
+                  return BillionText.bodyMedium(errorMessage);
                 },
                 loading: () => const Center(
                   child: CircularProgressIndicator(),
@@ -203,14 +202,6 @@ extension ModalBottomSheet on BuildContext {
                 )
                 .when(
                   data: (account) {
-                    if (account == null) {
-                      return Center(
-                        child: BillionText.bodyMedium(
-                          'Счет не найден',
-                        ),
-                      );
-                    }
-
                     return ListTile(
                       title: BillionText.titleMedium(account.name),
                       subtitle: BillionText.bodyMedium(
@@ -222,11 +213,9 @@ extension ModalBottomSheet on BuildContext {
                     );
                   },
                   error: (error, stackTrace) {
-                    log(error.toString());
-                    log(stackTrace.toString());
-                    return BillionText.bodyMedium(
-                      'Извините, произошла ошибка получения категорий',
-                    );
+                    final errorMessage = ErrorHelper.whenError(error, 'Ошибка получения категорий');
+
+                    return BillionText.bodyMedium(errorMessage);
                   },
                   loading: () => const Center(
                     child: CircularProgressIndicator(),

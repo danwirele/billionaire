@@ -40,7 +40,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
           )
           .toList();
 
-      localDatasource.saveCategories(
+      await localDatasource.saveCategories(
         categoryDbList: categoryDbList,
       );
 

@@ -50,11 +50,9 @@ class BankAccountRepositoryImpl implements BankAccountRepository {
       return accounts;
     } else {
       final accounts = await localDatasource.getAllAccounts();
-      print(accounts);
 
       final modelAccounts = accounts.map(
         (e) {
-          print(e);
           return AccountModel(
             id: e.id,
             userId: e.userId,
