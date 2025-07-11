@@ -16,7 +16,7 @@ class HistoryTransactions extends _$HistoryTransactions {
   Future<HistoryTransactionStateModel?> build({
     required bool isIncome,
   }) async {
-    final transactions = await ref.watch(
+    final transactions = await ref.read(
       historyTransactionsRepositoryProvider.future,
     );
 

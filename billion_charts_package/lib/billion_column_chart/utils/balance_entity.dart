@@ -5,4 +5,9 @@ class BalanceEntity {
 
   final DateTime date;
   final double balance;
+
+  @override
+  String toString() {
+    return 'BalanceEntity(date: $date, balance: $balance)';
+  }
 }

@@ -6,11 +6,11 @@ class BillionColumnBalanceChart extends StatefulWidget {
   final BillionColumnChartConfig config;
 
   @override
-  _BillionColumnBalanceChartState createState() =>
-      _BillionColumnBalanceChartState();
+  BillionColumnBalanceChartState createState() =>
+      BillionColumnBalanceChartState();
 }
 
-class _BillionColumnBalanceChartState
+class BillionColumnBalanceChartState
     extends State<BillionColumnBalanceChart> {
   int? touchedIndex;
 
@@ -131,7 +131,7 @@ class _BillionColumnBalanceChartState
             },
           ),
         ),
-        
+
         duration: Duration(seconds: 2), // Отключаем анимацию
       ),
     );
@@ -158,8 +158,8 @@ class _BillionColumnBalanceChartState
   }
 
   double _calculateMaxY(List<BalanceEntity> data) {
-   return data
-      .map((entity) => entity.balance.abs())
-      .reduce((a, b) => a > b ? a : b) ;
+    return data
+        .map((entity) => entity.balance.abs())
+        .reduce((a, b) => a > b ? a : b);
   }
 }

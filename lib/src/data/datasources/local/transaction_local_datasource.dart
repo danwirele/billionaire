@@ -1,22 +1,41 @@
 import 'package:billionaire/src/data/db/db.dart';
 import 'package:drift/drift.dart';
 
-class TransactionLocalDatasource {
-  TransactionLocalDatasource({required Database database}) : _database = database;
+abstract interface class TransactionLocalDatasource {
+  Future<void> saveTransaction({
+    required TransactionDbModel transaction,
+  });
+
+  Future<List<TransactionDbModel>> getAllTransactions();
+
+  Future<List<TransactionDbModel>> getTransactionsByType({
+    required bool isIncome,
+  });
+}
+
+class TransactionLocalDatasourceImpl implements TransactionLocalDatasource {
+  const TransactionLocalDatasourceImpl({required Database database}) : _database = database;
   final Database _database;
 
-  Future<void> saveTransaction({required TransactionDbModel transaction}) async {
+  @override
+  Future<void> saveTransaction({
+    required TransactionDbModel transaction,
+  }) async {
     await _database.transactionTable.insertOne(
       transaction,
       mode: InsertMode.insertOrFail,
     );
   }
 
+  @override
   Future<List<TransactionDbModel>> getAllTransactions() async {
     return _database.select(_database.transactionTable).get();
   }
 
-  Future<List<TransactionDbModel>> getTransactionsByType({required bool isIncome}) async {
+  @override
+  Future<List<TransactionDbModel>> getTransactionsByType({
+    required bool isIncome,
+  }) async {
     final categories = _database.categoryTable;
     final transactions = _database.transactionTable;
 
@@ -36,6 +55,9 @@ class TransactionLocalDatasource {
           categoryId: data.read('categoryId'),
           amount: data.read('amount'),
           transactionDate: data.read('transactionDate'),
+          createdAt: data.read('createdAt'),
+          updatedAt: data.read('updatedAt'),
+          comment: data.readNullable('comment'),
         );
       },
     ).toList();

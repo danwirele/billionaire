@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:billionaire/core/l10n/app_localizations.dart';
 import 'package:billionaire/src/presentation/pages/stats/controllers/stats_controller.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/error_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -23,6 +22,7 @@ class StatsPage extends StatelessWidget {
                 skipLoadingOnRefresh: true,
                 skipLoadingOnReload: true,
                 data: (categories) {
+                  debugPrint(categories.toString());
                   return Column(
                     children: [
                       TextField(
@@ -46,56 +46,65 @@ class StatsPage extends StatelessWidget {
                         onChanged: (query) async {
                           await ref
                               .read(statsControllerProvider.notifier)
-                              .fuzzySearchLevenshtein(
-                                query,
-                                categories,
-                              );
+                              .fuzzySearchLevenshtein(query);
                         },
                       ),
                       Expanded(
-                        child: ListView.builder(
-                          itemCount: categories.length,
-                          itemBuilder: (context, index) {
-                            final category = categories[index];
-
-                            return Column(
-                              children: [
-                                ListTile(
-                                  dense: true,
-                                  contentPadding:
-                                      const EdgeInsets.symmetric(
-                                        vertical: 11,
-                                        horizontal: 16,
-                                      ),
-                                  leading: category.emoji.isNotEmpty
-                                      ? CircleAvatar(
-                                          radius: 12,
-                                          backgroundColor:
-                                              BillionColors
-                                                  .primaryContainer,
-                                          child: Text(category.emoji),
-                                        )
-                                      : const SizedBox.shrink(),
-
-                                  title: BillionText.bodyLarge(
-                                    category.name,
-                                  ),
+                        child: categories.isEmpty
+                            ? Center(
+                                child: BillionText.bodyMedium(
+                                  'Категории отсутствуют',
                                 ),
-                                const Divider(height: 1),
-                              ],
-                            );
-                          },
-                        ),
+                              )
+                            : ListView.builder(
+                                itemCount: categories.length,
+                                itemBuilder: (context, index) {
+                                  final category = categories[index];
+
+                                  return Column(
+                                    children: [
+                                      ListTile(
+                                        dense: true,
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                              vertical: 11,
+                                              horizontal: 16,
+                                            ),
+                                        leading:
+                                            category.emoji.isNotEmpty
+                                            ? CircleAvatar(
+                                                radius: 12,
+                                                backgroundColor:
+                                                    BillionColors
+                                                        .primaryContainer,
+                                                child: Text(
+                                                  category.emoji,
+                                                ),
+                                              )
+                                            : const SizedBox.shrink(),
+
+                                        title: BillionText.bodyLarge(
+                                          category.name,
+                                        ),
+                                      ),
+                                      const Divider(height: 1),
+                                    ],
+                                  );
+                                },
+                              ),
                       ),
                     ],
                   );
                 },
                 error: (error, stackTrace) {
-                  log(error.toString());
-                  log(stackTrace.toString());
-                  return const Center(
-                    child: Text(
-                      'Произошла ошибка получения категорий',
+                  final errorMessage = ErrorHelper.whenError(
+                    error,
+                    'Произошла ошибка получения категорий',
+                  );
+
+                  return Center(
+                    child: BillionText.bodyMedium(
+                      errorMessage,
                     ),
                   );
                 },

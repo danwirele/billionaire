@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:billionaire/core/enum/currency_enum.dart';
 import 'package:billionaire/core/enum/filter_option.dart';
 import 'package:billionaire/src/domain/controllers/categories_repository.dart';
@@ -12,6 +10,7 @@ import 'package:billionaire/src/presentation/pages/transaction/history/widgets/f
 import 'package:billionaire/src/presentation/pages/transaction/widgets/billion_stat_widget.dart';
 import 'package:billionaire/src/presentation/shared/controllers/currency_provider.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/error_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -129,7 +128,9 @@ extension ModalBottomSheet on BuildContext {
     );
   }
 
-  Future<CategoryModel?> showCategories() async {
+  Future<CategoryModel?> showCategories({
+    required bool isIncome,
+  }) async {
     return showModalBottomSheet<CategoryModel>(
       context: this,
       showDragHandle: true,
@@ -143,12 +144,24 @@ extension ModalBottomSheet on BuildContext {
               )
               .when(
                 data: (categories) {
+                  final filteredCategories = categories
+                      .where(
+                        (element) => element.isIncome == isIncome,
+                      )
+                      .toList();
+
+                  if (categories.isEmpty) {
+                    return Center(
+                      child: BillionText.bodyMedium('Категории отсутствуют'),
+                    );
+                  }
+
                   return ListView.builder(
                     shrinkWrap: true,
                     padding: EdgeInsets.zero,
-                    itemCount: categories.length,
+                    itemCount: filteredCategories.length,
                     itemBuilder: (context, index) {
-                      final category = categories[index];
+                      final category = filteredCategories[index];
 
                       return BillionStatWidget(
                         actionCallBack: () async {
@@ -161,11 +174,9 @@ extension ModalBottomSheet on BuildContext {
                   );
                 },
                 error: (error, stackTrace) {
-                  log(error.toString());
-                  log(stackTrace.toString());
-                  return BillionText.bodyMedium(
-                    'Извините, произошла ошибка получения категорий',
-                  );
+                  final errorMessage = ErrorHelper.whenError(error, 'Ошибка получения категорий');
+
+                  return BillionText.bodyMedium(errorMessage);
                 },
                 loading: () => const Center(
                   child: CircularProgressIndicator(),
@@ -191,14 +202,6 @@ extension ModalBottomSheet on BuildContext {
                 )
                 .when(
                   data: (account) {
-                    if (account == null) {
-                      return Center(
-                        child: BillionText.bodyMedium(
-                          'Счет не найден',
-                        ),
-                      );
-                    }
-
                     return ListTile(
                       title: BillionText.titleMedium(account.name),
                       subtitle: BillionText.bodyMedium(
@@ -210,11 +213,9 @@ extension ModalBottomSheet on BuildContext {
                     );
                   },
                   error: (error, stackTrace) {
-                    log(error.toString());
-                    log(stackTrace.toString());
-                    return BillionText.bodyMedium(
-                      'Извините, произошла ошибка получения категорий',
-                    );
+                    final errorMessage = ErrorHelper.whenError(error, 'Ошибка получения категорий');
+
+                    return BillionText.bodyMedium(errorMessage);
                   },
                   loading: () => const Center(
                     child: CircularProgressIndicator(),

@@ -1,8 +1,7 @@
-import 'package:billionaire/src/data/db/db_provider.dart';
-import 'package:billionaire/src/data/remote/mock_repository_impl/mock_bank_account_repository_impl.dart';
+import 'package:billionaire/src/domain/controllers/connection.dart';
 import 'package:billionaire/src/domain/models/account/account_model.dart';
 import 'package:billionaire/src/domain/models/account/account_update_request_model.dart';
-import 'package:billionaire/src/domain/repositories/bank_account_repository.dart';
+import 'package:billionaire/src/domain/repo_impl_provider/bank_account_repository_impl_di.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'user_account_repository.g.dart';
@@ -12,18 +11,17 @@ P.S. у нас по условию ДЗ 1 всего один аккаунт
 После этого получить информацию о счете [AccountResponseModel] уже по id
 */
 
-@Riverpod(keepAlive: true)
+@Riverpod(keepAlive: true, dependencies: [Connection])
 class UserAccountRepository extends _$UserAccountRepository {
-  late final BankAccountRepository accountRepo;
-
   @override
-  Future<AccountModel?> build() async {
-    final database = await ref.read(dbProviderProvider.future);
+  Future<AccountModel> build() async {
+    final bankAccountRepo = await ref.read(
+      bankAccountRepositoryImplDiProvider.future,
+    );
 
-    accountRepo = MockBankAccountRepositoryImpl(database: database);
-    final accountsList = await accountRepo.getAllBankAccounts();
+    await ref.watch(connectionProvider.future);
 
-    if (accountsList.isEmpty) return null;
+    final accountsList = await bankAccountRepo.getAllBankAccounts();
 
     return accountsList.first;
   }
@@ -31,12 +29,16 @@ class UserAccountRepository extends _$UserAccountRepository {
   Future<void> updateAccount(
     AccountModel updatedModel,
   ) async {
+    final bankAccountRepo = await ref.read(
+      bankAccountRepositoryImplDiProvider.future,
+    );
+
     final currentAccount = state.value;
     if (currentAccount == null) {
       return;
     }
 
-    final newModel = await accountRepo.updateBankAccount(
+    final newModel = await bankAccountRepo.updateBankAccount(
       id: updatedModel.id,
       updatedModel: AccountUpdateRequestModel(
         balance: updatedModel.balance,

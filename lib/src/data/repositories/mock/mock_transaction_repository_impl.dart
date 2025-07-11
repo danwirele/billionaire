@@ -1,4 +1,3 @@
-import 'package:billionaire/src/data/db/db.dart';
 import 'package:billionaire/src/domain/models/account/account_brief_model.dart';
 import 'package:billionaire/src/domain/models/category/category_model.dart';
 import 'package:billionaire/src/domain/models/transactions/transaction.dart';
@@ -7,17 +6,13 @@ import 'package:billionaire/src/domain/models/transactions/transaction_response.
 import 'package:billionaire/src/domain/repositories/transaction_repository.dart';
 
 class MockTransactionRepositoryImpl implements TransactionRepository {
-  MockTransactionRepositoryImpl({required Database database}) : _database = database {
+  MockTransactionRepositoryImpl() {
     resetMockData();
   }
-  final Database _database;
 
   // Список фиктивных транзакций
   final List<TransactionModel> _mockTransactions = [];
   final List<TransactionResponseModel> _mockTransactionsResponses = [];
-
-  // Переменная для контроля ID транзакций
-  int _nextId = 1;
 
   @override
   Future<TransactionModel?> createTransaction(
@@ -27,7 +22,7 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
 
     // Создаем новую транзакцию с уникальным ID
     final newTransaction = TransactionModel(
-      id: _nextId++,
+      id: _mockTransactions.length + 1,
       accountId: model.accountId,
       categoryId: model.categoryId,
       amount: model.amount,
@@ -119,10 +114,7 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<void> deleteTransaction({
-    required int id,
-    required TransactionModel deleteModel,
-  }) async {
+  Future<void> deleteTransaction({required int id}) async {
     await Future<void>.delayed(const Duration(milliseconds: 200));
 
     final index = _mockTransactions.indexWhere((t) => t.id == id);
@@ -156,8 +148,6 @@ class MockTransactionRepositoryImpl implements TransactionRepository {
   void resetMockData() {
     _mockTransactions.clear();
     _mockTransactionsResponses.clear();
-
-    _nextId = 1;
 
     final today = DateTime.now().add(
       const Duration(minutes: 10),

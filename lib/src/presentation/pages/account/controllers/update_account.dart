@@ -13,8 +13,6 @@ class UpdateAccount extends _$UpdateAccount {
       userAccountRepositoryProvider.future,
     );
 
-    if (userAccount == null) return null;
-
     final nameController = TextEditingController();
 
     ref.onDispose(nameController.dispose);
@@ -38,8 +36,6 @@ class UpdateAccount extends _$UpdateAccount {
       currency: currency ?? userAccount.currency,
     );
 
-    await ref
-        .read(userAccountRepositoryProvider.notifier)
-        .updateAccount(updatedAccount);
+    await ref.read(userAccountRepositoryProvider.notifier).updateAccount(updatedAccount);
   }
 }

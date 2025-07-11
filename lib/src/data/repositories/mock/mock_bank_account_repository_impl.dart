@@ -1,53 +1,29 @@
+import 'package:billionaire/src/data/datasources/local/bank_account_local_datasource.dart';
 import 'package:billionaire/src/data/db/db.dart';
-import 'package:billionaire/src/data/local/account_local_datasource.dart';
 import 'package:billionaire/src/domain/models/account/account_model.dart';
 import 'package:billionaire/src/domain/models/account/account_response_model.dart';
 import 'package:billionaire/src/domain/models/account/account_update_request_model.dart';
+import 'package:billionaire/src/domain/models/account/stat_item_model.dart';
 import 'package:billionaire/src/domain/repositories/bank_account_repository.dart';
 import 'package:drift/drift.dart';
 
 class MockBankAccountRepositoryImpl implements BankAccountRepository {
   MockBankAccountRepositoryImpl({required Database database}) : _database = database {
-    _accountLocalDatasource = AccountLocalDatasource(database: _database);
+    _accountLocalDatasource = BankAccountLocalDatasourceImpl(
+      database: _database,
+    );
     resetMockData();
   }
   final Database _database;
 
-  late final AccountLocalDatasource _accountLocalDatasource;
+  late final BankAccountLocalDatasource _accountLocalDatasource;
 
   final List<AccountModel> _mockAccounts = [];
   final List<AccountResponseModel> _mockAccountResponses = [];
 
   @override
   Future<List<AccountModel>> getAllBankAccounts() async {
-    final accountDbModel = await _accountLocalDatasource.getAccount();
-
-    if (accountDbModel == null) {
-      final account = _mockAccounts.first;
-      await _accountLocalDatasource.saveAccount(
-        accountDbModel: AccountTableCompanion(
-          apiId: Value(account.id),
-          balance: Value(account.balance),
-          name: Value(account.name),
-          currency: Value(account.currency),
-          userId: Value(account.userId),
-        ),
-      );
-
-      return [account];
-    }
-
-    final accountModel = AccountModel(
-      id: accountDbModel.apiId,
-      userId: accountDbModel.userId,
-      name: accountDbModel.name,
-      balance: accountDbModel.balance,
-      currency: accountDbModel.currency,
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-    );
-
-    return [accountModel];
+    return [_mockAccounts.first];
   }
 
   @override
@@ -67,7 +43,7 @@ class MockBankAccountRepositoryImpl implements BankAccountRepository {
   }) async {
     await _accountLocalDatasource.updateAccount(
       updatedModel: AccountTableCompanion(
-        apiId: Value(id),
+        id: Value(id),
         name: Value(updatedModel.name),
         balance: Value(updatedModel.balance),
         currency: Value(updatedModel.currency),
@@ -194,8 +170,8 @@ class MockBankAccountRepositoryImpl implements BankAccountRepository {
         'name': 'Долларовый счёт',
         'balance': '1500.00',
         'currency': 'USD',
-        'incomeStats': [],
-        'expenseStats': [],
+        'incomeStats': <StatItemModel>[],
+        'expenseStats': <StatItemModel>[],
         'createdAt': '2025-05-01T10:30:00.000Z',
         'updatedAt': '2025-06-01T15:45:00.000Z',
       }),

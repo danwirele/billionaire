@@ -1,29 +1,69 @@
-import 'package:billionaire/src/data/db/db_provider.dart';
-import 'package:billionaire/src/data/remote/mock_repository_impl/mock_transaction_repository_impl.dart';
+import 'package:billionaire/src/data/db/db_service.dart';
+import 'package:billionaire/src/data/services/dio_service.dart';
 import 'package:billionaire/src/domain/controllers/user_account_repository.dart';
 import 'package:billionaire/src/domain/models/transactions/transaction_request.dart';
 import 'package:billionaire/src/domain/models/transactions/transaction_response.dart';
-import 'package:billionaire/src/domain/repositories/transaction_repository.dart';
+import 'package:billionaire/src/domain/repo_impl_provider/transaction_repository_impl_di.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'transactions_repository.g.dart';
 
-@Riverpod(dependencies: [UserAccountRepository])
+@Riverpod(
+  dependencies: [UserAccountRepository, DbService, DioService],
+)
 class TransactionsRepository extends _$TransactionsRepository {
-  late final TransactionRepository transactionRepo;
-
   @override
   Future<List<TransactionResponseModel>?> build() async {
-    final database = await ref.read(dbProviderProvider.future);
-    transactionRepo = MockTransactionRepositoryImpl(database: database);
+    final transactions = getTransactionsByPeriod();
 
-    final account = await ref.watch(
+    return transactions;
+  }
+
+  Future<void> createTransaction({
+    required TransactionRequestModel newModel,
+  }) async {
+    final transactionRepo = await ref.read(
+      transactionRepositoryImplDiProvider.future,
+    );
+    await transactionRepo.createTransaction(newModel);
+
+    final transactions = await getTransactionsByPeriod();
+    state = AsyncData(transactions);
+  }
+
+  Future<void> updateTransaction({
+    required int id,
+    required TransactionRequestModel newModel,
+  }) async {
+    final transactionRepo = await ref.read(
+      transactionRepositoryImplDiProvider.future,
+    );
+    await transactionRepo.updateTransaction(
+      id: id,
+      updatedModel: newModel,
+    );
+    final transactions = await getTransactionsByPeriod();
+    state = AsyncData(transactions);
+  }
+
+  Future<void> deleteTransaction({
+    required int id,
+  }) async {
+    final transactionRepo = await ref.read(
+      transactionRepositoryImplDiProvider.future,
+    );
+    await transactionRepo.deleteTransaction(id: id);
+  }
+
+  Future<List<TransactionResponseModel>?> getTransactionsByPeriod() async {
+    final transactionRepo = await ref.read(
+      transactionRepositoryImplDiProvider.future,
+    );
+
+    final account = await ref.read(
       userAccountRepositoryProvider.future,
     );
 
-    if (account == null) return null;
-
-    //TODO! Сделай екстеншен
     final dateTimeNow = DateTime.now();
 
     // Начало текущего дня
@@ -43,20 +83,10 @@ class TransactionsRepository extends _$TransactionsRepository {
       59,
     );
 
-    final transactions = await transactionRepo.getTransactionsByPeriod(
+    return transactionRepo.getTransactionsByPeriod(
       accountId: account.id,
       startDate: startDate,
       endDate: endDate,
     );
-
-    return transactions;
-  }
-
-  Future<void> createTransaction({required TransactionRequestModel newModel}) async {
-   //todo!
-  }
-
-  Future<void> updateTransaction({required}) async {
-   //todo!
   }
 }

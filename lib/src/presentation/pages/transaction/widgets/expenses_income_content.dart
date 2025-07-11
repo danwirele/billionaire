@@ -2,13 +2,14 @@ import 'package:billionaire/src/presentation/pages/transaction/controllers/filte
 import 'package:billionaire/src/presentation/pages/transaction/widgets/billion_stat_widget.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/dialogs_extension.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/error_helper.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/invoke_function.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ExpensesIncomeContent extends StatelessWidget {
   const ExpensesIncomeContent.income({super.key}) : isIncome = true;
-  const ExpensesIncomeContent.expenses({super.key})
-    : isIncome = false;
+  const ExpensesIncomeContent.expenses({super.key}) : isIncome = false;
 
   final bool isIncome;
 
@@ -18,50 +19,80 @@ class ExpensesIncomeContent extends StatelessWidget {
       isIncome: isIncome,
     );
 
-    return Consumer(
-      builder: (context, ref, child) {
-        final currencyProviderValue = ref.getCurrency();
+    return Column(
+      children: [
+        Consumer(
+          builder: (context, ref, child) {
+            final currencyProviderValue = ref.getCurrency();
 
-        return ref
-            .watch(accountTransactionRepo)
-            .when(
-              data: (transactionStateModel) {
-                if (transactionStateModel == null) {
-                  return const Center(
-                    child: Text(
-                      'Извините, произошла ошибка, счет не найден',
-                    ),
-                  );
-                }
+            return BillionPinnedContainer.primaryMedium(
+              leading: BillionText.bodyLarge('Всего'),
+              action: ref
+                  .watch(accountTransactionRepo)
+                  .when(
+                    data: (transactionStateModel) {
+                      final amountText = transactionStateModel?.amount.formatNumber() ?? 'Информация отсутствует';
 
-                if (transactionStateModel.transactions.isEmpty) {
-                  return const Center(
-                    child: Text(
-                      'Отсутствуют информации о транзакциях',
-                    ),
-                  );
-                }
+                      return BillionText.bodyLarge(
+                        '$amountText ${currencyProviderValue.char}',
+                      );
+                    },
+                    error: (error, stackTrace) {
+                      final errorMessage = ErrorHelper.whenError(error);
 
-                return Column(
-                  children: [
-                    BillionPinnedContainer.primaryMedium(
-                      leading: BillionText.bodyLarge('Всего'),
-                      action: BillionText.bodyLarge(
-                        '${transactionStateModel.amount.formatNumber()} ${currencyProviderValue.char}',
-                      ),
+                      return BillionText.bodyMedium(
+                        errorMessage,
+                        maxLines: 10,
+                      );
+                    },
+                    loading: () => BillionText.bodyLarge(
+                      'Загрузка...',
                     ),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount:
-                            transactionStateModel.transactions.length,
+                  ),
+            );
+          },
+        ),
+        Expanded(
+          child: Consumer(
+            builder: (context, ref, child) {
+              final currencyProviderValue = ref.getCurrency();
+
+              return ref
+                  .watch(accountTransactionRepo)
+                  .when(
+                    data: (transactionStateModel) {
+                      if (transactionStateModel == null) {
+                        return const Center(
+                          child: Text(
+                            'Извините, произошла ошибка, счет не найден',
+                          ),
+                        );
+                      }
+
+                      if (transactionStateModel.transactions.isEmpty) {
+                        return const Center(
+                          child: Text(
+                            'Список транзакций пуст',
+                          ),
+                        );
+                      }
+
+                      return ListView.builder(
+                        itemCount: transactionStateModel.transactions.length,
                         itemBuilder: (context, index) {
-                          final transaction = transactionStateModel
-                              .transactions[index];
+                          final transaction = transactionStateModel.transactions[index];
                           final category = transaction.category;
 
                           return BillionStatWidget(
-                            actionCallBack: ()async {
-                              await   context.showTransactionActionDialog(model: transaction);  
+                            actionCallBack: () async {
+                              await context.invokeMethodWrapper(
+                                () async {
+                                  await context.showTransactionActionDialog(
+                                    model: transaction,
+                                    isIncome: isIncome,
+                                  );
+                                },
+                              );
                             },
                             statTitle: category.name,
                             statDescription: transaction.comment,
@@ -71,21 +102,29 @@ class ExpensesIncomeContent extends StatelessWidget {
                             leadingEmoji: category.emoji,
                           );
                         },
+                      );
+                    },
+                    error: (error, stackTrace) {
+                      final errorMessage = ErrorHelper.whenError(error);
+
+                      return Center(
+                        child: BillionText.bodyMedium(
+                          errorMessage,
+                          maxLines: 10,
+                        ),
+                      );
+                    },
+                    loading: () => const Center(
+                      child: CircularProgressIndicator(
+                        backgroundColor: BillionColors.primaryContainer,
+                        color: BillionColors.primary,
                       ),
                     ),
-                  ],
-                );
-              },
-              error: (error, stackTrace) =>
-                  BillionText.bodyMedium(error.toString()),
-              loading: () => const Center(
-                child: CircularProgressIndicator(
-                  backgroundColor: BillionColors.primaryContainer,
-                  color: BillionColors.primary,
-                ),
-              ),
-            );
-      },
+                  );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

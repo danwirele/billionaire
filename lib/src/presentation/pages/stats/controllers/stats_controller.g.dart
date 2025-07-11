@@ -6,7 +6,7 @@ part of 'stats_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$statsControllerHash() => r'b0f03ee83bf6f28ac759d714d368f8684336f4c9';
+String _$statsControllerHash() => r'0f1d03713b77cd9d22188aee9d2ae614024e8c50';
 
 /// See also [StatsController].
 @ProviderFor(StatsController)
@@ -20,8 +20,11 @@ final statsControllerProvider =
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
           ? null
           : _$statsControllerHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
+      dependencies: <ProviderOrFamily>[categoriesRepositoryProvider],
+      allTransitiveDependencies: <ProviderOrFamily>{
+        categoriesRepositoryProvider,
+        ...?categoriesRepositoryProvider.allTransitiveDependencies,
+      },
     );
 
 typedef _$StatsController = AutoDisposeAsyncNotifier<List<CategoryModel>>;

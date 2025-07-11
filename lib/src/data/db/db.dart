@@ -2,11 +2,21 @@ import 'package:drift/drift.dart';
 part './models/category_table.dart';
 part './models/transaction_table.dart';
 part './models/account_table.dart';
+part './events/create_transaction_event.dart';
+part './events/update_transaction_event.dart';
+part './events/delete_transaction_event.dart';
 
 part 'db.g.dart';
 
 @DriftDatabase(
-  tables: [CategoryTable, TransactionTable, AccountTable],
+  tables: [
+    CategoryTable,
+    TransactionTable,
+    AccountTable,
+    CreateTransactionEventTable,
+    UpdateTransactionEventTable,
+    DeleteTransactionEventTable,
+  ],
 )
 class Database extends _$Database {
   Database(super.e);

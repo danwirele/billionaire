@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 class ChooseCategory extends StatelessWidget {
   const ChooseCategory({
     required this.categoryNotifier,
+    required this.isIncome,
     super.key,
   });
 
+  final bool isIncome;
   final ValueNotifier<CategoryModel?> categoryNotifier;
 
   @override
@@ -18,7 +20,9 @@ class ChooseCategory extends StatelessWidget {
       builder: (context, category, _) {
         return BillionPinnedContainer.transparentLarge(
           onTap: () async {
-            final selectedCategory = await context.showCategories();
+            final selectedCategory = await context.showCategories(
+              isIncome: isIncome,
+            );
             if (selectedCategory != null) {
               categoryNotifier.value = selectedCategory;
             }

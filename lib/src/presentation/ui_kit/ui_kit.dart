@@ -1,8 +1,7 @@
 import 'package:billionaire/core/enum/currency_enum.dart';
 import 'package:billionaire/core/gen/assets.gen.dart';
 import 'package:billionaire/core/l10n/app_localizations.dart';
-import 'package:billionaire/src/data/db/db.dart';
-import 'package:billionaire/src/data/db/db_provider.dart';
+import 'package:billionaire/src/domain/controllers/connection.dart';
 import 'package:billionaire/src/presentation/shared/controllers/currency_provider.dart';
 import 'package:billionaire/src/router/routes_util.dart';
 import 'package:flutter/material.dart';

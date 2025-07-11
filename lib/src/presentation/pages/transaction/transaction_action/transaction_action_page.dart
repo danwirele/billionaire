@@ -1,6 +1,7 @@
 import 'package:billionaire/src/domain/controllers/user_account_repository.dart';
 import 'package:billionaire/src/domain/models/account/account_brief_model.dart';
 import 'package:billionaire/src/domain/models/category/category_model.dart';
+import 'package:billionaire/src/domain/models/transactions/transaction_request.dart';
 import 'package:billionaire/src/domain/models/transactions/transaction_response.dart';
 import 'package:billionaire/src/presentation/pages/transaction/transaction_action/controllers/transaction_action.dart';
 import 'package:billionaire/src/presentation/pages/transaction/transaction_action/widgets/choose_account.dart';
@@ -18,11 +19,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class TransactionActionPage extends HookConsumerWidget {
   const TransactionActionPage({
+    required this.isIncome,
     this.model,
     super.key,
   });
 
   final TransactionResponseModel? model;
+  final bool isIncome;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -45,12 +48,13 @@ class TransactionActionPage extends HookConsumerWidget {
 
     // Проверка валидности данных перед сохранением
     bool isValid() {
-      return accountNotifier.value != null && categoryNotifier.value != null && amountNotifier.value.isNotEmpty;
+      return accountNotifier.value != null &&
+          categoryNotifier.value != null &&
+          amountNotifier.value.isNotEmpty;
     }
 
     return BillionScaffold(
       appBar: BillionAppBar(
-        //TODO
         leading: IconButton(
           onPressed: GoRouter.of(context).pop,
           icon: const Icon(Icons.close),
@@ -64,11 +68,10 @@ class TransactionActionPage extends HookConsumerWidget {
           ),
           onPressed: () async {
             if (isValid()) {
-              final transaction = TransactionResponseModel(
-                id: model?.id ?? 0,
-                account: accountNotifier.value!,
-                category: categoryNotifier.value!,
-                amount: amountNotifier.value,
+              final transaction = TransactionRequestModel(
+                accountId: userAccount.id,
+                categoryId: categoryNotifier.value!.id,
+                amount: amountNotifier.value.replaceAll(' ', ''),
                 transactionDate: DateTime(
                   dateNotifier.value.year,
                   dateNotifier.value.month,
@@ -77,19 +80,20 @@ class TransactionActionPage extends HookConsumerWidget {
                   timeNotifier.value.minute,
                 ),
                 comment: commentNotifier.value,
-                createdAt: model?.createdAt ?? DateTime.now(),
-                updatedAt: DateTime.now(),
               );
+
+              if (context.mounted) {
+                context.pop();
+              }
 
               await ref
                   .read(
                     transactionActionProvider(model: model).notifier,
                   )
-                  .saveTransaction(newTransaction: transaction);
-
-              if (context.mounted) {
-                context.pop();
-              }
+                  .saveTransaction(
+                    newModel: transaction,
+                    transactionId: model?.id,
+                  );
             } else {
               final errorList = <String>[];
 
@@ -113,25 +117,49 @@ class TransactionActionPage extends HookConsumerWidget {
         child: Column(
           children: [
             ChooseAccount(accountNotifier: accountNotifier),
-            ChooseCategory(categoryNotifier: categoryNotifier),
+            ChooseCategory(
+              categoryNotifier: categoryNotifier,
+              isIncome: isIncome,
+            ),
             ChooseAmount(amountNotifier: amountNotifier),
             ChooseDate(dateNotifier: dateNotifier),
             ChooseTime(timeNotifier: timeNotifier),
             ChooseComment(commentNotifier: commentNotifier),
-            if(model != null) Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
-              child: ElevatedButton(onPressed: () {
-              },
-              style: const ButtonStyle(
-                backgroundColor: const WidgetStatePropertyAll(BillionColors.error),
-                foregroundColor:WidgetStatePropertyAll(BillionColors.onPrimary,)
-              ),
-              child: BillionText.labelLarge('Удалить расход',color: BillionColors.onPrimary,),
-              ),
-            ),
-          ],
+            if (model != null)
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    if (context.mounted) {
+                      context.pop();
+                    }
 
+                    await ref
+                        .read(
+                          transactionActionProvider(
+                            model: model,
+                          ).notifier,
+                        )
+                        .deleteTransaction(
+                          transactionId: model!.id,
+                        );
+                  },
+                  style: const ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(
+                      BillionColors.error,
+                    ),
+                    foregroundColor: WidgetStatePropertyAll(
+                      BillionColors.onPrimary,
+                    ),
+                  ),
+                  child: BillionText.labelLarge(
+                    'Удалить расход',
+                    color: BillionColors.onPrimary,
+                  ),
+                ),
+              ),
+          ],
         ),
       ),
     );

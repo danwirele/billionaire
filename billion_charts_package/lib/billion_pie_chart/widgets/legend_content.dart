@@ -12,6 +12,11 @@ class LegendContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final sortedLegends =
+        legends.where((legend) => legend.percentage > 0).toList()
+          ..sort((a, b) => b.percentage.compareTo(a.percentage));
+    final topLegends = sortedLegends.take(8).toList();
+
     return Center(
       child: ConstrainedBox(
         constraints: BoxConstraints(
@@ -23,19 +28,24 @@ class LegendContent extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: List.generate(legends.length, (index) {
-            final legend = legends[index];
+          children: List.generate(topLegends.length, (index) {
+            final legend = topLegends[index];
             return SizedBox(
               child: Row(
                 mainAxisSize: MainAxisSize.min,
-                spacing: 3.3,
                 children: [
+                  const SizedBox(
+                    width: 3.3,
+                  ), // Добавляем отступ слева
                   CircleAvatar(
                     backgroundColor: legend.sectionColor,
                     radius: 3.5,
                   ),
+                  const SizedBox(
+                    width: 3.3,
+                  ), // Отступ между кругом и текстом
                   Text(
-                    '${legend.percentage.toStringAsFixed(0)}& ${legend.title}',
+                    '${legend.percentage.toStringAsFixed(0)}% ${legend.title}',
                     style: const TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 7,

@@ -5,7 +5,7 @@ import 'package:billionaire/src/presentation/pages/transaction/transaction_actio
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/text_input_formatters.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -79,6 +79,7 @@ extension DialogExtension on BuildContext {
             return AlertDialog(
               title: BillionText.bodyMedium('Сумма транзакции'),
               content: TextField(
+                autofocus: true,
                 controller: amountTextEditingController,
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
@@ -183,13 +184,19 @@ extension DialogExtension on BuildContext {
     );
   }
 
-  Future<void> showTransactionActionDialog({TransactionResponseModel? model})async=>  showGeneralDialog(
-            context: this,
-            barrierDismissible: true,
-            requestFocus: true,
-            barrierLabel: 'barrier',
-            pageBuilder: (context, animation, secondaryAnimation) {
-              return TransactionActionPage(model: model);
-            },
-          );
+  Future<void> showTransactionActionDialog({
+    required bool isIncome,
+    TransactionResponseModel? model,
+  }) async => showGeneralDialog(
+    context: this,
+    barrierDismissible: true,
+    requestFocus: true,
+    barrierLabel: 'barrier',
+    pageBuilder: (context, animation, secondaryAnimation) {
+      return TransactionActionPage(
+        model: model,
+        isIncome: isIncome,
+      );
+    },
+  );
 }

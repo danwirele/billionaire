@@ -1,29 +1,31 @@
 import 'package:billionaire/src/domain/controllers/categories_repository.dart';
 import 'package:billionaire/src/domain/models/category/category_model.dart';
+import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:fuzzy/fuzzy.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'stats_controller.g.dart';
 
-@riverpod
+@Riverpod(dependencies: [CategoriesRepository])
 class StatsController extends _$StatsController {
   @override
   Future<List<CategoryModel>> build() async {
-    return ref.watch(categoriesRepositoryProvider.future);
+    return ref.read(categoriesRepositoryProvider.future);
   }
 
   Future<void> fuzzySearchLevenshtein(
     String query,
-    List<CategoryModel> categories,
   ) async {
+    final categories = state.value;
+    if (categories == null) return;
     if (query.isEmpty) {
       state = AsyncData(
         await ref.read(categoriesRepositoryProvider.future),
       );
       return;
     }
-
+    debugPrint(categories.toString());
     // Преобразование объектов CategoryModel в массив строк
-    final names = categories.map((e) => e.name).toList();
+    final names = categories.map((e) => e.name).toSet().toList();
 
     // Выполнение поиска
     final fuzy = Fuzzy(names);
