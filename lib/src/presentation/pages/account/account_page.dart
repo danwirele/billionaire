@@ -15,7 +15,11 @@ class AccountPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BillionScaffold(
       appBar: const AccountAppBar(),
-      floatingActionButton: BillionFAB(onPressed: () {}),
+      floatingActionButton: Consumer(
+        builder: (context, ref, child) => BillionFAB(
+          onPressed: () async {},
+        ),
+      ),
       body: const Column(
         children: [
           AccountBalance(),
@@ -43,11 +47,12 @@ class _TransactionChartState extends State<TransactionChart> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = context.colorScheme;
+
     return SizedBox(
       height: MediaQuery.sizeOf(context).height / 3.5,
       child: Column(
         children: [
-          // Панель с SegmentedButton
           Consumer(
             builder: (context, ref, child) {
               final chartController = ref.read(
@@ -57,16 +62,16 @@ class _TransactionChartState extends State<TransactionChart> {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SegmentedButton<bool>(
-                  style: const ButtonStyle(
+                  style: ButtonStyle(
                     backgroundColor: WidgetStateProperty.fromMap(
                       {
                         WidgetState.selected:
-                            BillionColors.primaryContainer,
-                        WidgetState.any: BillionColors.onPrimary,
+                            colorScheme.primaryContainer,
+                        WidgetState.any: colorScheme.onPrimary,
                       },
                     ),
                     foregroundColor: WidgetStatePropertyAll(
-                      BillionColors.onSurfaceVariant,
+                      colorScheme.onSurfaceVariant,
                     ),
                   ),
                   segments: const [

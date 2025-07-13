@@ -5,14 +5,18 @@ import 'package:billionaire/src/presentation/ui_kit/utils/dialogs_extension.dart
 import 'package:billionaire/src/presentation/ui_kit/utils/invoke_function.dart';
 import 'package:billionaire/src/router/routes_util.dart';
 import 'package:flutter/material.dart';
+// import 'package:gaimon/gaimon.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:vibration/vibration.dart';
 
 class IncomePage extends StatelessWidget {
   const IncomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = context.colorScheme;
+
     return BillionScaffold.fab(
       appBar: BillionAppBar(
         title: AppLocalizations.of(context)!.appBarIncome,
@@ -23,10 +27,10 @@ class IncomePage extends StatelessWidget {
               pathParameters: {'isIncome': 'true'},
             );
           },
-          icon: const Icon(
+          icon: Icon(
             Icons.history,
             size: 24,
-            color: BillionColors.onSurfaceVariant,
+            color: colorScheme.onSurfaceVariant,
           ),
         ),
       ),
@@ -34,9 +38,17 @@ class IncomePage extends StatelessWidget {
         builder: (context, ref, child) => BillionFAB(
           onPressed: () async {
             await context.invokeMethodWrapper(() async {
-              await context.showTransactionActionDialog(
-                isIncome: true,
-              );
+              if (await Vibration.hasCustomVibrationsSupport()) {
+                await Vibration.vibrate(
+                  pattern: [0, 50],
+                  intensities: [0, 7],
+                );
+              }
+              if (context.mounted) {
+                await context.showTransactionActionDialog(
+                  isIncome: true,
+                );
+              }
             });
           },
         ),

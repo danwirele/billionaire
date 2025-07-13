@@ -52,6 +52,7 @@ extension ModalBottomSheet on BuildContext {
 
   Future<void> showCurrencyBottomSheet() async {
     const currencyList = Currency.values;
+    final colorScheme = this.colorScheme;
     await showModalBottomSheet<void>(
       context: this,
       showDragHandle: true,
@@ -69,20 +70,21 @@ extension ModalBottomSheet on BuildContext {
                 currency: currencyList[index],
               );
             },
-            separatorBuilder: (context, index) => const Divider(height: 1),
+            separatorBuilder: (context, index) =>
+                const Divider(height: 1),
           ),
           const Divider(height: 1),
           ListTile(
             onTap: GoRouter.of(context).pop,
             contentPadding: const EdgeInsets.symmetric(
-              vertical: 3,
+              vertical: 7,
               horizontal: 14,
             ),
-            tileColor: BillionColors.error,
-            leading: const Icon(
+            tileColor: colorScheme.error,
+            leading: Icon(
               Icons.cancel_outlined,
               size: 24,
-              color: BillionColors.onPrimary,
+              color: colorScheme.onPrimary,
             ),
             title: BillionText.bodyMedium(
               'Отмена',
@@ -152,7 +154,9 @@ extension ModalBottomSheet on BuildContext {
 
                   if (categories.isEmpty) {
                     return Center(
-                      child: BillionText.bodyMedium('Категории отсутствуют'),
+                      child: BillionText.bodyMedium(
+                        'Категории отсутствуют',
+                      ),
                     );
                   }
 
@@ -174,7 +178,10 @@ extension ModalBottomSheet on BuildContext {
                   );
                 },
                 error: (error, stackTrace) {
-                  final errorMessage = ErrorHelper.whenError(error, 'Ошибка получения категорий');
+                  final errorMessage = ErrorHelper.whenError(
+                    error,
+                    'Ошибка получения категорий',
+                  );
 
                   return BillionText.bodyMedium(errorMessage);
                 },
@@ -213,7 +220,10 @@ extension ModalBottomSheet on BuildContext {
                     );
                   },
                   error: (error, stackTrace) {
-                    final errorMessage = ErrorHelper.whenError(error, 'Ошибка получения категорий');
+                    final errorMessage = ErrorHelper.whenError(
+                      error,
+                      'Ошибка получения категорий',
+                    );
 
                     return BillionText.bodyMedium(errorMessage);
                   },

@@ -9,7 +9,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ExpensesIncomeContent extends StatelessWidget {
   const ExpensesIncomeContent.income({super.key}) : isIncome = true;
-  const ExpensesIncomeContent.expenses({super.key}) : isIncome = false;
+  const ExpensesIncomeContent.expenses({super.key})
+    : isIncome = false;
 
   final bool isIncome;
 
@@ -18,6 +19,7 @@ class ExpensesIncomeContent extends StatelessWidget {
     final accountTransactionRepo = filteredTransactionsProvider(
       isIncome: isIncome,
     );
+    final colorScheme = context.colorScheme;
 
     return Column(
       children: [
@@ -31,14 +33,19 @@ class ExpensesIncomeContent extends StatelessWidget {
                   .watch(accountTransactionRepo)
                   .when(
                     data: (transactionStateModel) {
-                      final amountText = transactionStateModel?.amount.formatNumber() ?? 'Информация отсутствует';
+                      final amountText =
+                          transactionStateModel?.amount
+                              .formatNumber() ??
+                          'Информация отсутствует';
 
                       return BillionText.bodyLarge(
                         '$amountText ${currencyProviderValue.char}',
                       );
                     },
                     error: (error, stackTrace) {
-                      final errorMessage = ErrorHelper.whenError(error);
+                      final errorMessage = ErrorHelper.whenError(
+                        error,
+                      );
 
                       return BillionText.bodyMedium(
                         errorMessage,
@@ -69,7 +76,9 @@ class ExpensesIncomeContent extends StatelessWidget {
                         );
                       }
 
-                      if (transactionStateModel.transactions.isEmpty) {
+                      if (transactionStateModel
+                          .transactions
+                          .isEmpty) {
                         return const Center(
                           child: Text(
                             'Список транзакций пуст',
@@ -78,19 +87,22 @@ class ExpensesIncomeContent extends StatelessWidget {
                       }
 
                       return ListView.builder(
-                        itemCount: transactionStateModel.transactions.length,
+                        itemCount:
+                            transactionStateModel.transactions.length,
                         itemBuilder: (context, index) {
-                          final transaction = transactionStateModel.transactions[index];
+                          final transaction = transactionStateModel
+                              .transactions[index];
                           final category = transaction.category;
 
                           return BillionStatWidget(
                             actionCallBack: () async {
                               await context.invokeMethodWrapper(
                                 () async {
-                                  await context.showTransactionActionDialog(
-                                    model: transaction,
-                                    isIncome: isIncome,
-                                  );
+                                  await context
+                                      .showTransactionActionDialog(
+                                        model: transaction,
+                                        isIncome: isIncome,
+                                      );
                                 },
                               );
                             },
@@ -105,7 +117,9 @@ class ExpensesIncomeContent extends StatelessWidget {
                       );
                     },
                     error: (error, stackTrace) {
-                      final errorMessage = ErrorHelper.whenError(error);
+                      final errorMessage = ErrorHelper.whenError(
+                        error,
+                      );
 
                       return Center(
                         child: BillionText.bodyMedium(
@@ -114,10 +128,10 @@ class ExpensesIncomeContent extends StatelessWidget {
                         ),
                       );
                     },
-                    loading: () => const Center(
+                    loading: () => Center(
                       child: CircularProgressIndicator(
-                        backgroundColor: BillionColors.primaryContainer,
-                        color: BillionColors.primary,
+                        backgroundColor: colorScheme.primaryContainer,
+                        color: colorScheme.primary,
                       ),
                     ),
                   );

@@ -16,7 +16,8 @@ class AccountBalance extends ConsumerStatefulWidget {
   const AccountBalance({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _AccountBalanceState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _AccountBalanceState();
 }
 
 class _AccountBalanceState extends ConsumerState<AccountBalance> {
@@ -41,6 +42,7 @@ class _AccountBalanceState extends ConsumerState<AccountBalance> {
   @override
   Widget build(BuildContext context) {
     final currency = ref.watch(currencyProviderProvider);
+    final colorScheme = context.colorScheme;
 
     return BillionPinnedContainer.primaryMedium(
       leading: Row(
@@ -77,7 +79,7 @@ class _AccountBalanceState extends ConsumerState<AccountBalance> {
                       return SpoilerOverlay(
                         key: ValueKey(isVisible),
                         config: WidgetSpoilerConfig(
-                          particleColor: BillionColors.error,
+                          particleColor: colorScheme.error,
                           fadeRadius: 30,
                           maxParticleSize: 3,
                           particleDensity: 0.4,

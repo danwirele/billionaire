@@ -4,7 +4,8 @@ class BillionBottomNavBar extends StatefulWidget {
   const BillionBottomNavBar({super.key});
 
   @override
-  State<BillionBottomNavBar> createState() => _BillionBottomNavBarState();
+  State<BillionBottomNavBar> createState() =>
+      _BillionBottomNavBarState();
 }
 
 class _BillionBottomNavBarState extends State<BillionBottomNavBar> {
@@ -14,6 +15,8 @@ class _BillionBottomNavBarState extends State<BillionBottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = context.colorScheme;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -23,19 +26,30 @@ class _BillionBottomNavBarState extends State<BillionBottomNavBar> {
           removeTop: true,
           child: NavigationBar(
             height: _navBarHeight,
-            backgroundColor: BillionColors.surfaceContainer,
-            indicatorColor: BillionColors.primaryContainer,
+            backgroundColor: colorScheme.surfaceContainer,
+            indicatorColor: colorScheme.primaryContainer,
             overlayColor: const WidgetStatePropertyAll(
               Colors.transparent,
             ),
             animationDuration: const Duration(seconds: 1),
             selectedIndex: _index,
             labelTextStyle: WidgetStateTextStyle.resolveWith(
-              (Set<WidgetState> states) => BillionTextStyle.labelMedium.copyWith(
-                color: states.contains(WidgetState.selected) ? null : BillionColors.onSurfaceVariant,
-              ),
+              (Set<WidgetState> states) =>
+                  BillionTextStyle.labelMedium.copyWith(
+                    color: states.contains(WidgetState.selected)
+                        ? null
+                        : colorScheme.onSurfaceVariant,
+                  ),
             ),
-            onDestinationSelected: (value) {
+            onDestinationSelected: (value) async {
+              if (await Vibration.hasCustomVibrationsSupport()) {
+                Vibration.vibrate(
+                  pattern: [0, 50],
+                  intensities: [0, 7],
+                );
+              }
+              if (!context.mounted) return;
+
               switch (value) {
                 case 0:
                   setState(() => _index = value);
@@ -87,12 +101,17 @@ class ConnectionContainer extends ConsumerStatefulWidget {
   const ConnectionContainer({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ConnectionContainerState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ConnectionContainerState();
 }
 
-class _ConnectionContainerState extends ConsumerState<ConnectionContainer> with SingleTickerProviderStateMixin {
+class _ConnectionContainerState
+    extends ConsumerState<ConnectionContainer>
+    with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
+    final colorScheme = context.colorScheme;
+
     return ref
         .watch(connectionProvider)
         .when(
@@ -102,11 +121,11 @@ class _ConnectionContainerState extends ConsumerState<ConnectionContainer> with 
               key: const ValueKey('offline-bar'),
               width: double.infinity,
               duration: Durations.medium4,
-              color: BillionColors.error,
+              color: colorScheme.error,
               alignment: Alignment.center,
               child: BillionText.bodyLarge(
                 'Offline mode',
-                color: BillionColors.onPrimary,
+                color: colorScheme.onPrimary,
               ),
             );
           },

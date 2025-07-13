@@ -18,7 +18,7 @@ class CurrencyTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(
-        vertical: 3,
+        vertical: 7,
         horizontal: 14,
       ),
       leading: SvgPicture.asset(currency.iconPath),

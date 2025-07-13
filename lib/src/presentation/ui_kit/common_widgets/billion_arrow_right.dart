@@ -5,9 +5,11 @@ class BillionArrowRight extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = context.colorScheme;
+
     return Assets.icons.moreVert.svg(
       colorFilter: ColorFilter.mode(
-        BillionColors.tertiary.withValues(
+        colorScheme.tertiary.withValues(
           alpha: 0.3,
         ),
         BlendMode.srcIn,

@@ -10,6 +10,8 @@ class StatsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = context.colorScheme;
+
     return BillionScaffold(
       appBar: BillionAppBar(
         title: AppLocalizations.of(context)!.appBarStats,
@@ -26,10 +28,10 @@ class StatsPage extends StatelessWidget {
                   return Column(
                     children: [
                       TextField(
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           filled: true,
-                          fillColor: Color(0xffECE6F0),
-                          contentPadding: EdgeInsets.symmetric(
+                          fillColor: colorScheme.surfaceContainerHigh,
+                          contentPadding: const EdgeInsets.symmetric(
                             vertical: 16,
                             horizontal: 14,
                           ),
@@ -37,9 +39,9 @@ class StatsPage extends StatelessWidget {
 
                           suffixIcon: Icon(
                             Icons.search,
-                            color: Color(0xff1D1B20),
+                            color: colorScheme.onSurfaceVariant,
                           ),
-                          border: OutlineInputBorder(
+                          border: const OutlineInputBorder(
                             borderSide: BorderSide.none,
                           ),
                         ),
@@ -49,6 +51,7 @@ class StatsPage extends StatelessWidget {
                               .fuzzySearchLevenshtein(query);
                         },
                       ),
+                      const BillionDivider(),
                       Expanded(
                         child: categories.isEmpty
                             ? Center(
@@ -75,7 +78,7 @@ class StatsPage extends StatelessWidget {
                                             ? CircleAvatar(
                                                 radius: 12,
                                                 backgroundColor:
-                                                    BillionColors
+                                                    colorScheme
                                                         .primaryContainer,
                                                 child: Text(
                                                   category.emoji,

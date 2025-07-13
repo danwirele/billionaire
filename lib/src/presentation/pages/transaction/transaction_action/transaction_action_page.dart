@@ -29,6 +29,8 @@ class TransactionActionPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final colorScheme = context.colorScheme;
+
     final userAccount = ref.read(userAccountRepositoryProvider).value;
 
     final accountNotifier = useValueNotifier<AccountBriefModel?>(
@@ -61,10 +63,10 @@ class TransactionActionPage extends HookConsumerWidget {
         ),
         title: model == null ? 'Добавление' : 'Редактирование',
         actionIcon: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.check,
             size: 24,
-            color: BillionColors.onSurfaceVariant,
+            color: colorScheme.onSurfaceVariant,
           ),
           onPressed: () async {
             if (isValid()) {
@@ -145,17 +147,17 @@ class TransactionActionPage extends HookConsumerWidget {
                           transactionId: model!.id,
                         );
                   },
-                  style: const ButtonStyle(
+                  style: ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(
-                      BillionColors.error,
+                      colorScheme.error,
                     ),
                     foregroundColor: WidgetStatePropertyAll(
-                      BillionColors.onPrimary,
+                      colorScheme.onPrimary,
                     ),
                   ),
                   child: BillionText.labelLarge(
                     'Удалить расход',
-                    color: BillionColors.onPrimary,
+                    color: colorScheme.onPrimary,
                   ),
                 ),
               ),

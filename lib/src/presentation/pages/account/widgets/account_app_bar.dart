@@ -6,16 +6,20 @@ import 'package:billionaire/src/presentation/ui_kit/utils/error_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AccountAppBar extends StatelessWidget implements PreferredSizeWidget {
+class AccountAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
   const AccountAppBar({
     super.key,
   });
 
   @override
-  Size get preferredSize => const Size.fromHeight(BillionAppBar.sizeAppBar);
+  Size get preferredSize =>
+      const Size.fromHeight(BillionAppBar.sizeAppBar);
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = context.colorScheme;
+
     return PreferredSize(
       preferredSize: const Size.fromHeight(
         BillionAppBar.sizeAppBar,
@@ -34,8 +38,8 @@ class AccountAppBar extends StatelessWidget implements PreferredSizeWidget {
                         icon: Assets.icons.edit.svg(
                           width: 24,
                           height: 24,
-                          colorFilter: const ColorFilter.mode(
-                            BillionColors.onSurfaceVariant,
+                          colorFilter: ColorFilter.mode(
+                            colorScheme.onSurfaceVariant,
                             BlendMode.srcIn,
                           ),
                         ),
@@ -54,8 +58,8 @@ class AccountAppBar extends StatelessWidget implements PreferredSizeWidget {
                       icon: Assets.icons.edit.svg(
                         width: 24,
                         height: 24,
-                        colorFilter: const ColorFilter.mode(
-                          BillionColors.onSurfaceVariant,
+                        colorFilter: ColorFilter.mode(
+                          colorScheme.onSurfaceVariant,
                           BlendMode.srcIn,
                         ),
                       ),
@@ -72,8 +76,8 @@ class AccountAppBar extends StatelessWidget implements PreferredSizeWidget {
                       icon: Assets.icons.edit.svg(
                         width: 24,
                         height: 24,
-                        colorFilter: const ColorFilter.mode(
-                          BillionColors.onSurfaceVariant,
+                        colorFilter: ColorFilter.mode(
+                          colorScheme.onSurfaceVariant,
                           BlendMode.srcIn,
                         ),
                       ),
@@ -87,8 +91,8 @@ class AccountAppBar extends StatelessWidget implements PreferredSizeWidget {
                     icon: Assets.icons.edit.svg(
                       width: 24,
                       height: 24,
-                      colorFilter: const ColorFilter.mode(
-                        BillionColors.onSurfaceVariant,
+                      colorFilter: ColorFilter.mode(
+                        colorScheme.onSurfaceVariant,
                         BlendMode.srcIn,
                       ),
                     ),

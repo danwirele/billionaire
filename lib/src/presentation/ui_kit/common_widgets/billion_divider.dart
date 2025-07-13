@@ -7,9 +7,11 @@ class BillionDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Divider(
+    final colorScheme = context.colorScheme;
+
+    return Divider(
       height: 1,
-      color: BillionColors.outlineVariant,
+      color: colorScheme.outlineVariant,
     );
   }
 }

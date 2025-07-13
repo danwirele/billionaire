@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:vibration/vibration.dart';
 
 //widgets
 part 'common_widgets/billion_app_bar.dart';
@@ -24,6 +25,7 @@ part 'common_widgets/billion_arrow_right.dart';
 //theme
 part 'theme/billion_colors.dart';
 part 'theme/billion_text_style.dart';
+part 'theme/billion_theme.dart';
 
 //utils
 part 'utils/date_time_extension.dart';

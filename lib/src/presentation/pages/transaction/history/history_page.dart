@@ -23,6 +23,7 @@ class HistoryPage extends StatelessWidget {
     final historyTransactionsController = historyTransactionsProvider(
       isIncome: isIncome,
     );
+    final colorScheme = context.colorScheme;
 
     return BillionScaffold(
       appBar: BillionAppBar(
@@ -37,8 +38,8 @@ class HistoryPage extends StatelessWidget {
           icon: Assets.icons.historyOutline.svg(
             width: 24,
             height: 24,
-            colorFilter: const ColorFilter.mode(
-              BillionColors.onSurfaceVariant,
+            colorFilter: ColorFilter.mode(
+              colorScheme.onSurfaceVariant,
               BlendMode.srcIn,
             ),
           ),
@@ -54,49 +55,55 @@ class HistoryPage extends StatelessWidget {
                 children: [
                   ValueListenableBuilder(
                     valueListenable: date.startDate,
-                    builder: (context, value, child) => BillionPinnedContainer.primaryMedium(
-                      onTap: () async {
-                        final newDate = await showDatePicker(
-                          context: context,
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime.now(),
-                          initialDate: value,
-                        );
+                    builder: (context, value, child) =>
+                        BillionPinnedContainer.primaryMedium(
+                          onTap: () async {
+                            final newDate = await showDatePicker(
+                              context: context,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime.now(),
+                              initialDate: value,
+                            );
 
-                        if (newDate != null) {
-                          await ref.read(dateProvider.notifier).setStartDate(newDate);
-                        }
-                      },
-                      leading: BillionText.bodyLarge(
-                        'Начало',
-                      ),
-                      action: BillionText.bodyLarge(
-                        value.toddMMyyyy(),
-                      ),
-                    ),
+                            if (newDate != null) {
+                              await ref
+                                  .read(dateProvider.notifier)
+                                  .setStartDate(newDate);
+                            }
+                          },
+                          leading: BillionText.bodyLarge(
+                            'Начало',
+                          ),
+                          action: BillionText.bodyLarge(
+                            value.toddMMyyyy(),
+                          ),
+                        ),
                   ),
                   ValueListenableBuilder(
                     valueListenable: date.endDate,
-                    builder: (context, value, child) => BillionPinnedContainer.primaryMedium(
-                      onTap: () async {
-                        final newDate = await showDatePicker(
-                          context: context,
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime.now(),
-                          initialDate: value,
-                        );
+                    builder: (context, value, child) =>
+                        BillionPinnedContainer.primaryMedium(
+                          onTap: () async {
+                            final newDate = await showDatePicker(
+                              context: context,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime.now(),
+                              initialDate: value,
+                            );
 
-                        if (newDate != null) {
-                          await ref.read(dateProvider.notifier).setEndDate(newDate);
-                        }
-                      },
-                      leading: BillionText.bodyLarge(
-                        'Конец',
-                      ),
-                      action: BillionText.bodyLarge(
-                        value.toddMMyyyy(),
-                      ),
-                    ),
+                            if (newDate != null) {
+                              await ref
+                                  .read(dateProvider.notifier)
+                                  .setEndDate(newDate);
+                            }
+                          },
+                          leading: BillionText.bodyLarge(
+                            'Конец',
+                          ),
+                          action: BillionText.bodyLarge(
+                            value.toddMMyyyy(),
+                          ),
+                        ),
                   ),
                 ],
               );
@@ -132,20 +139,25 @@ class HistoryPage extends StatelessWidget {
                           }
 
                           return HistoryTransactionsContent(
-                            currencyProviderValue: currencyProviderValue,
-                            historyTransactionStateModel: historyTransactionStateModel,
+                            currencyProviderValue:
+                                currencyProviderValue,
+                            historyTransactionStateModel:
+                                historyTransactionStateModel,
                           );
                         },
                         error: (error, stackTrace) {
-                          final errorMessage = ErrorHelper.whenError(error);
+                          final errorMessage = ErrorHelper.whenError(
+                            error,
+                          );
 
                           return BillionText.bodyMedium(
                             errorMessage,
                           );
                         },
-                        loading: () => const CircularProgressIndicator(
-                          backgroundColor: BillionColors.primaryContainer,
-                          color: BillionColors.primary,
+                        loading: () => CircularProgressIndicator(
+                          backgroundColor:
+                              colorScheme.primaryContainer,
+                          color: colorScheme.primary,
                         ),
                       );
                 },

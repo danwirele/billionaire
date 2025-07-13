@@ -23,6 +23,9 @@ class AnalysisContent extends ConsumerWidget {
     final analysisProvider = analysisStateProvider(
       isIncome: isIncome,
     );
+
+    final colorScheme = context.colorScheme;
+
     return Consumer(
       builder: (context, ref, child) {
         final currency = ref.read(currencyProviderProvider);
@@ -63,8 +66,7 @@ class AnalysisContent extends ConsumerWidget {
 
                 return Column(
                   children: [
-                    BillionPinnedContainer.primaryMedium(
-                      containerColor: Colors.transparent,
+                    BillionPinnedContainer.transparentMedium(
                       leading: BillionText.bodyLarge(
                         'Сумма',
                       ),
@@ -131,10 +133,10 @@ class AnalysisContent extends ConsumerWidget {
 
                 return BillionText.bodyMedium(errorMessage);
               },
-              loading: () => const Center(
+              loading: () => Center(
                 child: CircularProgressIndicator(
-                  backgroundColor: BillionColors.primaryContainer,
-                  color: BillionColors.primary,
+                  backgroundColor: colorScheme.primaryContainer,
+                  color: colorScheme.primary,
                 ),
               ),
             );
