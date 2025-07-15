@@ -1,6 +1,7 @@
 import 'package:billionaire/src/presentation/pages/settings/widgets/settings_arrow.dart';
 import 'package:billionaire/src/presentation/shared/controllers/theme.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -21,7 +22,7 @@ class TintPicker extends ConsumerWidget {
             Color? newColor;
 
             return AlertDialog(
-              title: const Text('Выберите основной цвет'),
+              title: Text(context.localization.choosePrimaryColor),
               content: SingleChildScrollView(
                 child: ColorPicker(
                   onColorChanged: (value) {
@@ -32,7 +33,7 @@ class TintPicker extends ConsumerWidget {
               ),
               actions: <Widget>[
                 ElevatedButton(
-                  child: const Text('Got it'),
+                  child: Text(context.localization.accept),
                   onPressed: () {
                     Navigator.of(context).pop(newColor);
                   },
@@ -51,7 +52,7 @@ class TintPicker extends ConsumerWidget {
           await themeController.setTint(color, currentBrightness);
         }
       },
-      leading: BillionText.bodyLarge('Основной цвет'),
+      leading: BillionText.bodyLarge(context.localization.primaryColor),
       action: const SettingsArrow(),
     );
   }

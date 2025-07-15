@@ -1,3 +1,4 @@
+import 'package:billion_charts_package/l10n/app_localizations.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 

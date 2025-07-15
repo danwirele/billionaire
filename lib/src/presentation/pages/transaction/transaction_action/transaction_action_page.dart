@@ -12,6 +12,7 @@ import 'package:billionaire/src/presentation/pages/transaction/transaction_actio
 import 'package:billionaire/src/presentation/pages/transaction/transaction_action/widgets/choose_time.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/dialogs_extension.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
@@ -50,9 +51,7 @@ class TransactionActionPage extends HookConsumerWidget {
 
     // Проверка валидности данных перед сохранением
     bool isValid() {
-      return accountNotifier.value != null &&
-          categoryNotifier.value != null &&
-          amountNotifier.value.isNotEmpty;
+      return accountNotifier.value != null && categoryNotifier.value != null && amountNotifier.value.isNotEmpty;
     }
 
     return BillionScaffold(
@@ -61,7 +60,7 @@ class TransactionActionPage extends HookConsumerWidget {
           onPressed: GoRouter.of(context).pop,
           icon: const Icon(Icons.close),
         ),
-        title: model == null ? 'Добавление' : 'Редактирование',
+        title: model == null ? context.localization.addition : context.localization.editing,
         actionIcon: IconButton(
           icon: Icon(
             Icons.check,
@@ -100,13 +99,13 @@ class TransactionActionPage extends HookConsumerWidget {
               final errorList = <String>[];
 
               if (accountNotifier.value == null) {
-                errorList.add('Счет');
+                errorList.add(context.localization.errorAccount);
               }
               if (categoryNotifier.value == null) {
-                errorList.add('Статья');
+                errorList.add(context.localization.errorCategory);
               }
               if (amountNotifier.value.isEmpty) {
-                errorList.add('Сумма');
+                errorList.add(context.localization.errorAmount);
               }
 
               // Показываем диалог с ошибкой
@@ -156,7 +155,7 @@ class TransactionActionPage extends HookConsumerWidget {
                     ),
                   ),
                   child: BillionText.labelLarge(
-                    'Удалить расход',
+                    context.localization.deleteTransaction,
                     color: colorScheme.onPrimary,
                   ),
                 ),

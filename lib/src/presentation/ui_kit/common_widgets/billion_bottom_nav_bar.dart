@@ -4,8 +4,7 @@ class BillionBottomNavBar extends StatefulWidget {
   const BillionBottomNavBar({super.key});
 
   @override
-  State<BillionBottomNavBar> createState() =>
-      _BillionBottomNavBarState();
+  State<BillionBottomNavBar> createState() => _BillionBottomNavBarState();
 }
 
 class _BillionBottomNavBarState extends State<BillionBottomNavBar> {
@@ -16,6 +15,7 @@ class _BillionBottomNavBarState extends State<BillionBottomNavBar> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = context.colorScheme;
+    final localization = context.localization;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -34,12 +34,9 @@ class _BillionBottomNavBarState extends State<BillionBottomNavBar> {
             animationDuration: const Duration(seconds: 1),
             selectedIndex: _index,
             labelTextStyle: WidgetStateTextStyle.resolveWith(
-              (Set<WidgetState> states) =>
-                  BillionTextStyle.labelMedium.copyWith(
-                    color: states.contains(WidgetState.selected)
-                        ? null
-                        : colorScheme.onSurfaceVariant,
-                  ),
+              (Set<WidgetState> states) => BillionTextStyle.labelMedium.copyWith(
+                color: states.contains(WidgetState.selected) ? null : colorScheme.onSurfaceVariant,
+              ),
             ),
             onDestinationSelected: (value) async {
               if (await Vibration.hasCustomVibrationsSupport()) {
@@ -71,23 +68,23 @@ class _BillionBottomNavBarState extends State<BillionBottomNavBar> {
             destinations: [
               BillionNavDestination(
                 icon: Assets.icons.trendDown,
-                label: AppLocalizations.of(context)!.navBarExpenses,
+                label: localization.navBarExpenses,
               ),
               BillionNavDestination(
                 icon: Assets.icons.trendUp,
-                label: AppLocalizations.of(context)!.navBarIncome,
+                label: localization.navBarIncome,
               ),
               BillionNavDestination(
                 icon: Assets.icons.account,
-                label: AppLocalizations.of(context)!.navBarAccount,
+                label: localization.navBarAccount,
               ),
               BillionNavDestination(
                 icon: Assets.icons.expenseStats,
-                label: AppLocalizations.of(context)!.navBarStats,
+                label: localization.navBarStats,
               ),
               BillionNavDestination(
                 icon: Assets.icons.settings,
-                label: AppLocalizations.of(context)!.navBarSettings,
+                label: localization.navBarSettings,
               ),
             ],
           ),
@@ -101,13 +98,10 @@ class ConnectionContainer extends ConsumerStatefulWidget {
   const ConnectionContainer({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _ConnectionContainerState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _ConnectionContainerState();
 }
 
-class _ConnectionContainerState
-    extends ConsumerState<ConnectionContainer>
-    with SingleTickerProviderStateMixin {
+class _ConnectionContainerState extends ConsumerState<ConnectionContainer> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final colorScheme = context.colorScheme;

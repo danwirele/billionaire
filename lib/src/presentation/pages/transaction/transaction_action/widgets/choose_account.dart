@@ -1,5 +1,6 @@
 import 'package:billionaire/src/domain/models/account/account_brief_model.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/modal_bottom_sheet_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -26,10 +27,10 @@ class ChooseAccount extends ConsumerWidget {
               );
             }
           },
-          leading: BillionText.bodyLarge('Счет'),
+          leading: BillionText.bodyLarge(context.localization.account),
           action: Row(
             children: [
-              BillionText.bodyLarge(account?.name ?? 'Не выбран'),
+              BillionText.bodyLarge(account?.name ?? context.localization.notSelected),
               const BillionArrowRight(),
             ],
           ),

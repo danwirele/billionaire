@@ -1,5 +1,6 @@
 import 'package:billionaire/src/presentation/pages/transaction/analysis/controllers/analysis_filter.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -33,7 +34,7 @@ class AnalysisDates extends ConsumerWidget {
                 }
               },
               leading: BillionText.bodyLarge(
-                'Период: начало',
+                context.localization.periodBeginning,
               ),
               action: Container(
                 padding: const EdgeInsets.symmetric(
@@ -74,7 +75,7 @@ class AnalysisDates extends ConsumerWidget {
                   }
                 },
                 leading: BillionText.bodyLarge(
-                  'Период: конец',
+                  context.localization.periodEnd,
                 ),
                 action: Container(
                   padding: const EdgeInsets.symmetric(

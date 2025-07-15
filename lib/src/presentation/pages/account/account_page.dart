@@ -5,6 +5,7 @@ import 'package:billionaire/src/presentation/pages/account/widgets/account_balan
 import 'package:billionaire/src/presentation/pages/account/widgets/currency_selector.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/error_helper.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -65,8 +66,7 @@ class _TransactionChartState extends State<TransactionChart> {
                   style: ButtonStyle(
                     backgroundColor: WidgetStateProperty.fromMap(
                       {
-                        WidgetState.selected:
-                            colorScheme.primaryContainer,
+                        WidgetState.selected: colorScheme.primaryContainer,
                         WidgetState.any: colorScheme.onPrimary,
                       },
                     ),
@@ -74,22 +74,20 @@ class _TransactionChartState extends State<TransactionChart> {
                       colorScheme.onSurfaceVariant,
                     ),
                   ),
-                  segments: const [
+                  segments: [
                     ButtonSegment(
                       value: true,
-
-                      label: Text('По дням'),
+                      label: Text(context.localization.byDay),
                     ),
                     ButtonSegment(
                       value: false,
-                      label: Text('По месяцам'),
+                      label: Text(context.localization.byMonth),
                     ),
                   ],
                   selected: {_showDaily},
                   onSelectionChanged: (Set<bool> newSelection) async {
                     if (newSelection.first) {
-                      await chartController
-                          .getCurrentMonthTransactions();
+                      await chartController.getCurrentMonthTransactions();
                     } else {
                       await chartController.getYearTransactions();
                     }
@@ -119,7 +117,7 @@ class _TransactionChartState extends State<TransactionChart> {
                         );
                       },
                       error: (error, stackTrace) {
-                        final errorMessage = ErrorHelper.whenError(
+                        final errorMessage = context.whenError(
                           error,
                         );
 

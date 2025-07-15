@@ -11,6 +11,7 @@ import 'package:billionaire/src/presentation/pages/transaction/widgets/billion_s
 import 'package:billionaire/src/presentation/shared/controllers/currency_provider.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/error_helper.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -22,28 +23,32 @@ extension ModalBottomSheet on BuildContext {
       showDragHandle: true,
       useSafeArea: true,
       isScrollControlled: true,
-      builder: (context) => const Column(
+      builder: (context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Фильтры',
-            style: TextStyle(
+            localization.filters,
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           FilterElement(
             filterOption: FilterOption.dateAscending,
+            filterName: localization.filterDateAscending,
           ),
           FilterElement(
             filterOption: FilterOption.dateDescending,
+            filterName: localization.filterDateDescending,
           ),
           FilterElement(
             filterOption: FilterOption.priceAscending,
+            filterName: localization.filterPriceAscending,
           ),
           FilterElement(
             filterOption: FilterOption.priceDescending,
+            filterName: localization.filterPriceDescending,
           ),
         ],
       ),
@@ -70,12 +75,11 @@ extension ModalBottomSheet on BuildContext {
                 currency: currencyList[index],
               );
             },
-            separatorBuilder: (context, index) =>
-                const Divider(height: 1),
+            separatorBuilder: (context, index) => const Divider(height: 1),
           ),
           const Divider(height: 1),
           ListTile(
-            onTap: GoRouter.of(context).pop,
+            onTap: GoRouter.of(this).pop,
             contentPadding: const EdgeInsets.symmetric(
               vertical: 7,
               horizontal: 14,
@@ -87,7 +91,7 @@ extension ModalBottomSheet on BuildContext {
               color: colorScheme.onPrimary,
             ),
             title: BillionText.bodyMedium(
-              'Отмена',
+              localization.cancel,
               color: Colors.white,
             ),
           ),
@@ -155,7 +159,7 @@ extension ModalBottomSheet on BuildContext {
                   if (categories.isEmpty) {
                     return Center(
                       child: BillionText.bodyMedium(
-                        'Категории отсутствуют',
+                        localization.noCategories,
                       ),
                     );
                   }
@@ -178,9 +182,9 @@ extension ModalBottomSheet on BuildContext {
                   );
                 },
                 error: (error, stackTrace) {
-                  final errorMessage = ErrorHelper.whenError(
+                  final errorMessage = context.whenError(
                     error,
-                    'Ошибка получения категорий',
+                    localization.errorGettingCategories,
                   );
 
                   return BillionText.bodyMedium(errorMessage);
@@ -212,7 +216,7 @@ extension ModalBottomSheet on BuildContext {
                     return ListTile(
                       title: BillionText.titleMedium(account.name),
                       subtitle: BillionText.bodyMedium(
-                        'Баланс: ${account.balance}\n${account.currency}',
+                        '${localization.balance}: ${account.balance}\n${account.currency}',
                       ),
                       onTap: () async {
                         GoRouter.of(context).pop(account);
@@ -220,9 +224,9 @@ extension ModalBottomSheet on BuildContext {
                     );
                   },
                   error: (error, stackTrace) {
-                    final errorMessage = ErrorHelper.whenError(
+                    final errorMessage = context.whenError(
                       error,
-                      'Ошибка получения категорий',
+                      localization.errorGettingCategories,
                     );
 
                     return BillionText.bodyMedium(errorMessage);

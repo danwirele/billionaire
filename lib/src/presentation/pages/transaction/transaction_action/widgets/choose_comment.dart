@@ -1,5 +1,6 @@
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/dialogs_extension.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:flutter/material.dart';
 
 class ChooseComment extends StatelessWidget {
@@ -31,16 +32,16 @@ class ChooseComment extends StatelessWidget {
                 isDense: true,
                 contentPadding: EdgeInsets.zero,
                 border: InputBorder.none,
-                hintText: 'Комментарий',
+                hintText: context.localization.comment,
                 hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Colors.grey, 
+                  color: Colors.grey,
                 ),
               ),
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: Colors.black,
               ),
               controller: TextEditingController(text: comment),
-              enabled: false, 
+              enabled: false,
             ),
           ),
         );

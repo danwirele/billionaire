@@ -17,6 +17,12 @@ void main() async {
         DeviceOrientation.portraitDown,
         DeviceOrientation.portraitUp,
       ]);
+      await SystemChrome.setApplicationSwitcherDescription(
+        const ApplicationSwitcherDescription(
+          label: 'My App',
+          primaryColor: 1,
+        ),
+      );
       ImageUtils.svgPrecacheImage();
 
       await Config().init();

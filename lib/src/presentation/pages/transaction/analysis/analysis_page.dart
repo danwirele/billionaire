@@ -1,6 +1,7 @@
 import 'package:billionaire/src/presentation/pages/transaction/analysis/widgets/analysis_content.dart';
 import 'package:billionaire/src/presentation/pages/transaction/analysis/widgets/analysis_dates.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:flutter/material.dart';
 
 class AnalysisPage extends StatelessWidget {
@@ -12,9 +13,9 @@ class AnalysisPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BillionScaffold(
-      appBar: const BillionAppBar(
+      appBar: BillionAppBar(
         isTransparent: true,
-        title: 'Анализ',
+        title: context.localization.appBarAnalysis,
       ),
       body: Column(
         children: [

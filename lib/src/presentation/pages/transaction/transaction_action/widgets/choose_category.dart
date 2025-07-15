@@ -1,5 +1,6 @@
 import 'package:billionaire/src/domain/models/category/category_model.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/modal_bottom_sheet_extension.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,7 @@ class ChooseCategory extends StatelessWidget {
               categoryNotifier.value = selectedCategory;
             }
           },
-          leading: BillionText.bodyLarge('Статья'),
+          leading: BillionText.bodyLarge(context.localization.category),
           action: Row(
             children: [
               BillionText.bodyLarge(category?.name ?? 'Не выбрана'),

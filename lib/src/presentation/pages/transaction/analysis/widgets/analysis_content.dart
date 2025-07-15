@@ -6,6 +6,7 @@ import 'package:billionaire/src/presentation/pages/transaction/widgets/billion_s
 import 'package:billionaire/src/presentation/shared/controllers/currency_provider.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/error_helper.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/modal_bottom_sheet_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -37,23 +38,21 @@ class AnalysisContent extends ConsumerWidget {
               skipLoadingOnReload: false,
               data: (analysisState) {
                 if (analysisState == null) {
-                  return const Center(
-                    child: Text('Извините произошла ошибка'),
+                  return Center(
+                    child: Text(context.localization.sorryErrorOccurred),
                   );
                 }
 
-                final analysisStateList =
-                    analysisState.stateModelsList;
+                final analysisStateList = analysisState.stateModelsList;
 
                 if (analysisStateList.isEmpty) {
-                  return const Center(
-                    child: Text('Транзакции отсутствуют'),
+                  return Center(
+                    child: Text(context.localization.noTransactions),
                   );
                 }
                 final random = Random();
                 final Set<Color> uniqueColors = {};
-                while (uniqueColors.length <
-                    analysisStateList.length) {
+                while (uniqueColors.length < analysisStateList.length) {
                   final color = Color.fromRGBO(
                     random.nextInt(256),
                     random.nextInt(256),
@@ -68,7 +67,7 @@ class AnalysisContent extends ConsumerWidget {
                   children: [
                     BillionPinnedContainer.transparentMedium(
                       leading: BillionText.bodyLarge(
-                        'Сумма',
+                        context.localization.amount,
                       ),
                       action: BillionText.bodyLarge(
                         '${analysisState.summaryAmount.toStringAsFixed(0)} ${currency.char}',
@@ -80,8 +79,7 @@ class AnalysisContent extends ConsumerWidget {
                         legends: List.generate(
                           analysisStateList.length,
                           (index) {
-                            final analysisElement =
-                                analysisStateList[index];
+                            final analysisElement = analysisStateList[index];
                             return LegendEntity(
                               percentage: analysisElement.percentage,
                               title: analysisElement.category.name,
@@ -98,8 +96,7 @@ class AnalysisContent extends ConsumerWidget {
                       child: ListView.builder(
                         itemCount: analysisStateList.length,
                         itemBuilder: (context, index) {
-                          final analysisElement =
-                              analysisStateList[index];
+                          final analysisElement = analysisStateList[index];
 
                           return GestureDetector(
                             onTap: () {
@@ -108,18 +105,15 @@ class AnalysisContent extends ConsumerWidget {
                               );
                             },
                             child: BillionStatWidget(
-                              statTitle:
-                                  analysisElement.category.name,
-                              statDescription: analysisElement
-                                  .lastTransactionComment,
+                              statTitle: analysisElement.category.name,
+                              statDescription: analysisElement.lastTransactionComment,
                               subAction: BillionText.bodyLarge(
                                 '${analysisElement.amount} ${currency.char}',
                               ),
                               action: BillionText.bodyLarge(
                                 '${analysisElement.percentage.toStringAsFixed(0)}%',
                               ),
-                              leadingEmoji:
-                                  analysisElement.category.emoji,
+                              leadingEmoji: analysisElement.category.emoji,
                             ),
                           );
                         },
@@ -129,7 +123,7 @@ class AnalysisContent extends ConsumerWidget {
                 );
               },
               error: (error, stackTrace) {
-                final errorMessage = ErrorHelper.whenError(error);
+                final errorMessage = context.whenError(error);
 
                 return BillionText.bodyMedium(errorMessage);
               },

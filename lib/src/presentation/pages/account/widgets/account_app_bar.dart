@@ -3,18 +3,17 @@ import 'package:billionaire/src/presentation/pages/account/controllers/update_ac
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/dialogs_extension.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/error_helper.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AccountAppBar extends StatelessWidget
-    implements PreferredSizeWidget {
+class AccountAppBar extends StatelessWidget implements PreferredSizeWidget {
   const AccountAppBar({
     super.key,
   });
 
   @override
-  Size get preferredSize =>
-      const Size.fromHeight(BillionAppBar.sizeAppBar);
+  Size get preferredSize => const Size.fromHeight(BillionAppBar.sizeAppBar);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +31,7 @@ class AccountAppBar extends StatelessWidget
                 data: (data) {
                   if (data == null) {
                     return BillionAppBar(
-                      title: 'Счет не найден',
+                      title: context.localization.accountNotFound,
                       actionIcon: IconButton(
                         onPressed: () {},
                         icon: Assets.icons.edit.svg(
@@ -67,7 +66,7 @@ class AccountAppBar extends StatelessWidget
                   );
                 },
                 error: (error, stackTrace) {
-                  final errorMessage = ErrorHelper.whenError(error);
+                  final errorMessage = context.whenError(error);
 
                   return BillionAppBar(
                     title: errorMessage,
@@ -85,7 +84,7 @@ class AccountAppBar extends StatelessWidget
                   );
                 },
                 loading: () => BillionAppBar(
-                  title: 'Загрузка...',
+                  title: '${context.localization.loading}...',
                   actionIcon: IconButton(
                     onPressed: () {},
                     icon: Assets.icons.edit.svg(
