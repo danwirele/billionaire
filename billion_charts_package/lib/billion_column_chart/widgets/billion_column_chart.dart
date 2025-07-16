@@ -22,7 +22,7 @@ class BillionColumnBalanceChartState
     if (entities.isEmpty) {
       return Center(
         child: Text(
-          AppLocalizations.of(context).noDataToDisplay,
+          widget.config.textNoDataToDisplay,
           style: TextStyle(fontSize: 16, color: Colors.grey),
         ),
       );
