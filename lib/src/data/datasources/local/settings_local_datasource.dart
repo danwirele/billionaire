@@ -30,7 +30,7 @@ class SettingsLocalDatasourceImplDi
   @override
   FutureOr<SettingsLocalDatasourceImpl> build() async {
     final sharedPreferencesProvider = await ref.read(
-      sharedPreferencesSerivceProvider.future,
+      sharedPreferencesServiceProvider.future,
     );
 
     return SettingsLocalDatasourceImpl(

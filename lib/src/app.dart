@@ -43,10 +43,6 @@ class _AppState extends ConsumerState<App>
 
   @override
   Widget build(BuildContext context) {
-    if (shouldBlur) {
-      return const BlurOverlay();
-    }
-
     ref.read(dioServiceProvider);
     ref.read(categoriesRepositoryProvider);
 
@@ -61,6 +57,15 @@ class _AppState extends ConsumerState<App>
             final darkTintColor = themeState.darkTintColor;
 
             return MaterialApp.router(
+              builder: (context, child) {
+                if (shouldBlur) {
+                  return BlurOverlay(
+                    child: child!,
+                  );
+                }
+
+                return child!;
+              },
               localizationsDelegates:
                   AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,
