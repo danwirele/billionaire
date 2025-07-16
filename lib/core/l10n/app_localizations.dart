@@ -386,6 +386,12 @@ abstract class AppLocalizations {
   /// **'No categories'**
   String get noCategories;
 
+  /// No description provided for @noDataToDisplay.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no data to display'**
+  String get noDataToDisplay;
+
   /// No description provided for @noInformation.
   ///
   /// In en, this message translates to:

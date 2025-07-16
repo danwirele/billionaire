@@ -47,6 +47,7 @@
   "newAccountName": "Новое название счета",
   "newTransactionComment": "Новый комментарий транзакции",
   "noCategories": "Категории отсутствуют",
+  "noDataToDisplay": "Нет данных для отображения",
   "noInformation": "Информация отсутствует",
   "noTransactions": "Транзакции отсутствуют",
   "notSelected": "Не выбран",

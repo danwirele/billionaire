@@ -47,6 +47,7 @@
   "newAccountName": "New account name",
   "newTransactionComment": "New transaction comment",
   "noCategories": "No categories",
+  "noDataToDisplay": "There is no data to display",
   "noInformation": "No information",
   "noTransactions": "No transactions",
   "notSelected": "Not selected",

@@ -7,7 +7,7 @@ part of 'settings_local_datasource.dart';
 // **************************************************************************
 
 String _$settingsLocalDatasourceImplDiHash() =>
-    r'b1f4a56ddb8ba0394c2a07f5cf647184325da648';
+    r'ef22652bf691be335f3275fbce44aa417b98d6d0';
 
 /// See also [SettingsLocalDatasourceImplDi].
 @ProviderFor(SettingsLocalDatasourceImplDi)

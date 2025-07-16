@@ -75,7 +75,8 @@ extension ModalBottomSheet on BuildContext {
                 currency: currencyList[index],
               );
             },
-            separatorBuilder: (context, index) => const Divider(height: 1),
+            separatorBuilder: (context, index) =>
+                const Divider(height: 1),
           ),
           const Divider(height: 1),
           ListTile(
@@ -214,9 +215,11 @@ extension ModalBottomSheet on BuildContext {
                 .when(
                   data: (account) {
                     return ListTile(
-                      title: BillionText.titleMedium(account.name),
+                      title: BillionText.titleMedium(
+                        account?.name ?? 'Аккаунт не найден',
+                      ),
                       subtitle: BillionText.bodyMedium(
-                        '${localization.balance}: ${account.balance}\n${account.currency}',
+                        '${localization.balance}: ${account?.balance}\n${account?.currency}',
                       ),
                       onTap: () async {
                         GoRouter.of(context).pop(account);

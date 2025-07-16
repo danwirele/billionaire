@@ -14,7 +14,7 @@ P.S. у нас по условию ДЗ 1 всего один аккаунт
 @Riverpod(keepAlive: true, dependencies: [Connection])
 class UserAccountRepository extends _$UserAccountRepository {
   @override
-  Future<AccountModel> build() async {
+  Future<AccountModel?> build() async {
     final bankAccountRepo = await ref.read(
       bankAccountRepositoryImplDiProvider.future,
     );
@@ -23,7 +23,7 @@ class UserAccountRepository extends _$UserAccountRepository {
 
     final accountsList = await bankAccountRepo.getAllBankAccounts();
 
-    return accountsList.first;
+    return accountsList.firstOrNull;
   }
 
   Future<void> updateAccount(

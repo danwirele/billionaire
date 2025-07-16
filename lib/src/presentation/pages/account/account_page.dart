@@ -22,12 +22,12 @@ class AccountPage extends StatelessWidget {
         ),
       ),
       body: const Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           AccountBalance(),
           CurrencySelector(),
           SizedBox(height: 16),
           TransactionChart(),
-          Spacer(),
         ],
       ),
     );
@@ -66,7 +66,8 @@ class _TransactionChartState extends State<TransactionChart> {
                   style: ButtonStyle(
                     backgroundColor: WidgetStateProperty.fromMap(
                       {
-                        WidgetState.selected: colorScheme.primaryContainer,
+                        WidgetState.selected:
+                            colorScheme.primaryContainer,
                         WidgetState.any: colorScheme.onPrimary,
                       },
                     ),
@@ -87,7 +88,8 @@ class _TransactionChartState extends State<TransactionChart> {
                   selected: {_showDaily},
                   onSelectionChanged: (Set<bool> newSelection) async {
                     if (newSelection.first) {
-                      await chartController.getCurrentMonthTransactions();
+                      await chartController
+                          .getCurrentMonthTransactions();
                     } else {
                       await chartController.getYearTransactions();
                     }
@@ -113,6 +115,8 @@ class _TransactionChartState extends State<TransactionChart> {
                           config: BillionColumnChartConfig(
                             entities: data,
                             showDaily: _showDaily,
+                            textNoDataToDisplay:
+                                context.localization.noDataToDisplay,
                           ),
                         );
                       },
@@ -122,7 +126,9 @@ class _TransactionChartState extends State<TransactionChart> {
                         );
 
                         return Center(
-                          child: BillionText.bodyMedium(errorMessage),
+                          child: BillionText.bodyMedium(
+                            errorMessage,
+                          ),
                         );
                       },
                       loading: () => const Center(

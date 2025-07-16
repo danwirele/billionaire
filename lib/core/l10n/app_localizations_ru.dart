@@ -153,6 +153,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get noCategories => 'Категории отсутствуют';
 
   @override
+  String get noDataToDisplay => 'Нет данных для отображения';
+
+  @override
   String get noInformation => 'Информация отсутствует';
 
   @override

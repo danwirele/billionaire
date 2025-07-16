@@ -153,6 +153,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noCategories => 'No categories';
 
   @override
+  String get noDataToDisplay => 'There is no data to display';
+
+  @override
   String get noInformation => 'No information';
 
   @override

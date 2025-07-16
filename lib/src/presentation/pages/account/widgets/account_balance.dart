@@ -17,7 +17,8 @@ class AccountBalance extends ConsumerStatefulWidget {
   const AccountBalance({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _AccountBalanceState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _AccountBalanceState();
 }
 
 class _AccountBalanceState extends ConsumerState<AccountBalance> {
@@ -67,7 +68,7 @@ class _AccountBalanceState extends ConsumerState<AccountBalance> {
               .when(
                 data: (data) {
                   final balance = double.parse(
-                    data.balance,
+                    data?.balance ?? '0.0',
                   ).formatNumber();
 
                   return Consumer(
@@ -103,7 +104,9 @@ class _AccountBalanceState extends ConsumerState<AccountBalance> {
 
                   return BillionText.bodyLarge(errorMessage);
                 },
-                loading: () => BillionText.bodyMedium('${context.localization.loading}...'),
+                loading: () => BillionText.bodyMedium(
+                  '${context.localization.loading}...',
+                ),
               ),
 
           const SizedBox(width: 16),

@@ -35,7 +35,9 @@ class TransactionActionPage extends HookConsumerWidget {
     final userAccount = ref.read(userAccountRepositoryProvider).value;
 
     final accountNotifier = useValueNotifier<AccountBriefModel?>(
-      AccountBriefModel.fromJson(userAccount!.toJson()),
+      userAccount != null
+          ? AccountBriefModel.fromJson(userAccount.toJson())
+          : null,
     );
     final categoryNotifier = useValueNotifier<CategoryModel?>(
       model?.category,
@@ -51,7 +53,9 @@ class TransactionActionPage extends HookConsumerWidget {
 
     // Проверка валидности данных перед сохранением
     bool isValid() {
-      return accountNotifier.value != null && categoryNotifier.value != null && amountNotifier.value.isNotEmpty;
+      return accountNotifier.value != null &&
+          categoryNotifier.value != null &&
+          amountNotifier.value.isNotEmpty;
     }
 
     return BillionScaffold(
@@ -60,7 +64,9 @@ class TransactionActionPage extends HookConsumerWidget {
           onPressed: GoRouter.of(context).pop,
           icon: const Icon(Icons.close),
         ),
-        title: model == null ? context.localization.addition : context.localization.editing,
+        title: model == null
+            ? context.localization.addition
+            : context.localization.editing,
         actionIcon: IconButton(
           icon: Icon(
             Icons.check,
@@ -70,7 +76,7 @@ class TransactionActionPage extends HookConsumerWidget {
           onPressed: () async {
             if (isValid()) {
               final transaction = TransactionRequestModel(
-                accountId: userAccount.id,
+                accountId: userAccount?.id ?? 0,
                 categoryId: categoryNotifier.value!.id,
                 amount: amountNotifier.value.replaceAll(' ', ''),
                 transactionDate: DateTime(

@@ -1,6 +1,5 @@
 import 'package:billionaire/core/enum/localization_enum.dart';
 import 'package:billionaire/src/data/services/shared_preferences_service.dart';
-import 'package:billionaire/src/data/utils/shared_preferences_service.dart';
 import 'package:flutter/material.dart' show Color, ThemeMode;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,7 +30,7 @@ class SettingsLocalDatasourceImplDi
   @override
   FutureOr<SettingsLocalDatasourceImpl> build() async {
     final sharedPreferencesProvider = await ref.read(
-      sharedPrefeerncesSerivceProvider.future,
+      sharedPreferencesSerivceProvider.future,
     );
 
     return SettingsLocalDatasourceImpl(
