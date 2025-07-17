@@ -4,6 +4,8 @@ abstract interface class PinCodeLocalDatasource {
   Future<void> savePinCode(String pinCode);
   Future<String?> loadPinCode();
   Future<bool> validatePinCode(String pinCode);
+  Future<bool> passwordExists();
+  Future<void> deletePassword(String pinCode);
 }
 
 class PinCodeLocalDatasourceImpl implements PinCodeLocalDatasource {
@@ -29,10 +31,28 @@ class PinCodeLocalDatasourceImpl implements PinCodeLocalDatasource {
 
   @override
   Future<bool> validatePinCode(String pinCode) async {
-    final savedPinCode = await loadPinCode();
+    final savedPinCode = await _storage.read(key: _pinCodeKey);
     if (savedPinCode == null) {
       throw StateError('Ошибка');
     }
     return savedPinCode == pinCode;
+  }
+
+  @override
+  Future<bool> passwordExists() async {
+    return _storage.containsKey(key: _pinCodeKey);
+  }
+
+  @override
+  Future<void> deletePassword(String pinCode) async {
+    final passwordExists = await _storage.containsKey(
+      key: _pinCodeKey,
+    );
+    if (!passwordExists) throw Exception('Невозможно удалить пароль');
+
+    final isValid = await validatePinCode(pinCode);
+    if (!isValid) throw Exception('Неверный пароль');
+
+    await _storage.delete(key: _pinCodeKey);
   }
 }

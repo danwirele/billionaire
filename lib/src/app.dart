@@ -5,7 +5,7 @@ import 'package:billionaire/src/presentation/shared/controllers/app_locale.dart'
 import 'package:billionaire/src/presentation/shared/controllers/theme.dart';
 import 'package:billionaire/src/presentation/ui_kit/common_widgets/blur_overlay.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
-import 'package:billionaire/src/router/router.dart' show router;
+import 'package:billionaire/src/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -46,44 +46,55 @@ class _AppState extends ConsumerState<App>
     ref.read(dioServiceProvider);
     ref.read(categoriesRepositoryProvider);
 
-    ref.watch(appLocaleProvider);
+    final appLocaleFuture = ref.watch(appLocaleProvider.future);
+    final themeFuture = ref.watch(themeProvider.future);
+    final router = ref.read(routerProvider);
 
-    return ref
-        .watch(themeProvider)
-        .when(
-          data: (themeState) {
-            final theme = themeState.mode;
-            final lightTintColor = themeState.lightTintColor;
-            final darkTintColor = themeState.darkTintColor;
+    return FutureBuilder(
+      future: Future.wait([appLocaleFuture, themeFuture]),
 
-            return MaterialApp.router(
-              builder: (context, child) {
-                if (shouldBlur) {
-                  return BlurOverlay(
-                    child: child!,
-                  );
-                }
+      builder: (context, asyncSnapshot) {
+        if (!asyncSnapshot.hasData)
+          return const Directionality(
+            textDirection: TextDirection.ltr,
+            child: CircularProgressIndicator(),
+          );
+        if (asyncSnapshot.hasError)
+          return Directionality(
+            textDirection: TextDirection.ltr,
+            child: Text(
+              'Непредвиденная ошибка ${asyncSnapshot.error}',
+            ),
+          );
 
-                return child!;
-              },
-              localizationsDelegates:
-                  AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocalizations.supportedLocales,
-              locale: Locale('ru'),
-              routerConfig: router,
-              theme: BillionTheme.lightTheme(primary: lightTintColor),
-              darkTheme: BillionTheme.darkTheme(
-                primary: darkTintColor,
-              ),
-              themeMode: theme,
-              debugShowCheckedModeBanner: false,
-            );
+        final appLocale = asyncSnapshot.data![0] as Locale;
+        final theme = asyncSnapshot.data![1] as ThemeState;
+
+        return MaterialApp.router(
+          builder: (context, child) {
+            if (shouldBlur) {
+              return BlurOverlay(
+                child: child!,
+              );
+            }
+
+            return child!;
           },
-          skipError: true,
-          skipLoadingOnRefresh: true,
-          skipLoadingOnReload: true,
-          error: (error, stackTrace) => const SizedBox.shrink(),
-          loading: () => const SizedBox.shrink(),
+          localizationsDelegates:
+              AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: appLocale,
+          routerConfig: router,
+          theme: BillionTheme.lightTheme(
+            primary: theme.lightTintColor,
+          ),
+          darkTheme: BillionTheme.darkTheme(
+            primary: theme.darkTintColor,
+          ),
+          themeMode: theme.mode,
+          debugShowCheckedModeBanner: false,
         );
+      },
+    );
   }
 }

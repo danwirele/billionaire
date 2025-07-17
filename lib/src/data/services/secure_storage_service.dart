@@ -1,13 +1,14 @@
+import 'package:billionaire/src/data/datasources/local/pin_code_local_datasource.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'secure_storage_service.g.dart';
 
 @Riverpod(keepAlive: true)
-class SecureStorageService extends _$SecureStorageService {
+class PincodeService extends _$PincodeService {
   @override
-  FlutterSecureStorage build() {
-    return const FlutterSecureStorage(
+  PinCodeLocalDatasource build() {
+    const secureStorage = FlutterSecureStorage(
       aOptions: AndroidOptions(
         encryptedSharedPreferences: true,
         storageCipherAlgorithm: StorageCipherAlgorithm.AES_CBC_PKCS7Padding,
@@ -17,5 +18,7 @@ class SecureStorageService extends _$SecureStorageService {
         accessibility: KeychainAccessibility.passcode,
       ),
     );
+
+    return PinCodeLocalDatasourceImpl(storage: secureStorage);
   }
 }

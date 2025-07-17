@@ -1,25 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'app_locale.dart';
+part of 'auth.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$appLocaleHash() => r'9827d88e2c2767416c95193583e425ce94bb8dfd';
+String _$authHash() => r'1dd7a463b1ad41ed762671c9deee0445ca98d38a';
 
-/// See also [AppLocale].
-@ProviderFor(AppLocale)
-final appLocaleProvider = AsyncNotifierProvider<AppLocale, Locale>.internal(
-  AppLocale.new,
-  name: r'appLocaleProvider',
+/// See also [Auth].
+@ProviderFor(Auth)
+final authProvider = AsyncNotifierProvider<Auth, bool>.internal(
+  Auth.new,
+  name: r'authProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$appLocaleHash,
+      : _$authHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$AppLocale = AsyncNotifier<Locale>;
+typedef _$Auth = AsyncNotifier<bool>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
