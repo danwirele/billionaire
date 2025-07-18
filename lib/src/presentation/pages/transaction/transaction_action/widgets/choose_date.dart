@@ -1,4 +1,5 @@
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:flutter/material.dart';
 
 class ChooseDate extends StatelessWidget {
@@ -27,7 +28,7 @@ class ChooseDate extends StatelessWidget {
               dateNotifier.value = newDate;
             }
           },
-          leading: BillionText.bodyLarge('Дата'),
+          leading: BillionText.bodyLarge(context.localization.date),
           action: Row(
             children: [
               BillionText.bodyLarge(date.toString().split(' ')[0]),

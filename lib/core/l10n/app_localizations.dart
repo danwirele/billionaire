@@ -67,8 +67,8 @@ abstract class AppLocalizations {
 
   final String localeName;
 
-  static AppLocalizations? of(BuildContext context) {
-    return Localizations.of<AppLocalizations>(context, AppLocalizations);
+  static AppLocalizations of(BuildContext context) {
+    return Localizations.of<AppLocalizations>(context, AppLocalizations)!;
   }
 
   static const LocalizationsDelegate<AppLocalizations> delegate =
@@ -98,11 +98,59 @@ abstract class AppLocalizations {
     Locale('ru'),
   ];
 
+  /// No description provided for @about.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get about;
+
+  /// No description provided for @aboutReadme.
+  ///
+  /// In en, this message translates to:
+  /// **'This app is designed to help you become a billionaire.'**
+  String get aboutReadme;
+
+  /// No description provided for @accept.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get accept;
+
+  /// No description provided for @account.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get account;
+
+  /// No description provided for @accountNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Account not found'**
+  String get accountNotFound;
+
+  /// No description provided for @addition.
+  ///
+  /// In en, this message translates to:
+  /// **'Addition'**
+  String get addition;
+
+  /// No description provided for @amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get amount;
+
   /// No description provided for @appBarAccount.
   ///
   /// In en, this message translates to:
   /// **'My account'**
   String get appBarAccount;
+
+  /// No description provided for @appBarAnalysis.
+  ///
+  /// In en, this message translates to:
+  /// **'Analysis'**
+  String get appBarAnalysis;
 
   /// No description provided for @appBarExpenses.
   ///
@@ -127,6 +175,258 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'My stats'**
   String get appBarStats;
+
+  /// No description provided for @balance.
+  ///
+  /// In en, this message translates to:
+  /// **'Balance'**
+  String get balance;
+
+  /// No description provided for @beginning.
+  ///
+  /// In en, this message translates to:
+  /// **'Beginning'**
+  String get beginning;
+
+  /// No description provided for @byDay.
+  ///
+  /// In en, this message translates to:
+  /// **' By day'**
+  String get byDay;
+
+  /// No description provided for @byMonth.
+  ///
+  /// In en, this message translates to:
+  /// **' By month'**
+  String get byMonth;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @category.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get category;
+
+  /// No description provided for @checkingBiometrics.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking biometrics'**
+  String get checkingBiometrics;
+
+  /// No description provided for @choosePrimaryColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a primary color'**
+  String get choosePrimaryColor;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @comment.
+  ///
+  /// In en, this message translates to:
+  /// **'Comment'**
+  String get comment;
+
+  /// No description provided for @confirmYourNewPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm your new password'**
+  String get confirmYourNewPassword;
+
+  /// No description provided for @contactSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact support'**
+  String get contactSupport;
+
+  /// No description provided for @currency.
+  ///
+  /// In en, this message translates to:
+  /// **' Currency'**
+  String get currency;
+
+  /// No description provided for @date.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get date;
+
+  /// No description provided for @deleteTransaction.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete transaction'**
+  String get deleteTransaction;
+
+  /// No description provided for @dollar.
+  ///
+  /// In en, this message translates to:
+  /// **'U.S. dollar'**
+  String get dollar;
+
+  /// No description provided for @dontSteal.
+  ///
+  /// In en, this message translates to:
+  /// **'Crook, don\'t steal'**
+  String get dontSteal;
+
+  /// No description provided for @editing.
+  ///
+  /// In en, this message translates to:
+  /// **'Editing'**
+  String get editing;
+
+  /// No description provided for @emptyData.
+  ///
+  /// In en, this message translates to:
+  /// **'No data to display'**
+  String get emptyData;
+
+  /// No description provided for @ending.
+  ///
+  /// In en, this message translates to:
+  /// **'Ending'**
+  String get ending;
+
+  /// No description provided for @enterAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter amount'**
+  String get enterAmount;
+
+  /// No description provided for @enterNewPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a new password'**
+  String get enterNewPassword;
+
+  /// No description provided for @enterYourPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password'**
+  String get enterYourPassword;
+
+  /// No description provided for @error.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
+
+  /// No description provided for @errorAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get errorAccount;
+
+  /// No description provided for @errorAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get errorAmount;
+
+  /// No description provided for @errorCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get errorCategory;
+
+  /// No description provided for @errorGettingCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'Error getting categories'**
+  String get errorGettingCategories;
+
+  /// No description provided for @euro.
+  ///
+  /// In en, this message translates to:
+  /// **'Euro'**
+  String get euro;
+
+  /// No description provided for @filterDateAscending.
+  ///
+  /// In en, this message translates to:
+  /// **'Date ascending'**
+  String get filterDateAscending;
+
+  /// No description provided for @filterDateDescending.
+  ///
+  /// In en, this message translates to:
+  /// **'Date descending'**
+  String get filterDateDescending;
+
+  /// No description provided for @filterPriceAscending.
+  ///
+  /// In en, this message translates to:
+  /// **'Price ascending'**
+  String get filterPriceAscending;
+
+  /// No description provided for @filterPriceDescending.
+  ///
+  /// In en, this message translates to:
+  /// **'Price descending'**
+  String get filterPriceDescending;
+
+  /// No description provided for @filters.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get filters;
+
+  /// No description provided for @findCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Find category'**
+  String get findCategory;
+
+  /// No description provided for @haptics.
+  ///
+  /// In en, this message translates to:
+  /// **'Haptics'**
+  String get haptics;
+
+  /// No description provided for @invalidPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid password'**
+  String get invalidPassword;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading'**
+  String get loading;
+
+  /// No description provided for @logInBiometricsReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in to the app using Face ID or Touch ID'**
+  String get logInBiometricsReason;
+
+  /// No description provided for @loginBiometrics.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in using Face ID / Touch ID'**
+  String get loginBiometrics;
+
+  /// No description provided for @myHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'My history'**
+  String get myHistory;
 
   /// No description provided for @navBarAccount.
   ///
@@ -157,6 +457,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Stats'**
   String get navBarStats;
+
+  /// No description provided for @newAccountName.
+  ///
+  /// In en, this message translates to:
+  /// **'New account name'**
+  String get newAccountName;
+
+  /// No description provided for @newTransactionComment.
+  ///
+  /// In en, this message translates to:
+  /// **'New transaction comment'**
+  String get newTransactionComment;
+
+  /// No description provided for @noBiometrics.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have biometric access, enter your pin code'**
+  String get noBiometrics;
+
+  /// No description provided for @noCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'No categories'**
+  String get noCategories;
+
+  /// No description provided for @noDataToDisplay.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no data to display'**
+  String get noDataToDisplay;
+
+  /// No description provided for @noInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'No information'**
+  String get noInformation;
+
+  /// No description provided for @noTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions'**
+  String get noTransactions;
+
+  /// No description provided for @notSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Not selected'**
+  String get notSelected;
+
+  /// No description provided for @notSpecified.
+  ///
+  /// In en, this message translates to:
+  /// **'Not specified'**
+  String get notSpecified;
+
+  /// No description provided for @periodBeginning.
+  ///
+  /// In en, this message translates to:
+  /// **'Period: beginning'**
+  String get periodBeginning;
+
+  /// No description provided for @periodEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'Period: end'**
+  String get periodEnd;
+
+  /// No description provided for @pinCode.
+  ///
+  /// In en, this message translates to:
+  /// **'PinCode'**
+  String get pinCode;
+
+  /// No description provided for @pleaseFillFollowingFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill in the following fields'**
+  String get pleaseFillFollowingFields;
+
+  /// No description provided for @primaryColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary color'**
+  String get primaryColor;
+
+  /// No description provided for @russianRuble.
+  ///
+  /// In en, this message translates to:
+  /// **'Russian Ruble'**
+  String get russianRuble;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @selectFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Select filter'**
+  String get selectFilter;
+
+  /// No description provided for @setPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Set a password'**
+  String get setPassword;
+
+  /// No description provided for @settingsTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Light/system'**
+  String get settingsTheme;
+
+  /// No description provided for @sorryErrorOccurred.
+  ///
+  /// In en, this message translates to:
+  /// **'Sorry, an error occurred'**
+  String get sorryErrorOccurred;
+
+  /// No description provided for @sorryErrorOccurredNoAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Sorry, an error occurred, account not found'**
+  String get sorryErrorOccurredNoAccount;
+
+  /// No description provided for @sorting.
+  ///
+  /// In en, this message translates to:
+  /// **'Sorting'**
+  String get sorting;
+
+  /// No description provided for @system.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get system;
+
+  /// No description provided for @time.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get time;
+
+  /// No description provided for @total.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get total;
+
+  /// No description provided for @transactionAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction amount'**
+  String get transactionAmount;
+
+  /// No description provided for @unknownError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown error'**
+  String get unknownError;
 }
 
 class _AppLocalizationsDelegate

@@ -1,4 +1,5 @@
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:flutter/material.dart';
 
 class ChooseTime extends StatelessWidget {
@@ -25,7 +26,7 @@ class ChooseTime extends StatelessWidget {
               timeNotifier.value = newTime;
             }
           },
-          leading: BillionText.bodyLarge('Время'),
+          leading: BillionText.bodyLarge(context.localization.time),
           action: Row(
             children: [
               BillionText.bodyLarge('${time.hour}:${time.minute}'),

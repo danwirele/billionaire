@@ -6,20 +6,21 @@ class BillionPinnedContainer extends StatelessWidget {
     required this.action,
     super.key,
     this.onTap,
-    this.containerColor = BillionColors.primaryContainer,
-  }) : _rowPadding = const EdgeInsets.symmetric(
+    this.isTransaprent = false,
+  }) : _height = 56,
+       _rowPadding = const EdgeInsets.symmetric(
          horizontal: 16,
-         vertical: 16,
        );
+
   const BillionPinnedContainer.primaryLarge({
     required this.leading,
     required this.action,
     super.key,
     this.onTap,
-    this.containerColor = BillionColors.primaryContainer,
-  }) : _rowPadding = const EdgeInsets.symmetric(
+    this.isTransaprent = false,
+  }) : _height = 70,
+       _rowPadding = const EdgeInsets.symmetric(
          horizontal: 16,
-         vertical: 16,
        );
 
   const BillionPinnedContainer.transparentMedium({
@@ -27,10 +28,10 @@ class BillionPinnedContainer extends StatelessWidget {
     required this.action,
     super.key,
     this.onTap,
-  }) : containerColor = Colors.transparent,
+    this.isTransaprent = true,
+  }) : _height = 56,
        _rowPadding = const EdgeInsets.symmetric(
          horizontal: 16,
-         vertical: 16,
        );
 
   const BillionPinnedContainer.transparentLarge({
@@ -38,20 +39,23 @@ class BillionPinnedContainer extends StatelessWidget {
     required this.action,
     super.key,
     this.onTap,
-  }) : containerColor = Colors.transparent,
+    this.isTransaprent = true,
+  }) : _height = 70,
        _rowPadding = const EdgeInsets.symmetric(
          horizontal: 16,
-         vertical: 22,
        );
 
   final Widget leading;
   final Widget action;
   final void Function()? onTap;
-  final Color containerColor;
   final EdgeInsets _rowPadding;
+  final bool isTransaprent;
+  final double _height;
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = context.colorScheme;
+
     return Material(
       child: InkWell(
         onTap: onTap,
@@ -59,8 +63,11 @@ class BillionPinnedContainer extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
+              height: _height,
               padding: _rowPadding,
-              color: containerColor,
+              color: isTransaprent
+                  ? Colors.transparent
+                  : colorScheme.primaryContainer,
               child: Row(
                 children: [
                   leading,

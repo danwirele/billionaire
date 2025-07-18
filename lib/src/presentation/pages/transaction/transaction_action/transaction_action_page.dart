@@ -12,6 +12,7 @@ import 'package:billionaire/src/presentation/pages/transaction/transaction_actio
 import 'package:billionaire/src/presentation/pages/transaction/transaction_action/widgets/choose_time.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/dialogs_extension.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
@@ -29,10 +30,14 @@ class TransactionActionPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final colorScheme = context.colorScheme;
+
     final userAccount = ref.read(userAccountRepositoryProvider).value;
 
     final accountNotifier = useValueNotifier<AccountBriefModel?>(
-      AccountBriefModel.fromJson(userAccount!.toJson()),
+      userAccount != null
+          ? AccountBriefModel.fromJson(userAccount.toJson())
+          : null,
     );
     final categoryNotifier = useValueNotifier<CategoryModel?>(
       model?.category,
@@ -59,17 +64,19 @@ class TransactionActionPage extends HookConsumerWidget {
           onPressed: GoRouter.of(context).pop,
           icon: const Icon(Icons.close),
         ),
-        title: model == null ? 'Добавление' : 'Редактирование',
+        title: model == null
+            ? context.localization.addition
+            : context.localization.editing,
         actionIcon: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.check,
             size: 24,
-            color: BillionColors.onSurfaceVariant,
+            color: colorScheme.onSurfaceVariant,
           ),
           onPressed: () async {
             if (isValid()) {
               final transaction = TransactionRequestModel(
-                accountId: userAccount.id,
+                accountId: userAccount?.id ?? 0,
                 categoryId: categoryNotifier.value!.id,
                 amount: amountNotifier.value.replaceAll(' ', ''),
                 transactionDate: DateTime(
@@ -98,13 +105,13 @@ class TransactionActionPage extends HookConsumerWidget {
               final errorList = <String>[];
 
               if (accountNotifier.value == null) {
-                errorList.add('Счет');
+                errorList.add(context.localization.errorAccount);
               }
               if (categoryNotifier.value == null) {
-                errorList.add('Статья');
+                errorList.add(context.localization.errorCategory);
               }
               if (amountNotifier.value.isEmpty) {
-                errorList.add('Сумма');
+                errorList.add(context.localization.errorAmount);
               }
 
               // Показываем диалог с ошибкой
@@ -145,17 +152,17 @@ class TransactionActionPage extends HookConsumerWidget {
                           transactionId: model!.id,
                         );
                   },
-                  style: const ButtonStyle(
+                  style: ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(
-                      BillionColors.error,
+                      colorScheme.error,
                     ),
                     foregroundColor: WidgetStatePropertyAll(
-                      BillionColors.onPrimary,
+                      colorScheme.onPrimary,
                     ),
                   ),
                   child: BillionText.labelLarge(
-                    'Удалить расход',
-                    color: BillionColors.onPrimary,
+                    context.localization.deleteTransaction,
+                    color: colorScheme.onPrimary,
                   ),
                 ),
               ),

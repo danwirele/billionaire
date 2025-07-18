@@ -21,13 +21,14 @@ class BillionScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = context.colorScheme;
     return Scaffold(
       appBar: appBar,
       body: body,
       floatingActionButton: floatingActionButton,
       floatingActionButtonLocation:
           FloatingActionButtonLocation.endFloat,
-      backgroundColor: BillionColors.surface,
+      backgroundColor: colorScheme.surface,
     );
   }
 }

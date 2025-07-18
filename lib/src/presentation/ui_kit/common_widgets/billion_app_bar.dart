@@ -7,7 +7,7 @@ class BillionAppBar extends StatelessWidget
     super.key,
     this.actionIcon,
     this.leading,
-    this.backgroundColor = BillionColors.primary,
+    this.isTransparent = false,
   });
 
   @override
@@ -18,11 +18,15 @@ class BillionAppBar extends StatelessWidget
   final String title;
   final Widget? leading;
   final Widget? actionIcon;
-  final Color backgroundColor;
+  final bool isTransparent;
   @override
   Widget build(BuildContext context) {
+    final colorScheme = context.colorScheme;
+
     return AppBar(
-      backgroundColor: backgroundColor,
+      backgroundColor: isTransparent
+          ? Colors.transparent
+          : colorScheme.primary,
       title: Text(title, style: BillionTextStyle.titleLarge),
       centerTitle: true,
       leading: leading,

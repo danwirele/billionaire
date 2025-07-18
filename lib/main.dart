@@ -17,12 +17,18 @@ void main() async {
         DeviceOrientation.portraitDown,
         DeviceOrientation.portraitUp,
       ]);
+      await SystemChrome.setApplicationSwitcherDescription(
+        const ApplicationSwitcherDescription(
+          label: 'My App',
+          primaryColor: 1,
+        ),
+      );
       ImageUtils.svgPrecacheImage();
 
       await Config().init();
 
       workerManager.log = true;
-      await workerManager.init();
+      // await workerManager.init();
       runApp(const ProviderScope(child: App()));
     },
     (error, st) {

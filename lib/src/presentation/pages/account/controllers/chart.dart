@@ -25,11 +25,14 @@ class Chart extends _$Chart {
         microsecond: 0,
       );
 
+      final sign = transaction.category.isIncome ? 1 : -1;
+
       if (!groupByDate.containsKey(key)) {
-        groupByDate[key] = double.parse(transaction.amount);
+        groupByDate[key] = double.parse(transaction.amount) * sign;
       } else {
         groupByDate[key] =
-            groupByDate[key]! + double.parse(transaction.amount);
+            groupByDate[key]! +
+            double.parse(transaction.amount) * sign;
       }
     }
 

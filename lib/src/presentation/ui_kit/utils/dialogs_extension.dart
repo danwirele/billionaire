@@ -3,6 +3,7 @@ import 'package:billionaire/src/domain/models/transactions/transaction_response.
 import 'package:billionaire/src/presentation/pages/account/controllers/update_account.dart';
 import 'package:billionaire/src/presentation/pages/transaction/transaction_action/transaction_action_page.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/text_input_formatters.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +27,7 @@ extension DialogExtension on BuildContext {
 
             return AlertDialog(
               title: BillionText.bodyMedium(
-                'Новое название счета',
+                localization.newAccountName,
               ),
               content: TextField(
                 controller: nameController,
@@ -39,7 +40,7 @@ extension DialogExtension on BuildContext {
                   onPressed: () {
                     GoRouter.of(context).pop();
                   },
-                  child: BillionText.bodyMedium('Отмена'),
+                  child: BillionText.bodyMedium(localization.cancel),
                 ),
                 ElevatedButton(
                   onPressed: () async {
@@ -50,7 +51,7 @@ extension DialogExtension on BuildContext {
                       GoRouter.of(this).pop();
                     }
                   },
-                  child: BillionText.bodyMedium('Сохранить'),
+                  child: BillionText.bodyMedium(localization.save),
                 ),
               ],
             );
@@ -77,7 +78,7 @@ extension DialogExtension on BuildContext {
             final validDecimalSeparator = format.symbols.DECIMAL_SEP;
 
             return AlertDialog(
-              title: BillionText.bodyMedium('Сумма транзакции'),
+              title: BillionText.bodyMedium(localization.transactionAmount),
               content: TextField(
                 autofocus: true,
                 controller: amountTextEditingController,
@@ -89,8 +90,8 @@ extension DialogExtension on BuildContext {
                     validDecimalSeparator: validDecimalSeparator,
                   ),
                 ],
-                decoration: const InputDecoration(
-                  hintText: 'Введите сумму',
+                decoration: InputDecoration(
+                  hintText: localization.enterAmount,
                 ),
               ),
               actions: [
@@ -100,7 +101,7 @@ extension DialogExtension on BuildContext {
                       context,
                     ).pop(amountTextEditingController.text);
                   },
-                  child: BillionText.bodyMedium('Отмена'),
+                  child: BillionText.bodyMedium(localization.cancel),
                 ),
                 ElevatedButton(
                   onPressed: () async {
@@ -108,7 +109,7 @@ extension DialogExtension on BuildContext {
 
                     GoRouter.of(context).pop(amount);
                   },
-                  child: BillionText.bodyMedium('Сохранить'),
+                  child: BillionText.bodyMedium(localization.save),
                 ),
               ],
             );
@@ -131,13 +132,13 @@ extension DialogExtension on BuildContext {
 
             return AlertDialog(
               title: BillionText.bodyMedium(
-                'Новый комментарий транзакции',
+                localization.newTransactionComment,
               ),
               content: TextField(
                 controller: commentTextEditingController,
-                decoration: const InputDecoration(
-                  hintText: 'Комментарий',
-                  hintStyle: TextStyle(color: Colors.grey),
+                decoration: InputDecoration(
+                  hintText: localization.comment,
+                  hintStyle: const TextStyle(color: Colors.grey),
                 ),
               ),
               actions: [
@@ -145,7 +146,7 @@ extension DialogExtension on BuildContext {
                   onPressed: () {
                     GoRouter.of(context).pop();
                   },
-                  child: BillionText.bodyMedium('Отмена'),
+                  child: BillionText.bodyMedium(localization.cancel),
                 ),
                 ElevatedButton(
                   onPressed: () async {
@@ -153,7 +154,7 @@ extension DialogExtension on BuildContext {
 
                     GoRouter.of(context).pop(comment);
                   },
-                  child: BillionText.bodyMedium('Сохранить'),
+                  child: BillionText.bodyMedium(localization.save),
                 ),
               ],
             );
@@ -169,9 +170,9 @@ extension DialogExtension on BuildContext {
       context: this,
       useRootNavigator: false,
       builder: (context) => AlertDialog(
-        title: BillionText.titleMedium('Ошибка'),
+        title: BillionText.titleMedium(localization.error),
         content: BillionText.bodyMedium(
-          'Пожалуйста, заполните следующие поля:${errorList.join(', ')}',
+          '${localization.pleaseFillFollowingFields}:${errorList.join(', ')}',
           overflow: TextOverflow.visible,
         ),
         actions: [

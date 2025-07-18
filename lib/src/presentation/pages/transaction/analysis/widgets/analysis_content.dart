@@ -6,6 +6,7 @@ import 'package:billionaire/src/presentation/pages/transaction/widgets/billion_s
 import 'package:billionaire/src/presentation/shared/controllers/currency_provider.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/error_helper.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/modal_bottom_sheet_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -23,6 +24,9 @@ class AnalysisContent extends ConsumerWidget {
     final analysisProvider = analysisStateProvider(
       isIncome: isIncome,
     );
+
+    final colorScheme = context.colorScheme;
+
     return Consumer(
       builder: (context, ref, child) {
         final currency = ref.read(currencyProviderProvider);
@@ -34,8 +38,10 @@ class AnalysisContent extends ConsumerWidget {
               skipLoadingOnReload: false,
               data: (analysisState) {
                 if (analysisState == null) {
-                  return const Center(
-                    child: Text('Извините произошла ошибка'),
+                  return Center(
+                    child: Text(
+                      context.localization.sorryErrorOccurred,
+                    ),
                   );
                 }
 
@@ -43,8 +49,8 @@ class AnalysisContent extends ConsumerWidget {
                     analysisState.stateModelsList;
 
                 if (analysisStateList.isEmpty) {
-                  return const Center(
-                    child: Text('Транзакции отсутствуют'),
+                  return Center(
+                    child: Text(context.localization.noTransactions),
                   );
                 }
                 final random = Random();
@@ -63,10 +69,9 @@ class AnalysisContent extends ConsumerWidget {
 
                 return Column(
                   children: [
-                    BillionPinnedContainer.primaryMedium(
-                      containerColor: Colors.transparent,
+                    BillionPinnedContainer.transparentMedium(
                       leading: BillionText.bodyLarge(
-                        'Сумма',
+                        context.localization.amount,
                       ),
                       action: BillionText.bodyLarge(
                         '${analysisState.summaryAmount.toStringAsFixed(0)} ${currency.char}',
@@ -127,14 +132,14 @@ class AnalysisContent extends ConsumerWidget {
                 );
               },
               error: (error, stackTrace) {
-                final errorMessage = ErrorHelper.whenError(error);
+                final errorMessage = context.whenError(error);
 
                 return BillionText.bodyMedium(errorMessage);
               },
-              loading: () => const Center(
+              loading: () => Center(
                 child: CircularProgressIndicator(
-                  backgroundColor: BillionColors.primaryContainer,
-                  color: BillionColors.primary,
+                  backgroundColor: colorScheme.primaryContainer,
+                  color: colorScheme.primary,
                 ),
               ),
             );

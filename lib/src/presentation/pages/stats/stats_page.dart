@@ -1,7 +1,7 @@
-import 'package:billionaire/core/l10n/app_localizations.dart';
 import 'package:billionaire/src/presentation/pages/stats/controllers/stats_controller.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/error_helper.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -10,9 +10,11 @@ class StatsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = context.colorScheme;
+
     return BillionScaffold(
       appBar: BillionAppBar(
-        title: AppLocalizations.of(context)!.appBarStats,
+        title: context.localization.appBarStats,
       ),
       body: Consumer(
         builder: (context, ref, child) {
@@ -26,34 +28,33 @@ class StatsPage extends StatelessWidget {
                   return Column(
                     children: [
                       TextField(
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           filled: true,
-                          fillColor: Color(0xffECE6F0),
-                          contentPadding: EdgeInsets.symmetric(
+                          fillColor: colorScheme.surfaceContainerHigh,
+                          contentPadding: const EdgeInsets.symmetric(
                             vertical: 16,
                             horizontal: 14,
                           ),
-                          hintText: 'Найти статью',
+                          hintText: context.localization.findCategory,
 
                           suffixIcon: Icon(
                             Icons.search,
-                            color: Color(0xff1D1B20),
+                            color: colorScheme.onSurfaceVariant,
                           ),
-                          border: OutlineInputBorder(
+                          border: const OutlineInputBorder(
                             borderSide: BorderSide.none,
                           ),
                         ),
                         onChanged: (query) async {
-                          await ref
-                              .read(statsControllerProvider.notifier)
-                              .fuzzySearchLevenshtein(query);
+                          await ref.read(statsControllerProvider.notifier).fuzzySearchLevenshtein(query);
                         },
                       ),
+                      const BillionDivider(),
                       Expanded(
                         child: categories.isEmpty
                             ? Center(
                                 child: BillionText.bodyMedium(
-                                  'Категории отсутствуют',
+                                  context.localization.noCategories,
                                 ),
                               )
                             : ListView.builder(
@@ -65,18 +66,14 @@ class StatsPage extends StatelessWidget {
                                     children: [
                                       ListTile(
                                         dense: true,
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                              vertical: 11,
-                                              horizontal: 16,
-                                            ),
-                                        leading:
-                                            category.emoji.isNotEmpty
+                                        contentPadding: const EdgeInsets.symmetric(
+                                          vertical: 11,
+                                          horizontal: 16,
+                                        ),
+                                        leading: category.emoji.isNotEmpty
                                             ? CircleAvatar(
                                                 radius: 12,
-                                                backgroundColor:
-                                                    BillionColors
-                                                        .primaryContainer,
+                                                backgroundColor: colorScheme.primaryContainer,
                                                 child: Text(
                                                   category.emoji,
                                                 ),
@@ -97,9 +94,9 @@ class StatsPage extends StatelessWidget {
                   );
                 },
                 error: (error, stackTrace) {
-                  final errorMessage = ErrorHelper.whenError(
+                  final errorMessage = context.whenError(
                     error,
-                    'Произошла ошибка получения категорий',
+                    context.localization.errorGettingCategories,
                   );
 
                   return Center(

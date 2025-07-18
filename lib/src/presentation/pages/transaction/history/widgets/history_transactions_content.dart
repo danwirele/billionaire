@@ -4,6 +4,7 @@ import 'package:billionaire/src/presentation/pages/transaction/widgets/billion_s
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/dialogs_extension.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/invoke_function.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -22,7 +23,7 @@ class HistoryTransactionsContent extends ConsumerWidget {
     return Column(
       children: [
         BillionPinnedContainer.primaryMedium(
-          leading: BillionText.bodyLarge('Всего'),
+          leading: BillionText.bodyLarge(context.localization.total),
           action: BillionText.bodyLarge(
             '${historyTransactionStateModel.amount.formatNumber()} ${currencyProviderValue.char}',
           ),
@@ -30,10 +31,8 @@ class HistoryTransactionsContent extends ConsumerWidget {
 
         Expanded(
           child: historyTransactionStateModel.transactions.isEmpty
-              ? const Center(
-                  child: Text(
-                    'Транзакции отсуствуют',
-                  ),
+              ? Center(
+                  child: Text(context.localization.noTransactions),
                 )
               : ListView.builder(
                   itemCount: historyTransactionStateModel.transactions.length,

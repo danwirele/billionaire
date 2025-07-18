@@ -7,7 +7,7 @@ part of 'chart_transactions_repository.dart';
 // **************************************************************************
 
 String _$chartTransactionsRepositoryHash() =>
-    r'c69d536221d7c7e8ac9dc70946291032b8cb09bf';
+    r'9f80dce44f0ac727c512557bd773221fbe940477';
 
 /// See also [ChartTransactionsRepository].
 @ProviderFor(ChartTransactionsRepository)

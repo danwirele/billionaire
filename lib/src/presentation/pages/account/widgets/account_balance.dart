@@ -6,6 +6,7 @@ import 'package:billionaire/src/presentation/pages/account/controllers/balance_v
 import 'package:billionaire/src/presentation/shared/controllers/currency_provider.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/error_helper.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sensors_plus/sensors_plus.dart';
@@ -16,7 +17,8 @@ class AccountBalance extends ConsumerStatefulWidget {
   const AccountBalance({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _AccountBalanceState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _AccountBalanceState();
 }
 
 class _AccountBalanceState extends ConsumerState<AccountBalance> {
@@ -41,6 +43,7 @@ class _AccountBalanceState extends ConsumerState<AccountBalance> {
   @override
   Widget build(BuildContext context) {
     final currency = ref.watch(currencyProviderProvider);
+    final colorScheme = context.colorScheme;
 
     return BillionPinnedContainer.primaryMedium(
       leading: Row(
@@ -52,7 +55,7 @@ class _AccountBalanceState extends ConsumerState<AccountBalance> {
             radius: 12,
             child: Text('💰'),
           ),
-          BillionText.bodyLarge('Баланс'),
+          BillionText.bodyLarge(context.localization.balance),
         ],
       ),
       action: Row(
@@ -65,7 +68,7 @@ class _AccountBalanceState extends ConsumerState<AccountBalance> {
               .when(
                 data: (data) {
                   final balance = double.parse(
-                    data.balance,
+                    data?.balance ?? '0.0',
                   ).formatNumber();
 
                   return Consumer(
@@ -77,7 +80,7 @@ class _AccountBalanceState extends ConsumerState<AccountBalance> {
                       return SpoilerOverlay(
                         key: ValueKey(isVisible),
                         config: WidgetSpoilerConfig(
-                          particleColor: BillionColors.error,
+                          particleColor: colorScheme.error,
                           fadeRadius: 30,
                           maxParticleSize: 3,
                           particleDensity: 0.4,
@@ -97,11 +100,13 @@ class _AccountBalanceState extends ConsumerState<AccountBalance> {
                   );
                 },
                 error: (error, stackTrace) {
-                  final errorMessage = ErrorHelper.whenError(error);
+                  final errorMessage = context.whenError(error);
 
                   return BillionText.bodyLarge(errorMessage);
                 },
-                loading: () => BillionText.bodyMedium('Загрузка...'),
+                loading: () => BillionText.bodyMedium(
+                  '${context.localization.loading}...',
+                ),
               ),
 
           const SizedBox(width: 16),

@@ -1,5 +1,6 @@
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/dialogs_extension.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -19,18 +20,17 @@ class ChooseAmount extends ConsumerWidget {
       builder: (context, amount, _) {
         return BillionPinnedContainer.transparentLarge(
           onTap: () async {
-            final newAmount = await context
-                .showSetTransactionAmountDialog(
-                  initialAmount: amount,
-                );
+            final newAmount = await context.showSetTransactionAmountDialog(
+              initialAmount: amount,
+            );
             if (newAmount != null) {
               amountNotifier.value = newAmount;
             }
           },
-          leading: BillionText.bodyLarge('Сумма'),
+          leading: BillionText.bodyLarge(context.localization.amount),
           action: Row(
             children: [
-              BillionText.bodyLarge(amount.isEmpty ? 'Не указана' : '$amount ${currency.char}'),
+              BillionText.bodyLarge(amount.isEmpty ? context.localization.notSpecified : '$amount ${currency.char}'),
               const BillionArrowRight(),
             ],
           ),

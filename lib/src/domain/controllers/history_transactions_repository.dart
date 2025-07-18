@@ -6,7 +6,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'history_transactions_repository.g.dart';
 
 @Riverpod(dependencies: [UserAccountRepository])
-class HistoryTransactionsRepository extends _$HistoryTransactionsRepository {
+class HistoryTransactionsRepository
+    extends _$HistoryTransactionsRepository {
   @override
   Future<List<TransactionResponseModel>?> build() async {
     final transactionRepo = await ref.read(
@@ -16,6 +17,8 @@ class HistoryTransactionsRepository extends _$HistoryTransactionsRepository {
     final account = await ref.watch(
       userAccountRepositoryProvider.future,
     );
+
+    if (account == null) return null;
 
     final dateTimeNow = DateTime.now();
     // Начало текущего дня
@@ -34,11 +37,12 @@ class HistoryTransactionsRepository extends _$HistoryTransactionsRepository {
       59,
       59,
     );
-    final transactions = await transactionRepo.getTransactionsByPeriod(
-      accountId: account.id,
-      startDate: startDate,
-      endDate: endDate,
-    );
+    final transactions = await transactionRepo
+        .getTransactionsByPeriod(
+          accountId: account.id,
+          startDate: startDate,
+          endDate: endDate,
+        );
 
     return transactions;
   }
@@ -57,11 +61,14 @@ class HistoryTransactionsRepository extends _$HistoryTransactionsRepository {
       userAccountRepositoryProvider.future,
     );
 
-    final transactions = await transactionRepo.getTransactionsByPeriod(
-      accountId: account.id,
-      startDate: startDate,
-      endDate: endDate,
-    );
+    if (account == null) return;
+
+    final transactions = await transactionRepo
+        .getTransactionsByPeriod(
+          accountId: account.id,
+          startDate: startDate,
+          endDate: endDate,
+        );
 
     state = AsyncData(transactions);
   }

@@ -4,7 +4,8 @@ class BillionBottomNavBar extends StatefulWidget {
   const BillionBottomNavBar({super.key});
 
   @override
-  State<BillionBottomNavBar> createState() => _BillionBottomNavBarState();
+  State<BillionBottomNavBar> createState() =>
+      _BillionBottomNavBarState();
 }
 
 class _BillionBottomNavBarState extends State<BillionBottomNavBar> {
@@ -14,71 +15,93 @@ class _BillionBottomNavBarState extends State<BillionBottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const ConnectionContainer(),
-        MediaQuery.removePadding(
-          context: context,
-          removeTop: true,
-          child: NavigationBar(
-            height: _navBarHeight,
-            backgroundColor: BillionColors.surfaceContainer,
-            indicatorColor: BillionColors.primaryContainer,
-            overlayColor: const WidgetStatePropertyAll(
-              Colors.transparent,
+    final colorScheme = context.colorScheme;
+    final localization = context.localization;
+
+    return Consumer(
+      builder: (context, ref, child) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const ConnectionContainer(),
+          MediaQuery.removePadding(
+            context: context,
+            removeTop: true,
+            child: NavigationBar(
+              height: _navBarHeight,
+              backgroundColor: colorScheme.surfaceContainer,
+              indicatorColor: colorScheme.primaryContainer,
+              overlayColor: const WidgetStatePropertyAll(
+                Colors.transparent,
+              ),
+              animationDuration: const Duration(seconds: 1),
+              selectedIndex: _index,
+              labelTextStyle: WidgetStateTextStyle.resolveWith(
+                (Set<WidgetState> states) =>
+                    BillionTextStyle.labelMedium.copyWith(
+                      color: states.contains(WidgetState.selected)
+                          ? null
+                          : colorScheme.onSurfaceVariant,
+                    ),
+              ),
+              onDestinationSelected: (value) async {
+                final hapticsEnabled = ref
+                    .read(haptickControllerProvider)
+                    .value!;
+
+                final hapticsNotifier = ref.read(
+                  haptickControllerProvider.notifier,
+                );
+
+                if (hapticsEnabled) {
+                  await hapticsNotifier.triggerLightHaptic();
+                }
+
+                if (!context.mounted) return;
+
+                switch (value) {
+                  case 0:
+                    setState(() => _index = value);
+                    context.goNamed(RoutesUtil.expensesPageName);
+                  case 1:
+                    setState(() => _index = value);
+                    context.goNamed(RoutesUtil.incomePageName);
+                  case 2:
+                    setState(() => _index = value);
+                    context.goNamed(RoutesUtil.accountPageName);
+                  case 3:
+                    setState(() => _index = value);
+                    context.goNamed(RoutesUtil.statsPageName);
+                  case 4:
+                    setState(() => _index = value);
+                    context.goNamed(RoutesUtil.settingsPageName);
+                }
+              },
+              destinations: [
+                BillionNavDestination(
+                  icon: Assets.icons.trendDown,
+                  label: localization.navBarExpenses,
+                ),
+                BillionNavDestination(
+                  icon: Assets.icons.trendUp,
+                  label: localization.navBarIncome,
+                ),
+                BillionNavDestination(
+                  icon: Assets.icons.account,
+                  label: localization.navBarAccount,
+                ),
+                BillionNavDestination(
+                  icon: Assets.icons.expenseStats,
+                  label: localization.navBarStats,
+                ),
+                BillionNavDestination(
+                  icon: Assets.icons.settings,
+                  label: localization.navBarSettings,
+                ),
+              ],
             ),
-            animationDuration: const Duration(seconds: 1),
-            selectedIndex: _index,
-            labelTextStyle: WidgetStateTextStyle.resolveWith(
-              (Set<WidgetState> states) => BillionTextStyle.labelMedium.copyWith(
-                color: states.contains(WidgetState.selected) ? null : BillionColors.onSurfaceVariant,
-              ),
-            ),
-            onDestinationSelected: (value) {
-              switch (value) {
-                case 0:
-                  setState(() => _index = value);
-                  context.goNamed(RoutesUtil.expensesPageName);
-                case 1:
-                  setState(() => _index = value);
-                  context.goNamed(RoutesUtil.incomePageName);
-                case 2:
-                  setState(() => _index = value);
-                  context.goNamed(RoutesUtil.accountPageName);
-                case 3:
-                  setState(() => _index = value);
-                  context.goNamed(RoutesUtil.statsPageName);
-                case 4:
-                  setState(() => _index = value);
-                  context.goNamed(RoutesUtil.settingsPageName);
-              }
-            },
-            destinations: [
-              BillionNavDestination(
-                icon: Assets.icons.trendDown,
-                label: AppLocalizations.of(context)!.navBarExpenses,
-              ),
-              BillionNavDestination(
-                icon: Assets.icons.trendUp,
-                label: AppLocalizations.of(context)!.navBarIncome,
-              ),
-              BillionNavDestination(
-                icon: Assets.icons.account,
-                label: AppLocalizations.of(context)!.navBarAccount,
-              ),
-              BillionNavDestination(
-                icon: Assets.icons.expenseStats,
-                label: AppLocalizations.of(context)!.navBarStats,
-              ),
-              BillionNavDestination(
-                icon: Assets.icons.settings,
-                label: AppLocalizations.of(context)!.navBarSettings,
-              ),
-            ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -87,12 +110,17 @@ class ConnectionContainer extends ConsumerStatefulWidget {
   const ConnectionContainer({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ConnectionContainerState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ConnectionContainerState();
 }
 
-class _ConnectionContainerState extends ConsumerState<ConnectionContainer> with SingleTickerProviderStateMixin {
+class _ConnectionContainerState
+    extends ConsumerState<ConnectionContainer>
+    with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
+    final colorScheme = context.colorScheme;
+
     return ref
         .watch(connectionProvider)
         .when(
@@ -102,11 +130,11 @@ class _ConnectionContainerState extends ConsumerState<ConnectionContainer> with 
               key: const ValueKey('offline-bar'),
               width: double.infinity,
               duration: Durations.medium4,
-              color: BillionColors.error,
+              color: colorScheme.error,
               alignment: Alignment.center,
               child: BillionText.bodyLarge(
                 'Offline mode',
-                color: BillionColors.onPrimary,
+                color: colorScheme.onPrimary,
               ),
             );
           },
