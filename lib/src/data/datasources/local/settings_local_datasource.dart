@@ -86,7 +86,7 @@ class SettingsLocalDatasourceImpl implements SettingsLocalDatasource {
     );
 
     if (localization != null) {
-      LocalizationEnum.values.byName(localization);
+      return LocalizationEnum.values.byName(localization);
     }
 
     return LocalizationEnum.system;
