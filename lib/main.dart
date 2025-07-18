@@ -28,7 +28,7 @@ void main() async {
       await Config().init();
 
       workerManager.log = true;
-      await workerManager.init();
+      // await workerManager.init();
       runApp(const ProviderScope(child: App()));
     },
     (error, st) {

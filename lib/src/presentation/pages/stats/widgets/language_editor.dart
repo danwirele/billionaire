@@ -12,12 +12,9 @@ class LanguageEditor extends StatelessWidget {
   void _showLanguageBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      showDragHandle: true,
-      useSafeArea: true,
       isScrollControlled: true,
       builder: (context) {
         final colorScheme = context.colorScheme;
-        final localization = context.localization;
 
         return Consumer(
           builder: (context, ref, child) {
@@ -44,7 +41,6 @@ class LanguageEditor extends StatelessWidget {
                       Navigator.of(context).pop();
                     },
                   ),
-                  const BillionDivider(),
                   ListTile(
                     title: const Text('English'),
                     trailing: currentEnum == LocalizationEnum.en
@@ -57,9 +53,8 @@ class LanguageEditor extends StatelessWidget {
                       Navigator.of(context).pop();
                     },
                   ),
-                  const BillionDivider(),
                   ListTile(
-                    title: Text(localization.system),
+                    title: const Text('Системный'),
                     trailing: currentEnum == LocalizationEnum.system
                         ? const Icon(Icons.check)
                         : null,
@@ -70,18 +65,14 @@ class LanguageEditor extends StatelessWidget {
                       Navigator.of(context).pop();
                     },
                   ),
-                  const BillionDivider(),
+                  const Divider(),
                   ListTile(
-                    tileColor: colorScheme.error,
                     leading: Icon(
                       Icons.cancel_outlined,
                       size: 24,
                       color: colorScheme.onPrimary,
                     ),
-                    title: BillionText.bodyMedium(
-                      localization.cancel,
-                      color: Colors.white,
-                    ),
+                    title: Text(context.localization.cancel),
                     onTap: Navigator.of(context).pop,
                   ),
                 ],

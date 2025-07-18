@@ -1,9 +1,9 @@
 part of '../ui_kit.dart';
 
 class BillionTheme extends ColorScheme {
-  const BillionTheme.light(this.primary)
+  const BillionTheme.light(this.newPrimary)
     : super.light(
-        primary: primary,
+        primary: newPrimary,
         onPrimary: BillionColors.lightOnPrimary,
         primaryContainer: BillionColors.lightPrimaryContainer,
         surface: BillionColors.lightSurface,
@@ -16,9 +16,9 @@ class BillionTheme extends ColorScheme {
         error: BillionColors.lightError,
       );
 
-  const BillionTheme.dark(this.primary)
+  const BillionTheme.dark(this.newPrimary)
     : super.dark(
-        primary: primary,
+        primary: newPrimary,
         onPrimary: BillionColors.darkOnPrimary,
         primaryContainer: BillionColors.darkPrimaryContainer,
         surface: BillionColors.darkSurface,
@@ -30,8 +30,8 @@ class BillionTheme extends ColorScheme {
         outlineVariant: BillionColors.darkOutlineVariant,
         error: BillionColors.darkError,
       );
-  @override
-  final Color primary;
+
+  final Color newPrimary;
 
   static ThemeData lightTheme({required Color? primary}) {
     return ThemeData(

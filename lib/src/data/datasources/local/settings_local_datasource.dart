@@ -22,6 +22,10 @@ abstract interface class SettingsLocalDatasource {
   Future<Color?> loadLightTintColor();
 
   Future<Color?> loadDarkTintColor();
+
+  Future<bool> saveHapticsEnabled({required bool isEnabled});
+
+  Future<bool> loadHapticsEnabled();
 }
 
 @Riverpod(keepAlive: true)
@@ -124,5 +128,21 @@ class SettingsLocalDatasourceImpl implements SettingsLocalDatasource {
       return Color(int.parse(hexColor.substring(1), radix: 16));
     }
     return null; // Default color
+  }
+
+  @override
+  Future<bool> saveHapticsEnabled({required bool isEnabled}) async {
+    return _sharedPreferernces.setBool(
+      SharedPreferencesService.hapticsEnabledKey,
+      isEnabled,
+    );
+  }
+
+  @override
+  Future<bool> loadHapticsEnabled() async {
+    return _sharedPreferernces.getBool(
+          SharedPreferencesService.hapticsEnabledKey,
+        ) ??
+        true;
   }
 }

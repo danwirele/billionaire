@@ -7,7 +7,7 @@ part of 'pincode_page_controller.dart';
 // **************************************************************************
 
 String _$pincodePageControllerHash() =>
-    r'6ec0b135d251ae00f00ea9fb08e57092a1a414f7';
+    r'9374c69eb6550c697186d8f0a32c298afe400272';
 
 /// See also [PincodePageController].
 @ProviderFor(PincodePageController)

@@ -98,6 +98,18 @@ abstract class AppLocalizations {
     Locale('ru'),
   ];
 
+  /// No description provided for @about.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get about;
+
+  /// No description provided for @aboutReadme.
+  ///
+  /// In en, this message translates to:
+  /// **'This app is designed to help you become a billionaire.'**
+  String get aboutReadme;
+
   /// No description provided for @accept.
   ///
   /// In en, this message translates to:
@@ -200,6 +212,12 @@ abstract class AppLocalizations {
   /// **'Category'**
   String get category;
 
+  /// No description provided for @checkingBiometrics.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking biometrics'**
+  String get checkingBiometrics;
+
   /// No description provided for @choosePrimaryColor.
   ///
   /// In en, this message translates to:
@@ -218,11 +236,23 @@ abstract class AppLocalizations {
   /// **'Comment'**
   String get comment;
 
+  /// No description provided for @confirmYourNewPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm your new password'**
+  String get confirmYourNewPassword;
+
   /// No description provided for @contactSupport.
   ///
   /// In en, this message translates to:
   /// **'Contact support'**
   String get contactSupport;
+
+  /// No description provided for @currency.
+  ///
+  /// In en, this message translates to:
+  /// **' Currency'**
+  String get currency;
 
   /// No description provided for @date.
   ///
@@ -235,6 +265,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete transaction'**
   String get deleteTransaction;
+
+  /// No description provided for @dollar.
+  ///
+  /// In en, this message translates to:
+  /// **'U.S. dollar'**
+  String get dollar;
+
+  /// No description provided for @dontSteal.
+  ///
+  /// In en, this message translates to:
+  /// **'Crook, don\'t steal'**
+  String get dontSteal;
 
   /// No description provided for @editing.
   ///
@@ -259,6 +301,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter amount'**
   String get enterAmount;
+
+  /// No description provided for @enterNewPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a new password'**
+  String get enterNewPassword;
+
+  /// No description provided for @enterYourPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password'**
+  String get enterYourPassword;
 
   /// No description provided for @error.
   ///
@@ -289,6 +343,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error getting categories'**
   String get errorGettingCategories;
+
+  /// No description provided for @euro.
+  ///
+  /// In en, this message translates to:
+  /// **'Euro'**
+  String get euro;
 
   /// No description provided for @filterDateAscending.
   ///
@@ -326,11 +386,41 @@ abstract class AppLocalizations {
   /// **'Find category'**
   String get findCategory;
 
+  /// No description provided for @haptics.
+  ///
+  /// In en, this message translates to:
+  /// **'Haptics'**
+  String get haptics;
+
+  /// No description provided for @invalidPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid password'**
+  String get invalidPassword;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
   /// No description provided for @loading.
   ///
   /// In en, this message translates to:
   /// **'Loading'**
   String get loading;
+
+  /// No description provided for @logInBiometricsReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in to the app using Face ID or Touch ID'**
+  String get logInBiometricsReason;
+
+  /// No description provided for @loginBiometrics.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in using Face ID / Touch ID'**
+  String get loginBiometrics;
 
   /// No description provided for @myHistory.
   ///
@@ -380,6 +470,12 @@ abstract class AppLocalizations {
   /// **'New transaction comment'**
   String get newTransactionComment;
 
+  /// No description provided for @noBiometrics.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have biometric access, enter your pin code'**
+  String get noBiometrics;
+
   /// No description provided for @noCategories.
   ///
   /// In en, this message translates to:
@@ -428,6 +524,12 @@ abstract class AppLocalizations {
   /// **'Period: end'**
   String get periodEnd;
 
+  /// No description provided for @pinCode.
+  ///
+  /// In en, this message translates to:
+  /// **'PinCode'**
+  String get pinCode;
+
   /// No description provided for @pleaseFillFollowingFields.
   ///
   /// In en, this message translates to:
@@ -440,6 +542,12 @@ abstract class AppLocalizations {
   /// **'Primary color'**
   String get primaryColor;
 
+  /// No description provided for @russianRuble.
+  ///
+  /// In en, this message translates to:
+  /// **'Russian Ruble'**
+  String get russianRuble;
+
   /// No description provided for @save.
   ///
   /// In en, this message translates to:
@@ -451,6 +559,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select filter'**
   String get selectFilter;
+
+  /// No description provided for @setPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Set a password'**
+  String get setPassword;
+
+  /// No description provided for @settingsTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Light/system'**
+  String get settingsTheme;
 
   /// No description provided for @sorryErrorOccurred.
   ///
@@ -469,6 +589,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sorting'**
   String get sorting;
+
+  /// No description provided for @system.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get system;
 
   /// No description provided for @time.
   ///

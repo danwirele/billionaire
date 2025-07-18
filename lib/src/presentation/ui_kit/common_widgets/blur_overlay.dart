@@ -1,5 +1,6 @@
 import 'dart:ui' show ImageFilter;
 
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:flutter/material.dart';
 
 class BlurOverlay extends StatelessWidget {
@@ -24,10 +25,10 @@ class BlurOverlay extends StatelessWidget {
                 ),
               ),
             ),
-            const Center(
+            Center(
               child: Text(
-                'Жулик не воруй',
-                style: TextStyle(
+                context.localization.dontSteal,
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 40,
                   overflow: TextOverflow.clip,

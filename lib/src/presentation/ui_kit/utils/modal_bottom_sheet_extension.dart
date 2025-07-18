@@ -216,7 +216,8 @@ extension ModalBottomSheet on BuildContext {
                   data: (account) {
                     return ListTile(
                       title: BillionText.titleMedium(
-                        account?.name ?? 'Аккаунт не найден',
+                        account?.name ??
+                            context.localization.accountNotFound,
                       ),
                       subtitle: BillionText.bodyMedium(
                         '${localization.balance}: ${account?.balance}\n${account?.currency}',

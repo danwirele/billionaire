@@ -1,6 +1,7 @@
+import 'dart:ui' show Locale;
 import 'package:billionaire/core/enum/localization_enum.dart';
 import 'package:billionaire/src/data/datasources/local/settings_local_datasource.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show WidgetsBinding;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'app_locale.g.dart';

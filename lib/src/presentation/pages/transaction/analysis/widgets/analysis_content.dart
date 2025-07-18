@@ -39,11 +39,14 @@ class AnalysisContent extends ConsumerWidget {
               data: (analysisState) {
                 if (analysisState == null) {
                   return Center(
-                    child: Text(context.localization.sorryErrorOccurred),
+                    child: Text(
+                      context.localization.sorryErrorOccurred,
+                    ),
                   );
                 }
 
-                final analysisStateList = analysisState.stateModelsList;
+                final analysisStateList =
+                    analysisState.stateModelsList;
 
                 if (analysisStateList.isEmpty) {
                   return Center(
@@ -52,7 +55,8 @@ class AnalysisContent extends ConsumerWidget {
                 }
                 final random = Random();
                 final Set<Color> uniqueColors = {};
-                while (uniqueColors.length < analysisStateList.length) {
+                while (uniqueColors.length <
+                    analysisStateList.length) {
                   final color = Color.fromRGBO(
                     random.nextInt(256),
                     random.nextInt(256),
@@ -79,7 +83,8 @@ class AnalysisContent extends ConsumerWidget {
                         legends: List.generate(
                           analysisStateList.length,
                           (index) {
-                            final analysisElement = analysisStateList[index];
+                            final analysisElement =
+                                analysisStateList[index];
                             return LegendEntity(
                               percentage: analysisElement.percentage,
                               title: analysisElement.category.name,
@@ -96,7 +101,8 @@ class AnalysisContent extends ConsumerWidget {
                       child: ListView.builder(
                         itemCount: analysisStateList.length,
                         itemBuilder: (context, index) {
-                          final analysisElement = analysisStateList[index];
+                          final analysisElement =
+                              analysisStateList[index];
 
                           return GestureDetector(
                             onTap: () {
@@ -105,15 +111,18 @@ class AnalysisContent extends ConsumerWidget {
                               );
                             },
                             child: BillionStatWidget(
-                              statTitle: analysisElement.category.name,
-                              statDescription: analysisElement.lastTransactionComment,
+                              statTitle:
+                                  analysisElement.category.name,
+                              statDescription: analysisElement
+                                  .lastTransactionComment,
                               subAction: BillionText.bodyLarge(
                                 '${analysisElement.amount} ${currency.char}',
                               ),
                               action: BillionText.bodyLarge(
                                 '${analysisElement.percentage.toStringAsFixed(0)}%',
                               ),
-                              leadingEmoji: analysisElement.category.emoji,
+                              leadingEmoji:
+                                  analysisElement.category.emoji,
                             ),
                           );
                         },

@@ -9,6 +9,7 @@ class SharedPreferencesService extends _$SharedPreferencesService {
   static const String localizationKey = 'localization';
   static const String lightTintColorKey = 'light_tint_color';
   static const String darkTintColorKey = 'dark_tint_color';
+  static const String hapticsEnabledKey = 'hapics';
   @override
   FutureOr<SharedPreferences> build() async {
     return SharedPreferences.getInstance();

@@ -28,10 +28,14 @@ class ChooseCategory extends StatelessWidget {
               categoryNotifier.value = selectedCategory;
             }
           },
-          leading: BillionText.bodyLarge(context.localization.category),
+          leading: BillionText.bodyLarge(
+            context.localization.category,
+          ),
           action: Row(
             children: [
-              BillionText.bodyLarge(category?.name ?? 'Не выбрана'),
+              BillionText.bodyLarge(
+                category?.name ?? context.localization.notSelected,
+              ),
               const BillionArrowRight(),
             ],
           ),

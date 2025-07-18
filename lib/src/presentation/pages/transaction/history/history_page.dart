@@ -55,49 +55,55 @@ class HistoryPage extends StatelessWidget {
                 children: [
                   ValueListenableBuilder(
                     valueListenable: date.startDate,
-                    builder: (context, value, child) => BillionPinnedContainer.primaryMedium(
-                      onTap: () async {
-                        final newDate = await showDatePicker(
-                          context: context,
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime.now(),
-                          initialDate: value,
-                        );
+                    builder: (context, value, child) =>
+                        BillionPinnedContainer.primaryMedium(
+                          onTap: () async {
+                            final newDate = await showDatePicker(
+                              context: context,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime.now(),
+                              initialDate: value,
+                            );
 
-                        if (newDate != null) {
-                          await ref.read(dateProvider.notifier).setStartDate(newDate);
-                        }
-                      },
-                      leading: BillionText.bodyLarge(
-                        context.localization.beginning,
-                      ),
-                      action: BillionText.bodyLarge(
-                        value.toddMMyyyy(),
-                      ),
-                    ),
+                            if (newDate != null) {
+                              await ref
+                                  .read(dateProvider.notifier)
+                                  .setStartDate(newDate);
+                            }
+                          },
+                          leading: BillionText.bodyLarge(
+                            context.localization.beginning,
+                          ),
+                          action: BillionText.bodyLarge(
+                            value.toddMMyyyy(),
+                          ),
+                        ),
                   ),
                   ValueListenableBuilder(
                     valueListenable: date.endDate,
-                    builder: (context, value, child) => BillionPinnedContainer.primaryMedium(
-                      onTap: () async {
-                        final newDate = await showDatePicker(
-                          context: context,
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime.now(),
-                          initialDate: value,
-                        );
+                    builder: (context, value, child) =>
+                        BillionPinnedContainer.primaryMedium(
+                          onTap: () async {
+                            final newDate = await showDatePicker(
+                              context: context,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime.now(),
+                              initialDate: value,
+                            );
 
-                        if (newDate != null) {
-                          await ref.read(dateProvider.notifier).setEndDate(newDate);
-                        }
-                      },
-                      leading: BillionText.bodyLarge(
-                        context.localization.ending,
-                      ),
-                      action: BillionText.bodyLarge(
-                        value.toddMMyyyy(),
-                      ),
-                    ),
+                            if (newDate != null) {
+                              await ref
+                                  .read(dateProvider.notifier)
+                                  .setEndDate(newDate);
+                            }
+                          },
+                          leading: BillionText.bodyLarge(
+                            context.localization.ending,
+                          ),
+                          action: BillionText.bodyLarge(
+                            value.toddMMyyyy(),
+                          ),
+                        ),
                   ),
                 ],
               );
@@ -108,9 +114,12 @@ class HistoryPage extends StatelessWidget {
               final filter = ref.watch(transactionFilterProvider);
               return BillionPinnedContainer.primaryMedium(
                 onTap: () async => context.showFilterBottomSheet(),
-                leading: BillionText.bodyLarge(context.localization.sorting),
+                leading: BillionText.bodyLarge(
+                  context.localization.sorting,
+                ),
                 action: BillionText.bodyLarge(
-                  filter?.filterName ?? context.localization.selectFilter,
+                  filter?.filterName ??
+                      context.localization.selectFilter,
                 ),
               );
             },
@@ -128,13 +137,17 @@ class HistoryPage extends StatelessWidget {
                         data: (historyTransactionStateModel) {
                           if (historyTransactionStateModel == null) {
                             return Text(
-                              context.localization.sorryErrorOccurredNoAccount,
+                              context
+                                  .localization
+                                  .sorryErrorOccurredNoAccount,
                             );
                           }
 
                           return HistoryTransactionsContent(
-                            currencyProviderValue: currencyProviderValue,
-                            historyTransactionStateModel: historyTransactionStateModel,
+                            currencyProviderValue:
+                                currencyProviderValue,
+                            historyTransactionStateModel:
+                                historyTransactionStateModel,
                           );
                         },
                         error: (error, stackTrace) {
@@ -147,7 +160,8 @@ class HistoryPage extends StatelessWidget {
                           );
                         },
                         loading: () => CircularProgressIndicator(
-                          backgroundColor: colorScheme.primaryContainer,
+                          backgroundColor:
+                              colorScheme.primaryContainer,
                           color: colorScheme.primary,
                         ),
                       );

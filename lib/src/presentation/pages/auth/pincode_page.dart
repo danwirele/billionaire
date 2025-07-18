@@ -1,6 +1,7 @@
 import 'package:billionaire/src/presentation/pages/auth/controller/pincode_page_controller.dart';
 import 'package:billionaire/src/presentation/pages/auth/widgets/billion_pinput.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -30,8 +31,9 @@ class PincodePage extends ConsumerWidget {
                           await pincodePageNotifier.setTempPass(
                             pinCode: value,
                           );
+                          return true;
                         },
-                        title: 'Установите пароль',
+                        title: context.localization.setPassword,
                       );
                     case PincodePageEnum.edit:
                       return BillionPinput(
@@ -39,16 +41,18 @@ class PincodePage extends ConsumerWidget {
                           await pincodePageNotifier.setTempPass(
                             pinCode: value,
                           );
+                          return true;
                         },
-                        title: 'Введите новый пароль',
+                        title: context.localization.enterNewPassword,
                       );
                     case PincodePageEnum.confirmation:
                       return BillionPinput(
                         onComplete: (value) async {
-                          await pincodePageNotifier.setPass(
-                            pinCode: value,
-                          );
-
+                          final result = await pincodePageNotifier
+                              .setPass(
+                                pinCode: value,
+                              );
+                          if (!result) return false;
                           await Future<void>.delayed(
                             Durations.short4,
                           );
@@ -56,13 +60,18 @@ class PincodePage extends ConsumerWidget {
                           if (context.mounted) {
                             GoRouter.of(context).pop();
                           }
+                          return true;
                         },
-                        title: 'Подтвердите ваш новый пароль',
+                        title: context
+                            .localization
+                            .confirmYourNewPassword,
                       );
                   }
                 },
                 error: (error, stackTrace) {
-                  return const Text('Извините произошла ошибка');
+                  return Text(
+                    context.localization.sorryErrorOccurred,
+                  );
                 },
                 loading: () => const CircularProgressIndicator(),
               ),

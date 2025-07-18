@@ -2,13 +2,13 @@ import 'package:billionaire/core/enum/currency_enum.dart';
 import 'package:billionaire/core/gen/assets.gen.dart';
 import 'package:billionaire/src/domain/controllers/connection.dart';
 import 'package:billionaire/src/presentation/shared/controllers/currency_provider.dart';
+import 'package:billionaire/src/presentation/shared/controllers/haptics_controller.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:billionaire/src/router/routes_util.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:vibration/vibration.dart';
 
 //widgets
 part 'common_widgets/billion_app_bar.dart';

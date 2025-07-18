@@ -12,7 +12,7 @@ class AppInfo extends StatelessWidget {
     final localization = context.localization;
 
     return BillionPinnedContainer.transparentMedium(
-      leading: BillionText.bodyLarge(localization.about),
+      leading: BillionText.bodyLarge(context.localization.about),
       action: const SettingsArrow(),
       onTap: () {
         showDialog(

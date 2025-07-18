@@ -4,7 +4,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 extension InvokeFunction on BuildContext {
-  Future<void> invokeMethodWrapper(Future<dynamic> Function() future) async {
+  Future<void> invokeMethodWrapper(
+    Future<dynamic> Function() future,
+  ) async {
     try {
       return await future.call();
     } on DioException catch (e) {
@@ -12,7 +14,9 @@ extension InvokeFunction on BuildContext {
         context: this,
         builder: (context) {
           return AlertDialog(
-            title: BillionText.titleLarge(context.localization.sorryErrorOccurred),
+            title: BillionText.titleLarge(
+              context.localization.sorryErrorOccurred,
+            ),
             content: BillionText.bodyMedium(
               e.message.toString(),
               overflow: TextOverflow.visible,
@@ -31,7 +35,9 @@ extension InvokeFunction on BuildContext {
         context: this,
         builder: (context) {
           return AlertDialog(
-            title: BillionText.titleLarge(context.localization.sorryErrorOccurred),
+            title: BillionText.titleLarge(
+              context.localization.sorryErrorOccurred,
+            ),
             content: BillionText.bodyMedium(
               context.localization.contactSupport,
               overflow: TextOverflow.visible,

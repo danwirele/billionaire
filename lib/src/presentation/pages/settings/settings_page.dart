@@ -1,3 +1,4 @@
+import 'package:billionaire/src/presentation/pages/settings/widgets/app_info.dart';
 import 'package:billionaire/src/presentation/pages/settings/widgets/code_password_editor.dart';
 import 'package:billionaire/src/presentation/pages/settings/widgets/haptick_editor.dart';
 import 'package:billionaire/src/presentation/pages/settings/widgets/language_editor.dart';
@@ -23,6 +24,7 @@ class SettingsPage extends StatelessWidget {
           HaptickEditor(),
           CodePasswordEditor(),
           LanguageEditor(),
+          AppInfo(),
         ],
       ),
     );

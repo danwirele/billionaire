@@ -48,6 +48,23 @@ class Auth extends _$Auth {
   Future<void> deletePass(String pinCode) async {
     final pincodeDatasource = ref.read(pincodeServiceProvider);
 
-    pincodeDatasource.deletePassword(pinCode);
+    await pincodeDatasource.deletePassword(pinCode);
+  }
+
+  Future<void> biometricsLogIn() async {
+    state = const AsyncData(true);
+    return;
+  }
+
+  Future<void> deleteBiometricsLogin() async {
+    await ref.read(pincodeServiceProvider).deleteBiometricsLogin();
+  }
+
+  Future<void> setBiometricsLogin() async {
+    return ref.read(pincodeServiceProvider).setBiometricsLogin();
+  }
+
+  Future<bool> isBiometricsEnabled() async {
+    return ref.read(pincodeServiceProvider).isBiometricsEnabled();
   }
 }

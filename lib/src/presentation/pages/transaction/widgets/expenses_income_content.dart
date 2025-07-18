@@ -10,7 +10,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ExpensesIncomeContent extends StatelessWidget {
   const ExpensesIncomeContent.income({super.key}) : isIncome = true;
-  const ExpensesIncomeContent.expenses({super.key}) : isIncome = false;
+  const ExpensesIncomeContent.expenses({super.key})
+    : isIncome = false;
 
   final bool isIncome;
 
@@ -28,12 +29,17 @@ class ExpensesIncomeContent extends StatelessWidget {
             final currencyProviderValue = ref.getCurrency();
 
             return BillionPinnedContainer.primaryMedium(
-              leading: BillionText.bodyLarge(context.localization.total),
+              leading: BillionText.bodyLarge(
+                context.localization.total,
+              ),
               action: ref
                   .watch(accountTransactionRepo)
                   .when(
                     data: (transactionStateModel) {
-                      final amountText = transactionStateModel?.amount.formatNumber() ?? context.localization.noInformation;
+                      final amountText =
+                          transactionStateModel?.amount
+                              .formatNumber() ??
+                          context.localization.noInformation;
 
                       return BillionText.bodyLarge(
                         '$amountText ${currencyProviderValue.char}',
@@ -68,12 +74,16 @@ class ExpensesIncomeContent extends StatelessWidget {
                       if (transactionStateModel == null) {
                         return Center(
                           child: Text(
-                            context.localization.sorryErrorOccurredNoAccount,
+                            context
+                                .localization
+                                .sorryErrorOccurredNoAccount,
                           ),
                         );
                       }
 
-                      if (transactionStateModel.transactions.isEmpty) {
+                      if (transactionStateModel
+                          .transactions
+                          .isEmpty) {
                         return Center(
                           child: Text(
                             context.localization.noTransactions,
@@ -82,19 +92,22 @@ class ExpensesIncomeContent extends StatelessWidget {
                       }
 
                       return ListView.builder(
-                        itemCount: transactionStateModel.transactions.length,
+                        itemCount:
+                            transactionStateModel.transactions.length,
                         itemBuilder: (context, index) {
-                          final transaction = transactionStateModel.transactions[index];
+                          final transaction = transactionStateModel
+                              .transactions[index];
                           final category = transaction.category;
 
                           return BillionStatWidget(
                             actionCallBack: () async {
                               await context.invokeMethodWrapper(
                                 () async {
-                                  await context.showTransactionActionDialog(
-                                    model: transaction,
-                                    isIncome: isIncome,
-                                  );
+                                  await context
+                                      .showTransactionActionDialog(
+                                        model: transaction,
+                                        isIncome: isIncome,
+                                      );
                                 },
                               );
                             },

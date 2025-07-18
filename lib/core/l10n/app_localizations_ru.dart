@@ -9,6 +9,12 @@ class AppLocalizationsRu extends AppLocalizations {
   AppLocalizationsRu([String locale = 'ru']) : super(locale);
 
   @override
+  String get about => 'О программе';
+
+  @override
+  String get aboutReadme => 'Это приложение, нужно что бы ты стал миллиардером';
+
+  @override
   String get accept => 'Принять';
 
   @override
@@ -60,6 +66,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get category => 'Статья';
 
   @override
+  String get checkingBiometrics => 'Проверка биометрии';
+
+  @override
   String get choosePrimaryColor => 'Выберите основной цвет';
 
   @override
@@ -69,13 +78,25 @@ class AppLocalizationsRu extends AppLocalizations {
   String get comment => 'Комментарий';
 
   @override
+  String get confirmYourNewPassword => 'Подтвердите ваш новый пароль';
+
+  @override
   String get contactSupport => 'Обратитесь в поддержку';
+
+  @override
+  String get currency => 'Валюта';
 
   @override
   String get date => 'Дата';
 
   @override
   String get deleteTransaction => 'Удалить транзакцию';
+
+  @override
+  String get dollar => 'Американский доллар';
+
+  @override
+  String get dontSteal => 'Жулик не воруй';
 
   @override
   String get editing => 'Редактирование';
@@ -88,6 +109,12 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get enterAmount => 'Введите сумму';
+
+  @override
+  String get enterNewPassword => 'Введите новый пароль';
+
+  @override
+  String get enterYourPassword => 'Введите ваш пароль';
 
   @override
   String get error => 'Ошибка';
@@ -103,6 +130,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get errorGettingCategories => 'Ошибка получения категорий';
+
+  @override
+  String get euro => 'Евро';
 
   @override
   String get filterDateAscending => 'Дата по возрастанию';
@@ -123,7 +153,23 @@ class AppLocalizationsRu extends AppLocalizations {
   String get findCategory => 'Найти статью';
 
   @override
+  String get haptics => 'Хаптики';
+
+  @override
+  String get invalidPassword => 'Неверный пароль';
+
+  @override
+  String get language => 'Язык';
+
+  @override
   String get loading => 'Загрузка';
+
+  @override
+  String get logInBiometricsReason =>
+      'Войдите в приложение с помощью Face ID или Touch ID';
+
+  @override
+  String get loginBiometrics => 'Войти через Face ID / Touch ID';
 
   @override
   String get myHistory => 'Моя история';
@@ -150,6 +196,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get newTransactionComment => 'Новый комментарий транзакции';
 
   @override
+  String get noBiometrics =>
+      'У вас отстутствует вход по биометрии, введите пин-код';
+
+  @override
   String get noCategories => 'Категории отсутствуют';
 
   @override
@@ -174,6 +224,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get periodEnd => 'Период: конец';
 
   @override
+  String get pinCode => 'Код пароль';
+
+  @override
   String get pleaseFillFollowingFields =>
       'Пожалуйста, заполните следующие поля';
 
@@ -181,10 +234,19 @@ class AppLocalizationsRu extends AppLocalizations {
   String get primaryColor => 'Основной цвет';
 
   @override
+  String get russianRuble => 'Российский рубль';
+
+  @override
   String get save => 'Сохранить';
 
   @override
   String get selectFilter => 'Выберите фильтр';
+
+  @override
+  String get setPassword => 'Установите пароль';
+
+  @override
+  String get settingsTheme => 'Светлая/системная';
 
   @override
   String get sorryErrorOccurred => 'Извините, произошла ошибка';
@@ -195,6 +257,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get sorting => 'Сортировка';
+
+  @override
+  String get system => 'Системный';
 
   @override
   String get time => 'Время';

@@ -23,7 +23,7 @@ class CurrencyTile extends ConsumerWidget {
       ),
       leading: SvgPicture.asset(currency.iconPath),
       title: BillionText.bodyLarge(
-        '${currency.fullName}  ${currency.char}',
+        '${context.localizedDisplayName(currency)}  ${currency.char}',
       ),
       onTap: () {
         ref

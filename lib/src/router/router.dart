@@ -122,7 +122,7 @@ class Router extends _$Router {
           path: RoutesUtil.authPagePath,
           name: RoutesUtil.authPageName,
           builder: (context, state) {
-            return const AuthPage();
+            return AuthPage();
           },
         ),
         GoRoute(

@@ -17,13 +17,14 @@ class PincodePageController extends _$PincodePageController {
     return hasPassword ? PincodePageEnum.edit : PincodePageEnum.set;
   }
 
-  Future<void> setPass({required String pinCode}) async {
+  Future<bool> setPass({required String pinCode}) async {
     final authNotifier = ref.read(authProvider.notifier);
-    if (pinCode != _temPincode) throw Exception('Пароли не равны');
+    if (pinCode != _temPincode) return false;
     await authNotifier.setPass(pinCode: pinCode);
 
     state = const AsyncData(PincodePageEnum.confirmation);
     _temPincode = null;
+    return true;
   }
 
   Future<bool> validatePincode({required String pinCode}) async {
