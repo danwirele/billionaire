@@ -6,7 +6,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'chart_transactions_repository.g.dart';
 
 @Riverpod(dependencies: [UserAccountRepository])
-class ChartTransactionsRepository extends _$ChartTransactionsRepository {
+class ChartTransactionsRepository
+    extends _$ChartTransactionsRepository {
   @override
   Future<List<TransactionResponseModel>?> build() async {
     final transactionRepo = await ref.read(
@@ -16,6 +17,7 @@ class ChartTransactionsRepository extends _$ChartTransactionsRepository {
     final account = await ref.watch(
       userAccountRepositoryProvider.future,
     );
+    if (account == null) return null;
 
     final dateTimeNow = DateTime.now();
     // Начало текущего дня
@@ -34,11 +36,12 @@ class ChartTransactionsRepository extends _$ChartTransactionsRepository {
       59,
       59,
     );
-    final transactions = await transactionRepo.getTransactionsByPeriod(
-      accountId: account.id,
-      startDate: startDate,
-      endDate: endDate,
-    );
+    final transactions = await transactionRepo
+        .getTransactionsByPeriod(
+          accountId: account.id,
+          startDate: startDate,
+          endDate: endDate,
+        );
 
     return transactions;
   }
@@ -56,12 +59,14 @@ class ChartTransactionsRepository extends _$ChartTransactionsRepository {
     final account = await ref.read(
       userAccountRepositoryProvider.future,
     );
+    if (account == null) return;
 
-    final transactions = await transactionRepo.getTransactionsByPeriod(
-      accountId: account.id,
-      startDate: startDate,
-      endDate: endDate,
-    );
+    final transactions = await transactionRepo
+        .getTransactionsByPeriod(
+          accountId: account.id,
+          startDate: startDate,
+          endDate: endDate,
+        );
 
     state = AsyncData(transactions);
   }

@@ -55,7 +55,8 @@ class TransactionsRepository extends _$TransactionsRepository {
     await transactionRepo.deleteTransaction(id: id);
   }
 
-  Future<List<TransactionResponseModel>?> getTransactionsByPeriod() async {
+  Future<List<TransactionResponseModel>?>
+  getTransactionsByPeriod() async {
     final transactionRepo = await ref.read(
       transactionRepositoryImplDiProvider.future,
     );
@@ -63,6 +64,7 @@ class TransactionsRepository extends _$TransactionsRepository {
     final account = await ref.read(
       userAccountRepositoryProvider.future,
     );
+    if (account == null) return null;
 
     final dateTimeNow = DateTime.now();
 

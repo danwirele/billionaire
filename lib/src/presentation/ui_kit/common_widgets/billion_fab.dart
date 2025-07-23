@@ -10,11 +10,13 @@ class BillionFAB extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = context.colorScheme;
+
     return FloatingActionButton(
       shape: const CircleBorder(),
       onPressed: onPressed,
       elevation: 0,
-      backgroundColor: BillionColors.primary,
+      backgroundColor: colorScheme.primary,
       foregroundColor: Colors.white,
       child: const Icon(Icons.add),
     );

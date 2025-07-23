@@ -5,7 +5,7 @@ import 'package:billionaire/src/presentation/pages/transaction/history/controlle
 import 'package:billionaire/src/presentation/pages/transaction/history/widgets/history_transactions_content.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/error_helper.dart';
-import 'package:billionaire/src/presentation/ui_kit/utils/filter_option_extension.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/modal_bottom_sheet_extension.dart';
 import 'package:billionaire/src/router/routes_util.dart';
 import 'package:flutter/material.dart';
@@ -23,10 +23,11 @@ class HistoryPage extends StatelessWidget {
     final historyTransactionsController = historyTransactionsProvider(
       isIncome: isIncome,
     );
+    final colorScheme = context.colorScheme;
 
     return BillionScaffold(
       appBar: BillionAppBar(
-        title: 'Моя история',
+        title: context.localization.myHistory,
         actionIcon: IconButton(
           onPressed: () async {
             await GoRouter.of(context).pushNamed(
@@ -37,8 +38,8 @@ class HistoryPage extends StatelessWidget {
           icon: Assets.icons.historyOutline.svg(
             width: 24,
             height: 24,
-            colorFilter: const ColorFilter.mode(
-              BillionColors.onSurfaceVariant,
+            colorFilter: ColorFilter.mode(
+              colorScheme.onSurfaceVariant,
               BlendMode.srcIn,
             ),
           ),
@@ -54,49 +55,55 @@ class HistoryPage extends StatelessWidget {
                 children: [
                   ValueListenableBuilder(
                     valueListenable: date.startDate,
-                    builder: (context, value, child) => BillionPinnedContainer.primaryMedium(
-                      onTap: () async {
-                        final newDate = await showDatePicker(
-                          context: context,
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime.now(),
-                          initialDate: value,
-                        );
+                    builder: (context, value, child) =>
+                        BillionPinnedContainer.primaryMedium(
+                          onTap: () async {
+                            final newDate = await showDatePicker(
+                              context: context,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime.now(),
+                              initialDate: value,
+                            );
 
-                        if (newDate != null) {
-                          await ref.read(dateProvider.notifier).setStartDate(newDate);
-                        }
-                      },
-                      leading: BillionText.bodyLarge(
-                        'Начало',
-                      ),
-                      action: BillionText.bodyLarge(
-                        value.toddMMyyyy(),
-                      ),
-                    ),
+                            if (newDate != null) {
+                              await ref
+                                  .read(dateProvider.notifier)
+                                  .setStartDate(newDate);
+                            }
+                          },
+                          leading: BillionText.bodyLarge(
+                            context.localization.beginning,
+                          ),
+                          action: BillionText.bodyLarge(
+                            value.toddMMyyyy(),
+                          ),
+                        ),
                   ),
                   ValueListenableBuilder(
                     valueListenable: date.endDate,
-                    builder: (context, value, child) => BillionPinnedContainer.primaryMedium(
-                      onTap: () async {
-                        final newDate = await showDatePicker(
-                          context: context,
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime.now(),
-                          initialDate: value,
-                        );
+                    builder: (context, value, child) =>
+                        BillionPinnedContainer.primaryMedium(
+                          onTap: () async {
+                            final newDate = await showDatePicker(
+                              context: context,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime.now(),
+                              initialDate: value,
+                            );
 
-                        if (newDate != null) {
-                          await ref.read(dateProvider.notifier).setEndDate(newDate);
-                        }
-                      },
-                      leading: BillionText.bodyLarge(
-                        'Конец',
-                      ),
-                      action: BillionText.bodyLarge(
-                        value.toddMMyyyy(),
-                      ),
-                    ),
+                            if (newDate != null) {
+                              await ref
+                                  .read(dateProvider.notifier)
+                                  .setEndDate(newDate);
+                            }
+                          },
+                          leading: BillionText.bodyLarge(
+                            context.localization.ending,
+                          ),
+                          action: BillionText.bodyLarge(
+                            value.toddMMyyyy(),
+                          ),
+                        ),
                   ),
                 ],
               );
@@ -107,9 +114,12 @@ class HistoryPage extends StatelessWidget {
               final filter = ref.watch(transactionFilterProvider);
               return BillionPinnedContainer.primaryMedium(
                 onTap: () async => context.showFilterBottomSheet(),
-                leading: BillionText.bodyLarge('Сортировка'),
+                leading: BillionText.bodyLarge(
+                  context.localization.sorting,
+                ),
                 action: BillionText.bodyLarge(
-                  filter?.displayName ?? 'Выберите фильтр',
+                  filter?.filterName ??
+                      context.localization.selectFilter,
                 ),
               );
             },
@@ -126,26 +136,33 @@ class HistoryPage extends StatelessWidget {
                         skipLoadingOnReload: true,
                         data: (historyTransactionStateModel) {
                           if (historyTransactionStateModel == null) {
-                            return const Text(
-                              'Извините, произошла ошибка, счет не найден',
+                            return Text(
+                              context
+                                  .localization
+                                  .sorryErrorOccurredNoAccount,
                             );
                           }
 
                           return HistoryTransactionsContent(
-                            currencyProviderValue: currencyProviderValue,
-                            historyTransactionStateModel: historyTransactionStateModel,
+                            currencyProviderValue:
+                                currencyProviderValue,
+                            historyTransactionStateModel:
+                                historyTransactionStateModel,
                           );
                         },
                         error: (error, stackTrace) {
-                          final errorMessage = ErrorHelper.whenError(error);
+                          final errorMessage = context.whenError(
+                            error,
+                          );
 
                           return BillionText.bodyMedium(
                             errorMessage,
                           );
                         },
-                        loading: () => const CircularProgressIndicator(
-                          backgroundColor: BillionColors.primaryContainer,
-                          color: BillionColors.primary,
+                        loading: () => CircularProgressIndicator(
+                          backgroundColor:
+                              colorScheme.primaryContainer,
+                          color: colorScheme.primary,
                         ),
                       );
                 },

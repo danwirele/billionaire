@@ -4,12 +4,14 @@ import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/dialogs_extension.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/error_helper.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/invoke_function.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ExpensesIncomeContent extends StatelessWidget {
   const ExpensesIncomeContent.income({super.key}) : isIncome = true;
-  const ExpensesIncomeContent.expenses({super.key}) : isIncome = false;
+  const ExpensesIncomeContent.expenses({super.key})
+    : isIncome = false;
 
   final bool isIncome;
 
@@ -18,6 +20,7 @@ class ExpensesIncomeContent extends StatelessWidget {
     final accountTransactionRepo = filteredTransactionsProvider(
       isIncome: isIncome,
     );
+    final colorScheme = context.colorScheme;
 
     return Column(
       children: [
@@ -26,19 +29,26 @@ class ExpensesIncomeContent extends StatelessWidget {
             final currencyProviderValue = ref.getCurrency();
 
             return BillionPinnedContainer.primaryMedium(
-              leading: BillionText.bodyLarge('Всего'),
+              leading: BillionText.bodyLarge(
+                context.localization.total,
+              ),
               action: ref
                   .watch(accountTransactionRepo)
                   .when(
                     data: (transactionStateModel) {
-                      final amountText = transactionStateModel?.amount.formatNumber() ?? 'Информация отсутствует';
+                      final amountText =
+                          transactionStateModel?.amount
+                              .formatNumber() ??
+                          context.localization.noInformation;
 
                       return BillionText.bodyLarge(
                         '$amountText ${currencyProviderValue.char}',
                       );
                     },
                     error: (error, stackTrace) {
-                      final errorMessage = ErrorHelper.whenError(error);
+                      final errorMessage = context.whenError(
+                        error,
+                      );
 
                       return BillionText.bodyMedium(
                         errorMessage,
@@ -46,7 +56,7 @@ class ExpensesIncomeContent extends StatelessWidget {
                       );
                     },
                     loading: () => BillionText.bodyLarge(
-                      'Загрузка...',
+                      '${context.localization.loading}...',
                     ),
                   ),
             );
@@ -62,35 +72,42 @@ class ExpensesIncomeContent extends StatelessWidget {
                   .when(
                     data: (transactionStateModel) {
                       if (transactionStateModel == null) {
-                        return const Center(
+                        return Center(
                           child: Text(
-                            'Извините, произошла ошибка, счет не найден',
+                            context
+                                .localization
+                                .sorryErrorOccurredNoAccount,
                           ),
                         );
                       }
 
-                      if (transactionStateModel.transactions.isEmpty) {
-                        return const Center(
+                      if (transactionStateModel
+                          .transactions
+                          .isEmpty) {
+                        return Center(
                           child: Text(
-                            'Список транзакций пуст',
+                            context.localization.noTransactions,
                           ),
                         );
                       }
 
                       return ListView.builder(
-                        itemCount: transactionStateModel.transactions.length,
+                        itemCount:
+                            transactionStateModel.transactions.length,
                         itemBuilder: (context, index) {
-                          final transaction = transactionStateModel.transactions[index];
+                          final transaction = transactionStateModel
+                              .transactions[index];
                           final category = transaction.category;
 
                           return BillionStatWidget(
                             actionCallBack: () async {
                               await context.invokeMethodWrapper(
                                 () async {
-                                  await context.showTransactionActionDialog(
-                                    model: transaction,
-                                    isIncome: isIncome,
-                                  );
+                                  await context
+                                      .showTransactionActionDialog(
+                                        model: transaction,
+                                        isIncome: isIncome,
+                                      );
                                 },
                               );
                             },
@@ -105,7 +122,9 @@ class ExpensesIncomeContent extends StatelessWidget {
                       );
                     },
                     error: (error, stackTrace) {
-                      final errorMessage = ErrorHelper.whenError(error);
+                      final errorMessage = context.whenError(
+                        error,
+                      );
 
                       return Center(
                         child: BillionText.bodyMedium(
@@ -114,10 +133,10 @@ class ExpensesIncomeContent extends StatelessWidget {
                         ),
                       );
                     },
-                    loading: () => const Center(
+                    loading: () => Center(
                       child: CircularProgressIndicator(
-                        backgroundColor: BillionColors.primaryContainer,
-                        color: BillionColors.primary,
+                        backgroundColor: colorScheme.primaryContainer,
+                        color: colorScheme.primary,
                       ),
                     ),
                   );

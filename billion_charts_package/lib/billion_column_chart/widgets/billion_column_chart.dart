@@ -20,9 +20,9 @@ class BillionColumnBalanceChartState
     final entities = widget.config.entities;
 
     if (entities.isEmpty) {
-      return const Center(
+      return Center(
         child: Text(
-          'Нет данных для отображения',
+          widget.config.textNoDataToDisplay,
           style: TextStyle(fontSize: 16, color: Colors.grey),
         ),
       );

@@ -1,5 +1,6 @@
 import 'package:billionaire/src/presentation/pages/transaction/analysis/controllers/analysis_filter.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -9,14 +10,14 @@ class AnalysisDates extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final date = ref.watch(analysisFilterProvider);
+    final colorScheme = context.colorScheme;
 
     return Column(
       children: [
         ValueListenableBuilder(
           valueListenable: date.startDate,
           builder: (context, value, child) {
-            return BillionPinnedContainer.primaryMedium(
-              containerColor: Colors.transparent,
+            return BillionPinnedContainer.transparentMedium(
               onTap: () async {
                 final newDate = await showDatePicker(
                   context: context,
@@ -33,18 +34,18 @@ class AnalysisDates extends ConsumerWidget {
                 }
               },
               leading: BillionText.bodyLarge(
-                'Период: начало',
+                context.localization.periodBeginning,
               ),
               action: Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,
                   vertical: 6,
                 ),
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(
                     Radius.circular(100),
                   ),
-                  color: BillionColors.primary,
+                  color: colorScheme.primary,
                 ),
                 child: BillionText.titleMedium(
                   value.toddMMyyyy(),
@@ -56,8 +57,7 @@ class AnalysisDates extends ConsumerWidget {
         ValueListenableBuilder(
           valueListenable: date.endDate,
           builder: (context, value, child) =>
-              BillionPinnedContainer.primaryMedium(
-                containerColor: Colors.transparent,
+              BillionPinnedContainer.transparentMedium(
                 onTap: () async {
                   final newDate = await showDatePicker(
                     context: context,
@@ -75,18 +75,18 @@ class AnalysisDates extends ConsumerWidget {
                   }
                 },
                 leading: BillionText.bodyLarge(
-                  'Период: конец',
+                  context.localization.periodEnd,
                 ),
                 action: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 20,
                     vertical: 6,
                   ),
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(
                       Radius.circular(100),
                     ),
-                    color: BillionColors.primary,
+                    color: colorScheme.primary,
                   ),
                   child: BillionText.titleMedium(
                     value.toddMMyyyy(),

@@ -5,6 +5,7 @@ import 'package:billionaire/src/presentation/pages/account/widgets/account_balan
 import 'package:billionaire/src/presentation/pages/account/widgets/currency_selector.dart';
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/error_helper.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -15,14 +16,18 @@ class AccountPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BillionScaffold(
       appBar: const AccountAppBar(),
-      floatingActionButton: BillionFAB(onPressed: () {}),
+      floatingActionButton: Consumer(
+        builder: (context, ref, child) => BillionFAB(
+          onPressed: () async {},
+        ),
+      ),
       body: const Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           AccountBalance(),
           CurrencySelector(),
           SizedBox(height: 16),
           TransactionChart(),
-          Spacer(),
         ],
       ),
     );
@@ -43,11 +48,12 @@ class _TransactionChartState extends State<TransactionChart> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = context.colorScheme;
+
     return SizedBox(
       height: MediaQuery.sizeOf(context).height / 3.5,
       child: Column(
         children: [
-          // Панель с SegmentedButton
           Consumer(
             builder: (context, ref, child) {
               final chartController = ref.read(
@@ -57,27 +63,26 @@ class _TransactionChartState extends State<TransactionChart> {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SegmentedButton<bool>(
-                  style: const ButtonStyle(
+                  style: ButtonStyle(
                     backgroundColor: WidgetStateProperty.fromMap(
                       {
                         WidgetState.selected:
-                            BillionColors.primaryContainer,
-                        WidgetState.any: BillionColors.onPrimary,
+                            colorScheme.primaryContainer,
+                        WidgetState.any: colorScheme.onPrimary,
                       },
                     ),
                     foregroundColor: WidgetStatePropertyAll(
-                      BillionColors.onSurfaceVariant,
+                      colorScheme.onSurfaceVariant,
                     ),
                   ),
-                  segments: const [
+                  segments: [
                     ButtonSegment(
                       value: true,
-
-                      label: Text('По дням'),
+                      label: Text(context.localization.byDay),
                     ),
                     ButtonSegment(
                       value: false,
-                      label: Text('По месяцам'),
+                      label: Text(context.localization.byMonth),
                     ),
                   ],
                   selected: {_showDaily},
@@ -110,16 +115,20 @@ class _TransactionChartState extends State<TransactionChart> {
                           config: BillionColumnChartConfig(
                             entities: data,
                             showDaily: _showDaily,
+                            textNoDataToDisplay:
+                                context.localization.noDataToDisplay,
                           ),
                         );
                       },
                       error: (error, stackTrace) {
-                        final errorMessage = ErrorHelper.whenError(
+                        final errorMessage = context.whenError(
                           error,
                         );
 
                         return Center(
-                          child: BillionText.bodyMedium(errorMessage),
+                          child: BillionText.bodyMedium(
+                            errorMessage,
+                          ),
                         );
                       },
                       loading: () => const Center(

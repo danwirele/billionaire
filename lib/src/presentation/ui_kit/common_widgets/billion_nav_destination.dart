@@ -10,31 +10,29 @@ class BillionNavDestination extends StatelessWidget {
   final SvgGenImage icon;
   final String label;
 
-  static const _unselectedColorFilter = ColorFilter.mode(
-    BillionColors.onSurfaceVariant,
-    BlendMode.srcIn,
-  );
-
-  static const _selectedColorFilter = ColorFilter.mode(
-    BillionColors.primary,
-    BlendMode.srcIn,
-  );
-
   static const double _iconSize = 24.0;
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = context.colorScheme;
+
     return NavigationDestination(
       label: label,
       icon: icon.svg(
         height: _iconSize,
         width: _iconSize,
-        colorFilter: _unselectedColorFilter,
+        colorFilter: ColorFilter.mode(
+          colorScheme.onSurfaceVariant,
+          BlendMode.srcIn,
+        ),
       ),
       selectedIcon: icon.svg(
         height: _iconSize,
         width: _iconSize,
-        colorFilter: _selectedColorFilter,
+        colorFilter: ColorFilter.mode(
+          colorScheme.primary,
+          BlendMode.srcIn,
+        ),
       ),
     );
   }

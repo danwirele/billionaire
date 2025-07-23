@@ -28,6 +28,7 @@ class BillionStatWidget extends StatelessWidget {
           : 3,
       horizontal: 16,
     );
+    final colorScheme = context.colorScheme;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -39,7 +40,7 @@ class BillionStatWidget extends StatelessWidget {
           leading: leadingEmoji.isNotEmpty
               ? CircleAvatar(
                   radius: 12,
-                  backgroundColor: BillionColors.primaryContainer,
+                  backgroundColor: colorScheme.primaryContainer,
                   child: Text(leadingEmoji),
                 )
               : null,
@@ -70,14 +71,14 @@ class BillionStatWidget extends StatelessWidget {
 
               Assets.icons.moreVert.svg(
                 colorFilter: ColorFilter.mode(
-                  BillionColors.tertiary.withValues(alpha: 0.3),
+                  colorScheme.tertiary.withValues(alpha: 0.3),
                   BlendMode.srcIn,
                 ),
               ),
             ],
           ),
         ),
-        const Divider(height: 1, color: BillionColors.outlineVariant),
+        Divider(height: 1, color: colorScheme.outlineVariant),
       ],
     );
   }

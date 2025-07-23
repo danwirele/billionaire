@@ -35,7 +35,7 @@ class HistoryTransactions extends _$HistoryTransactions {
     }
 
     if (filter != null) {
-      switch (filter) {
+      switch (filter.filterOption) {
         case FilterOption.dateAscending:
           filteredTransactions.sort(
             (a, b) => a.transactionDate.compareTo(b.transactionDate),

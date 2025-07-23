@@ -3,6 +3,7 @@ import 'package:billionaire/src/presentation/pages/account/controllers/update_ac
 import 'package:billionaire/src/presentation/ui_kit/ui_kit.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/dialogs_extension.dart';
 import 'package:billionaire/src/presentation/ui_kit/utils/error_helper.dart';
+import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -16,6 +17,8 @@ class AccountAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = context.colorScheme;
+
     return PreferredSize(
       preferredSize: const Size.fromHeight(
         BillionAppBar.sizeAppBar,
@@ -28,14 +31,14 @@ class AccountAppBar extends StatelessWidget implements PreferredSizeWidget {
                 data: (data) {
                   if (data == null) {
                     return BillionAppBar(
-                      title: 'Счет не найден',
+                      title: context.localization.accountNotFound,
                       actionIcon: IconButton(
                         onPressed: () {},
                         icon: Assets.icons.edit.svg(
                           width: 24,
                           height: 24,
-                          colorFilter: const ColorFilter.mode(
-                            BillionColors.onSurfaceVariant,
+                          colorFilter: ColorFilter.mode(
+                            colorScheme.onSurfaceVariant,
                             BlendMode.srcIn,
                           ),
                         ),
@@ -54,8 +57,8 @@ class AccountAppBar extends StatelessWidget implements PreferredSizeWidget {
                       icon: Assets.icons.edit.svg(
                         width: 24,
                         height: 24,
-                        colorFilter: const ColorFilter.mode(
-                          BillionColors.onSurfaceVariant,
+                        colorFilter: ColorFilter.mode(
+                          colorScheme.onSurfaceVariant,
                           BlendMode.srcIn,
                         ),
                       ),
@@ -63,7 +66,7 @@ class AccountAppBar extends StatelessWidget implements PreferredSizeWidget {
                   );
                 },
                 error: (error, stackTrace) {
-                  final errorMessage = ErrorHelper.whenError(error);
+                  final errorMessage = context.whenError(error);
 
                   return BillionAppBar(
                     title: errorMessage,
@@ -72,8 +75,8 @@ class AccountAppBar extends StatelessWidget implements PreferredSizeWidget {
                       icon: Assets.icons.edit.svg(
                         width: 24,
                         height: 24,
-                        colorFilter: const ColorFilter.mode(
-                          BillionColors.onSurfaceVariant,
+                        colorFilter: ColorFilter.mode(
+                          colorScheme.onSurfaceVariant,
                           BlendMode.srcIn,
                         ),
                       ),
@@ -81,14 +84,14 @@ class AccountAppBar extends StatelessWidget implements PreferredSizeWidget {
                   );
                 },
                 loading: () => BillionAppBar(
-                  title: 'Загрузка...',
+                  title: '${context.localization.loading}...',
                   actionIcon: IconButton(
                     onPressed: () {},
                     icon: Assets.icons.edit.svg(
                       width: 24,
                       height: 24,
-                      colorFilter: const ColorFilter.mode(
-                        BillionColors.onSurfaceVariant,
+                      colorFilter: ColorFilter.mode(
+                        colorScheme.onSurfaceVariant,
                         BlendMode.srcIn,
                       ),
                     ),
