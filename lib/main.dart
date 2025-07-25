@@ -19,7 +19,7 @@ void main() async {
       ]);
       await SystemChrome.setApplicationSwitcherDescription(
         const ApplicationSwitcherDescription(
-          label: 'My App',
+          label: 'Billionaire',
           primaryColor: 1,
         ),
       );

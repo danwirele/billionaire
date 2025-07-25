@@ -4,8 +4,13 @@ import 'package:billionaire/src/presentation/ui_kit/utils/localization_extension
 import 'package:flutter/material.dart';
 
 class BlurOverlay extends StatelessWidget {
-  const BlurOverlay({super.key, required this.child});
-  final Widget child;
+  const BlurOverlay({
+    this.backgroundChild,
+    super.key,
+  });
+
+  final Widget? backgroundChild;
+
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -13,7 +18,7 @@ class BlurOverlay extends StatelessWidget {
       child: Material(
         child: Stack(
           children: [
-            child,
+            ?backgroundChild,
             BackdropFilter(
               filter: ImageFilter.blur(
                 sigmaX: 10.0,

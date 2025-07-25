@@ -12,10 +12,10 @@ class CategoryRepositoryImpl implements CategoryRepository {
     required this.remoteDatasource,
     required this.localDatasource,
     required this.database,
+    required this.connectivity,
   });
 
-  static final Connectivity connectivity = Connectivity();
-
+  final Connectivity connectivity;
   final CategoriesLocalDatasource localDatasource;
   final Database database;
   final CategoriesDatasource remoteDatasource;
@@ -55,10 +55,14 @@ class CategoryRepositoryImpl implements CategoryRepository {
   }
 
   @override
-  Future<List<CategoryModel>> getAllCategoriesByType({required bool isIncome}) async {
+  Future<List<CategoryModel>> getAllCategoriesByType({
+    required bool isIncome,
+  }) async {
     final hasConnection = await connectivity.hasConnection();
     if (hasConnection) {
-      return remoteDatasource.getAllCategoriesByType(isIncome: isIncome);
+      return remoteDatasource.getAllCategoriesByType(
+        isIncome: isIncome,
+      );
     } else {
       return (await localDatasource.getAllCatgories())
           .where(
