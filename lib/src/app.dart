@@ -87,7 +87,7 @@ class _AppState extends ConsumerState<App>
           builder: (context, child) {
             if (shouldBlur) {
               return BlurOverlay(
-                child: child!,
+                backgroundChild: child!,
               );
             }
 
