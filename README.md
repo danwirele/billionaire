@@ -12,11 +12,12 @@ https://github.com/user-attachments/assets/d6a8e02c-17a2-40f0-ab62-3dcbcb253330
 2. Navigation - GoRouter
 3. Ofline-first подход и Event sourcing
 4. Unit, golden и integration(Patrol) тесты
-5.  Десериализация данных через пулл изолятов(Worker Manager)
-6. Локализация
-7. Светлая/Системная тема
-8. Вход по код-паролю / биометрии
-9. Хаптики
-10. Fuzzy search
-11. Анимации
+5. Десериализация данных через пулл изолятов(Worker Manager)
+6. Создан собственный пакет с графиками
+8. Локализация
+9. Светлая/Системная тема
+10. Вход по код-паролю / биометрии
+11. Хаптики
+12. Fuzzy search
+13. Анимации
 
